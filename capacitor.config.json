@@ -1,0 +1,5 @@
+{
+  "appId": "com.alvaro.mutua",
+  "appName": "mutua",
+  "webDir": "src-capacitor/www"
+}

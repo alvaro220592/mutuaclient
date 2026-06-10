@@ -1,0 +1,24 @@
+listar dispositivos: adb devices
+iniciar o servidor dev android: quasar dev -m capacitor -T android
+rodar o app sem android studio: npx cap run android
+rodar o app com android studio: android-studio android
+
+variáveis de ambiente devem começar com 'VITE_', senão o quasar bloqueia
+
+instalar plugin google auth(login com google): npm install @capawesome/capacitor-google-sign-in
+
+sempre que instalar um plugin pro android: npx cap sync android
+
+limpar cache:
+    rm -rf node_modules/.q-cache
+    rm -rf android/.gradle
+    rm -rf android/app/build
+    npx cap sync android
+    cd android
+    ./gradlew clean
+    quasar dev -m capacitor -T android
+
+    no android studio:
+        File
+        → Invalidate Caches
+        → Invalidate and Restart
