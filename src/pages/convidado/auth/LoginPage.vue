@@ -102,8 +102,6 @@ const onLoginGoogle = async () => {
 
         const idToken = user.idToken
 
-        console.log('ID TOKEN:', idToken)
-
         const data = await loginGoogleBackend(idToken)
 
         await setToken(data.token)

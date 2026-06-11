@@ -63,9 +63,7 @@ const onRedefinirSenha = async () => {
     try {
         carregando.value = true
 
-        const data = await redefinirSenha(email.value, codigo_recuperacao.value, password.value, password_confirmation.value)
-
-        console.log(JSON.stringify(data))
+        await redefinirSenha(email.value, codigo_recuperacao.value, password.value, password_confirmation.value)
 
         $q.notify({
             type: 'positive',

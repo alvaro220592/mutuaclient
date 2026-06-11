@@ -11,8 +11,6 @@
                     Mútua
                 </q-toolbar-title>
 
-                <q-btn flat dense icon="logout" @click="logout" />
-
             </q-toolbar>
         </q-header>
 

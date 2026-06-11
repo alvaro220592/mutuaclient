@@ -54,9 +54,7 @@ const enviarEmailRecuperacao = async () => {
     try {
         carregando.value = true
 
-        const data = await recuperarSenha(email.value)
-
-        console.log(JSON.stringify(data))
+        await recuperarSenha(email.value)
 
         $q.notify({
             type: 'positive',

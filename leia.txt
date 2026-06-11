@@ -29,4 +29,25 @@ buildar para casos em que plugins não funcionam no servidor dev, como o GoogleS
     #npx cap run android # pelo terminal (sem android studio)
     android-studio android # pelo andoid studio
 
-    
+colocar em produção na playstore
+    Criar keystore:
+        keytool -genkeypair -v -keystore mutua-release.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias mutua
+        ele salva no diretorio atual numa pasta chamada mutua-release.keystore. Tem que colocar essa pasta no gitignore
+    pegar SHA1 dele:
+        keytool -list -v -keystore mutua-release.keystore -alias mutua
+    cria um novo id de cliente Oauth na google cloud
+    coloca lá o sha1 criado
+    muda a var de ambiente VITE_GOOGLE_AUTH_ENABLED para true
+    builda: quasar build -m capacitor -T android
+    sincroniza: npx cap sync android (pode entrar em src-capacitor e fazer o mesmo comando por via das dúvidas)
+    gera o bundle:
+        cd android
+        ./gradlew bundleRelease
+        vai ser gerado em android/app/build/outputs/bundle/release/app-release.aab
+    Como AAB não instala direto, gere APK local para teste:
+        cd android
+        ./gradlew assembleRelease
+        depois procura: find android -name "*.apk"
+    procure: find android -name "*.aab"
+        esperado: android/app/build/outputs/bundle/release/app-release.aab
+        subir esse arquivo no google play console (https://developer.android.com/distribute/console?hl=pt-br)
