@@ -31,18 +31,16 @@ export default defineRouter(() => {
     const token = await getToken()
     const logado = !!token
 
-    // =========================
-    // 🔐 ROTAS PRIVADAS
-    // =========================
-    if (to.meta?.auth && !logado) {
-      // não logado tentando entrar em /app
+    const rotaPrivada = to.meta?.auth === true
+    const rotaPublica = to.meta?.auth === false
+
+    // 🔐 1. rota privada exige login
+    if (rotaPrivada && !logado) {
       return next('/login')
     }
 
-    // =========================
-    // 🔵 LOGADO NÃO VOLTA PRO LOGIN
-    // =========================
-    if (logado && to.path === '/login') {
+    // 🔵 2. logado não pode acessar área pública (boas-vindas/login/etc)
+    if (rotaPublica && logado) {
       return next('/app')
     }
 

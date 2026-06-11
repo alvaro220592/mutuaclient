@@ -1,44 +1,69 @@
 <template>
-    <div>
-        <h1 class="text-h5 q-mb-lg">
-            Insira seus dados para entrar
-        </h1>
+    <q-page class="flex flex-center q-pa-md">
 
-        <div class="column q-gutter-md">
-            <q-input outlined v-model="name" label="Usuário" />
+        <div class="register-box">
 
-            <q-input outlined v-model="email" label="E-mail" />
+            <!-- TÍTULO -->
+            <div class="text-h6 q-mb-lg text-center">
+                Crie sua conta
+            </div>
 
-            <q-input outlined v-model="password" label="Senha" type="password" />
+            <!-- FORM -->
+            <div class="column q-gutter-md">
 
-            <q-input outlined v-model="password_confirmation" label="Confirmar senha" type="password" />
+                <q-input outlined v-model="name" label="Usuário" />
 
-            <q-space class="q-mt-lg" />
+                <q-input outlined v-model="email" label="E-mail" />
 
-            <q-btn color="primary" label="Cadastrar" @click.prevent="onCadastrar" />
+                <q-input outlined v-model="password" label="Senha" type="password" />
 
-            <q-btn color="white" icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                label="Entrar com Google" text-color="black" @click.prevent="onLoginGoogle">
-            </q-btn>
+                <q-input outlined v-model="password_confirmation" label="Confirmar senha" type="password" />
 
-            <q-btn flat no-caps color="primary" label="Já tenho cadastro" to="/login" />
+                <q-btn color="primary" label="Cadastrar" @click.prevent="onCadastrar" />
 
-            <q-btn flat no-caps color="primary" label="Voltar para tela inicial" to="/" />
+                <!-- Separador -->
+                <div class="row items-center">
+                    <div class="col"><q-separator /></div>
+                    <div class="q-px-sm text-caption text-grey-6">ou</div>
+                    <div class="col"><q-separator /></div>
+                </div>
+
+                <q-btn color="white" text-color="black"
+                    icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                    label="Entrar com Google" @click.prevent="onLoginGoogle" />
+
+                <!-- ações secundárias -->
+                <div class="column q-gutter-sm q-mt-md">
+
+                    <q-btn flat no-caps color="primary" label="Já tenho cadastro" to="/login" />
+
+                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial" to="/" />
+
+                </div>
+
+            </div>
+
         </div>
 
-
-    </div>
+    </q-page>
 </template>
+
+<style scoped>
+.register-box {
+    width: 100%;
+    max-width: 380px;
+}
+</style>
 
 <script setup>
 import { ref } from 'vue';
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
-const name = ref('')
-const email = ref('')
-const password = ref('')
-const password_confirmation = ref('')
+const name = ref('alvaro')
+const email = ref('alvaro220592@gmail.com')
+const password = ref('password')
+const password_confirmation = ref('password')
 
 import { cadastrar } from 'src/services/auth'
 import { useRouter } from 'vue-router'

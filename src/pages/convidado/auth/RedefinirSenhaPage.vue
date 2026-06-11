@@ -1,27 +1,46 @@
 <template>
-    <div>
-        <h1 class="text-h6 q-mb-lg">
-            Redefinia sua senha
-        </h1>
+    <q-page class="flex flex-center q-pa-md">
 
-        <div class="column q-gutter-md">
-            <q-input outlined v-model="email" label="E-mail" />
+        <div class="reset-box">
 
-            <q-input outlined v-model="codigo_recuperacao" type="tel" maxlength="6"
-                label="Código de 6 dígitos recebido por e-mail" />
+            <!-- TÍTULO -->
+            <div class="text-h6 q-mb-sm text-center">
+                Redefinir senha
+            </div>
 
-            <q-input outlined v-model="password" label="Nova senha" type="password" />
+            <div class="text-body2 text-center text-grey-7 q-mb-md">
+                Digite o código enviado por e-mail e sua nova senha
+            </div>
 
-            <q-input outlined v-model="password_confirmation" label="Confirmar senha" type="password" />
+            <!-- FORM -->
+            <div class="column q-gutter-md">
 
-            <q-btn color="primary" label="Salvar" @click.prevent="onRedefinirSenha" :loading="carregando"
-                :disable="carregando" />
+                <q-input outlined v-model="email" label="E-mail" type="email" />
 
-            <q-btn flat no-caps color="primary" label="Voltar" to="/recuperar-senha" />
+                <q-input outlined v-model="codigo_recuperacao" label="Código de 6 dígitos" type="tel" maxlength="6" />
+
+                <q-input outlined v-model="password" label="Nova senha" type="password" />
+
+                <q-input outlined v-model="password_confirmation" label="Confirmar senha" type="password" />
+
+                <q-btn color="primary" label="Salvar" @click.prevent="onRedefinirSenha" :loading="carregando"
+                    :disable="carregando" />
+
+                <q-btn flat no-caps color="primary" label="Voltar" to="/recuperar-senha" />
+
+            </div>
+
         </div>
 
-    </div>
+    </q-page>
 </template>
+
+<style scoped>
+.reset-box {
+    width: 100%;
+    max-width: 380px;
+}
+</style>
 
 <script setup>
 import { ref } from 'vue';

@@ -1,20 +1,41 @@
 <template>
-    <div>
-        <h1 class="text-h6 q-mb-lg">
-            Insira o e-mail para redefinir a senha
-        </h1>
+    <q-page class="flex flex-center q-pa-md">
 
-        <div class="column q-gutter-md">
-            <q-input outlined v-model="email" label="E-mail" />
+        <div class="recover-box">
 
-            <q-btn color="primary" label="Enviar" @click.prevent="enviarEmailRecuperacao" :loading="carregando"
-                :disable="carregando" />
+            <!-- TÍTULO -->
+            <div class="text-h6 q-mb-lg text-center">
+                Redefinir senha
+            </div>
 
-            <q-btn flat no-caps color="primary" label="Voltar" to="/login" />
+            <div class="text-body2 text-center q-mb-md text-grey-7">
+                Informe seu e-mail para receber o link de recuperação
+            </div>
+
+            <!-- FORM -->
+            <div class="column q-gutter-md">
+
+                <q-input outlined v-model="email" label="E-mail" type="email" />
+
+                <q-btn color="primary" label="Enviar link" @click.prevent="enviarEmailRecuperacao" :loading="carregando"
+                    :disable="carregando" />
+
+                <!-- ações secundárias -->
+                <q-btn flat no-caps color="primary" label="Voltar para login" to="/login" />
+
+            </div>
+
         </div>
 
-    </div>
+    </q-page>
 </template>
+
+<style scoped>
+.recover-box {
+    width: 100%;
+    max-width: 380px;
+}
+</style>
 
 <script setup>
 import { ref } from 'vue';

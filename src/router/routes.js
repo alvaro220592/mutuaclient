@@ -4,6 +4,7 @@ const routes = [
   // =========================
   {
     path: '/',
+    meta: { auth: false },
     component: () => import('layouts/ConvidadoLayout.vue'),
     children: [
       {
@@ -35,7 +36,7 @@ const routes = [
   {
     path: '/app',
     component: () => import('layouts/AutenticadoLayout.vue'),
-    meta: { auth: true }, // <- aqui está a proteção
+    meta: { auth: true },
     children: [
       {
         path: '',

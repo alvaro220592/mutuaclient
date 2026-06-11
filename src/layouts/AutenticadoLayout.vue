@@ -1,78 +1,102 @@
 <template>
     <q-layout view="hHh lpR fFf">
 
-        <!-- Topo -->
+        <!-- HEADER SIMPLES -->
         <q-header elevated>
             <q-toolbar>
 
+                <q-btn flat dense icon="menu" @click="drawer = !drawer" />
+
                 <q-toolbar-title>
-                    Mútua - autenticado
+                    Mútua
                 </q-toolbar-title>
 
-                <!-- dropdown de perfil -->
-                <q-btn flat round>
-                    <q-avatar size="32px">
-                        <img :src="user?.imageUrl || 'https://cdn.quasar.dev/img/boy-avatar.png'" />
-                    </q-avatar>
-
-                    <q-menu>
-                        <q-list style="min-width: 180px">
-
-                            <!-- info do usuário -->
-                            <q-item>
-                                <q-item-section>
-                                    <q-item-label>{{ user?.name }}</q-item-label>
-                                    <q-item-label caption>{{ user?.email }}</q-item-label>
-                                </q-item-section>
-                            </q-item>
-
-                            <q-separator />
-
-                            <!-- logout -->
-                            <q-item clickable v-close-popup @click="logout">
-                                <q-item-section>
-                                    Sair
-                                </q-item-section>
-                            </q-item>
-
-                        </q-list>
-                    </q-menu>
-                </q-btn>
+                <q-btn flat dense icon="logout" @click="logout" />
 
             </q-toolbar>
         </q-header>
 
-        <!-- Conteúdo -->
+        <!-- DRAWER SIMPLES -->
+        <q-drawer v-model="drawer" bordered>
+
+            <q-list>
+
+                <q-item-label header>
+                    Módulos
+                </q-item-label>
+
+                <q-item clickable to="/app/home" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="home" />
+                    </q-item-section>
+                    <q-item-section>
+                        Home
+                    </q-item-section>
+                </q-item>
+
+                <q-item clickable to="/app/doacoes" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="volunteer_activism" />
+                    </q-item-section>
+                    <q-item-section>
+                        Doações
+                    </q-item-section>
+                </q-item>
+
+                <q-item clickable to="/app/adoção" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="pets" />
+                    </q-item-section>
+                    <q-item-section>
+                        Adoção
+                    </q-item-section>
+                </q-item>
+
+                <q-item clickable to="/app/desaparecidos" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="report" />
+                    </q-item-section>
+                    <q-item-section>
+                        Desaparecidos
+                    </q-item-section>
+                </q-item>
+
+                <q-item clickable @click.prevent="logout" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="logout" />
+                    </q-item-section>
+                    <q-item-section>
+                        Sair
+                    </q-item-section>
+                </q-item>
+
+            </q-list>
+
+        </q-drawer>
+
+        <!-- CONTEÚDO -->
         <q-page-container>
             <q-page class="q-pa-md">
                 <router-view />
             </q-page>
         </q-page-container>
 
-        <!-- Navegação inferior -->
-        <q-footer bordered>
-            <q-tabs align="justify">
-                <q-route-tab icon="home" to="/" />
-                <q-route-tab icon="login" to="/login" />
-            </q-tabs>
-        </q-footer>
-
     </q-layout>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { setToken } from 'src/services/storage'
 
+const drawer = ref(false)
 const router = useRouter()
 const authStore = useAuthStore()
 
-const user = authStore.user
-
 const logout = async () => {
     await setToken(null)
-    authStore.logout?.() || authStore.setAuth(null, null)
+    authStore.setAuth(null, null)
     router.replace('/login')
 }
 </script>
