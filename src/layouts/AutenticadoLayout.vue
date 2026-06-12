@@ -11,6 +11,9 @@
                     Mútua
                 </q-toolbar-title>
 
+
+                <q-btn flat round :icon="Dark.isActive ? 'light_mode' : 'dark_mode'" @click="alternarTema" />
+
             </q-toolbar>
         </q-header>
 
@@ -28,34 +31,16 @@
                         <q-icon name="home" />
                     </q-item-section>
                     <q-item-section>
-                        Home
+                        Início
                     </q-item-section>
                 </q-item>
 
-                <q-item clickable to="/app/doacoes" v-ripple>
+                <q-item v-for="modulo in listaModulos" :key="modulo.id" clickable to="/app/{{ modulo.slug }}" v-ripple>
                     <q-item-section avatar>
-                        <q-icon name="volunteer_activism" />
+                        <q-icon :name="modulo.icone" />
                     </q-item-section>
                     <q-item-section>
-                        Doações
-                    </q-item-section>
-                </q-item>
-
-                <q-item clickable to="/app/adoção" v-ripple>
-                    <q-item-section avatar>
-                        <q-icon name="pets" />
-                    </q-item-section>
-                    <q-item-section>
-                        Adoção
-                    </q-item-section>
-                </q-item>
-
-                <q-item clickable to="/app/desaparecidos" v-ripple>
-                    <q-item-section avatar>
-                        <q-icon name="report" />
-                    </q-item-section>
-                    <q-item-section>
-                        Desaparecidos
+                        {{ modulo.nome }}
                     </q-item-section>
                 </q-item>
 
@@ -83,18 +68,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { setToken } from 'src/services/storage'
+import { useModulos } from 'src/composables/useModulos'
+import { Dark } from 'quasar'
 
 const drawer = ref(false)
 const router = useRouter()
 const authStore = useAuthStore()
+const { listaModulos, trazerModulos } = useModulos()
+
+onMounted(trazerModulos)
 
 const logout = async () => {
     await setToken(null)
     authStore.setAuth(null, null)
     router.replace('/login')
+}
+
+const alternarTema = () => {
+    Dark.toggle()
+    // futuramente, tem que aplicar a escolha do tema pro usuário no backend
 }
 </script>

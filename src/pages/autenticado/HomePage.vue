@@ -30,8 +30,6 @@
                     </q-card-section>
                 </q-card>
             </div>
-
-
         </div>
 
     </q-page>
@@ -48,29 +46,13 @@
 
 
 import { useAuthStore } from 'src/stores/auth'
-import { modulos } from 'src/services/modulos';
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
+import { useModulos } from 'src/composables/useModulos'
 
 const authStore = useAuthStore()
-const listaModulos = ref(null)
+const { listaModulos, trazerModulos } = useModulos()
 
-onMounted(() => {
-    trazerModulos()
-})
-
-const trazerModulos = async () => {
-
-    try {
-        const dados = await modulos()
-
-        listaModulos.value = dados.modulos
-
-        console.log(JSON.stringify(dados))
-
-    } catch (err) {
-        console.error(JSON.stringify(err))
-    }
-}
+onMounted(trazerModulos)
 
 </script>
 

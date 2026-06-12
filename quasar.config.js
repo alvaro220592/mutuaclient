@@ -211,7 +211,8 @@ export default defineConfig((/* ctx */) => {
     },
     bin: {
       linuxAndroidStudio:
-        '/snap/android-studio/225/bin/studio.sh'
+        // se não achar o kandandroid, rode: which android-studio
+        '/snap/bin/android-studio'
     }
   }
 })
