@@ -60,7 +60,15 @@
         <!-- CONTEÚDO -->
         <q-page-container>
             <q-page class="q-pa-md">
-                <router-view />
+
+                <router-view v-slot="{ Component }">
+
+                    <transition appear mode="out-in" :enter-active-class="animacaoEntrar"
+                        :leave-active-class="animacaoSair">
+                        <component :is="Component" :key="$route.fullPath" />
+                    </transition>
+
+                </router-view>
             </q-page>
         </q-page-container>
 
@@ -74,11 +82,17 @@ import { useAuthStore } from 'src/stores/auth'
 import { setToken } from 'src/services/storage'
 import { useModulos } from 'src/composables/useModulos'
 import { Dark } from 'quasar'
+import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 
 const drawer = ref(false)
 const router = useRouter()
 const authStore = useAuthStore()
 const { listaModulos, trazerModulos } = useModulos()
+
+const {
+    animacaoEntrar,
+    animacaoSair
+} = useTransicaoEntrePaginas()
 
 onMounted(trazerModulos)
 

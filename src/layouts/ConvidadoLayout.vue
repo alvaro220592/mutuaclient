@@ -15,20 +15,26 @@
         <!-- Conteúdo -->
         <q-page-container>
             <q-page class="q-pa-md">
-                <router-view />
+                <router-view v-slot="{ Component }">
+
+                    <transition appear mode="out-in" :enter-active-class="animacaoEntrar"
+                        :leave-active-class="animacaoSair">
+                        <component :is="Component" :key="$route.fullPath" />
+                    </transition>
+
+                </router-view>
             </q-page>
         </q-page-container>
-
-        <!-- Navegação inferior -->
-        <!-- <q-footer bordered>
-            <q-tabs align="justify">
-                <q-route-tab icon="home" to="/" />
-                <q-route-tab icon="login" to="/login" />
-            </q-tabs>
-        </q-footer> -->
 
     </q-layout>
 </template>
 
 <script setup>
+import { useTransicaoEntrePaginas }
+    from 'src/composables/useTransicaoEntrePaginas'
+
+const {
+    animacaoEntrar,
+    animacaoSair
+} = useTransicaoEntrePaginas()
 </script>
