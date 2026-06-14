@@ -16,12 +16,14 @@
             </div>
 
             <div class="column q-gutter-md">
-                <q-card v-for="modulo in listaModulos" :key="modulo.id" clickable bordered>
+                <q-card v-for="modulo in listaModulos" :key="modulo.id" clickable
+                    @click="navegar(modulo.slug + '.opcoes')" bordered>
+
                     <q-card-section>
                         <div class="text-subtitle1">
                             <q-icon :name="modulo.icone" />
                             <!-- <q-icon name="person_search" /> -->
-                            {{ modulo.nome }}
+                            {{ modulo.slug }}
                         </div>
 
                         <div class="text-caption text-grey">
@@ -48,11 +50,17 @@
 import { useAuthStore } from 'src/stores/auth'
 import { onMounted } from 'vue';
 import { useModulos } from 'src/composables/useModulos'
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const { listaModulos, trazerModulos } = useModulos()
+const router = useRouter()
 
 onMounted(trazerModulos)
+
+const navegar = (rota) => {
+    router.push({ name: rota }) // ou router.push({ name: 'doacoes.index' })
+}
 
 </script>
 

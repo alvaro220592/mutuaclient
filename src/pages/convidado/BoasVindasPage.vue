@@ -31,9 +31,9 @@
 
             <q-space />
 
-            <q-btn flat no-caps color="primary" label="Entrar" to="/login" />
+            <q-btn flat no-caps color="primary" label="Entrar" :to="{ name: 'login' }" />
 
-            <q-btn flat no-caps color="primary" label="Criar conta" to="/cadastrar" />
+            <q-btn flat no-caps color="primary" label="Criar conta" :to="{ name: 'cadastrar' }" />
         </q-card-section>
     </q-card>
 </template>

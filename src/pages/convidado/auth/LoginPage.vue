@@ -32,11 +32,11 @@
                 <!-- ações secundárias -->
                 <div class="column q-gutter-sm q-mt-md">
 
-                    <q-btn flat no-caps color="primary" label="Cadastrar" to="/cadastrar" />
+                    <q-btn flat no-caps color="primary" label="Cadastrar" :to="{ name: 'cadastrar' }" />
 
-                    <q-btn flat no-caps color="primary" label="Esqueci minha senha" to="/recuperar-senha" />
+                    <q-btn flat no-caps color="primary" label="Esqueci minha senha" :to="{ name: 'recuperar-senha' }" />
 
-                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial" to="/" />
+                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial" :to="{ name: 'boas-vindas' }" />
 
                 </div>
 

@@ -2,6 +2,10 @@ listar dispositivos: adb devices
 iniciar o servidor dev android: quasar dev -m capacitor -T android
 rodar o app sem android studio: npx cap run android
 rodar o app com android studio: android-studio android
+rodar no emulador:
+    quasar dev -m capacitor -T android
+    emulator -list-avds
+    emulator -avd <NomeDoEmuladorListado ex: Pixel_7>
 
 variáveis de ambiente devem começar com 'VITE_', senão o quasar bloqueia
 

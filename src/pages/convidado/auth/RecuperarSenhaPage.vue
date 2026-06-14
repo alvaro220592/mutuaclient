@@ -21,7 +21,7 @@
                     :disable="carregando" />
 
                 <!-- ações secundárias -->
-                <q-btn flat no-caps color="primary" label="Voltar para login" to="/login" />
+                <q-btn flat no-caps color="primary" label="Voltar para login" :to="{ name: 'login' }" />
 
             </div>
 

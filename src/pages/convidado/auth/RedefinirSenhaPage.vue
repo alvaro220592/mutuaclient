@@ -26,7 +26,7 @@
                 <q-btn color="primary" label="Salvar" @click.prevent="onRedefinirSenha" :loading="carregando"
                     :disable="carregando" />
 
-                <q-btn flat no-caps color="primary" label="Voltar" to="/recuperar-senha" />
+                <q-btn flat no-caps color="primary" label="Voltar" :to="{ name: 'recuperar-senha' }" />
 
             </div>
 
