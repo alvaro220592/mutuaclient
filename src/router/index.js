@@ -7,45 +7,76 @@ import {
 } from 'vue-router'
 
 import routes from './routes'
-
-// 🔐 import do storage
 import { getToken } from 'src/services/storage'
 
+export let routerInstance
+
 export default defineRouter(() => {
-  const createHistory = process.env.SERVER
-    ? createMemoryHistory
-    : process.env.VUE_ROUTER_MODE === 'history'
-      ? createWebHistory
-      : createWebHashHistory
 
-  const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
-    history: createHistory(process.env.VUE_ROUTER_BASE),
-  })
+  const createHistory =
+    process.env.SERVER
+      ? createMemoryHistory
+      : process.env.VUE_ROUTER_MODE === 'history'
+        ? createWebHistory
+        : createWebHashHistory
 
-  // ============================
-  // 🔐 GUARD GLOBAL (LOGIN FLOW)
-  // ============================
-  Router.beforeEach(async (to, from, next) => {
-    const token = await getToken()
-    const logado = !!token
+  routerInstance =
+    createRouter({
+      scrollBehavior: () => ({
+        left: 0,
+        top: 0
+      }),
 
-    const rotaPrivada = to.meta?.auth === true
-    const rotaPublica = to.meta?.auth === false
+      routes,
 
-    // 🔐 1. rota privada exige login
-    if (rotaPrivada && !logado) {
-      return next('/login')
+      history:
+        createHistory(
+          process.env.VUE_ROUTER_BASE
+        ),
+    })
+
+  routerInstance.beforeEach(
+    async (
+      to,
+      from,
+      next
+    ) => {
+
+      const token =
+        await getToken()
+
+      const logado =
+        !!token
+
+      const rotaPrivada =
+        to.meta?.auth === true
+
+      const rotaPublica =
+        to.meta?.auth === false
+
+      if (
+        rotaPrivada
+        &&
+        !logado
+      ) {
+        return next(
+          '/login'
+        )
+      }
+
+      if (
+        rotaPublica
+        &&
+        logado
+      ) {
+        return next(
+          '/app'
+        )
+      }
+
+      next()
     }
+  )
 
-    // 🔵 2. logado não pode acessar área pública (boas-vindas/login/etc)
-    if (rotaPublica && logado) {
-      return next('/app')
-    }
-
-    next()
-  })
-
-  return Router
+  return routerInstance
 })

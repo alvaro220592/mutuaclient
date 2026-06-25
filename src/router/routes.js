@@ -48,6 +48,7 @@ const routes = [
         name: 'home',
         component: () => import('pages/autenticado/HomePage.vue')
       },
+      // doações
       {
         path: 'doacoes',
         children: [
@@ -58,16 +59,27 @@ const routes = [
           },
           {
             path: 'opcoes/solicitadas', // 'opcoes' inserido na url para ajudar na animação de transição entre as urls
-            name: 'doacoes.solicitadas',
-            component: () => import('pages/autenticado/modulos/doacoes/SolicitadasPage.vue')
+            name: 'doacoes.solicitadas.index',
+            component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/IndexPage.vue'),
           },
           {
             path: 'opcoes/oferecidas', // 'opcoes' inserido na url para ajudar na animação de transição entre as urls
-            name: 'doacoes.oferecidas',
-            component: () => import('pages/autenticado/modulos/doacoes/OferecidasPage.vue')
+            name: 'doacoes.oferecidas.index',
+            component: () => import('pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue'),
+          },
+          {
+            path: 'solicitadas/novo',
+            name: 'doacoes.solicitadas.novo',
+            component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'),
+          },
+          {
+            path: 'oferecidas/novo',
+            name: 'doacoes.oferecidas.novo',
+            component: () => import('src/pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'),
           },
         ]
       },
+      // adoção de animais
       {
         path: 'adocao-animais',
         children: [
@@ -78,6 +90,7 @@ const routes = [
           }
         ]
       },
+      // animais desaparecidos
       {
         path: 'animais-desaparecidos',
         children: [
@@ -88,6 +101,7 @@ const routes = [
           }
         ]
       },
+      // pessoas desaparecidas
       {
         path: 'pessoas-desaparecidas',
         children: [
@@ -98,6 +112,16 @@ const routes = [
           }
         ]
       },
+      {
+        path: 'usuario',
+        children: [
+          {
+            path: 'perfil',
+            name: 'usuario.perfil',
+            component: () => import('pages/autenticado/usuario/PerfilPage.vue'),
+          }
+        ]
+      }
     ]
   },
 

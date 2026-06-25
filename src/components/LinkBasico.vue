@@ -1,5 +1,5 @@
 <template>
-    <q-btn flat no-caps color="primary" icon="arrow_back" :label="props.titulo" :to="{ name: props.nomeRota }" />
+    <q-btn flat no-caps color="primary" :icon="props.icone" :label="props.titulo" :to="{ name: props.nomeRota }" />
 </template>
 
 
@@ -11,6 +11,11 @@ const props = defineProps({
     },
 
     titulo: {
+        type: String,
+        default: ''
+    },
+
+    icone: {
         type: String,
         default: ''
     }

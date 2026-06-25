@@ -23,24 +23,15 @@
             <q-list>
 
                 <q-item-label header>
-                    Módulos
+                    Olá, {{ authStore.user?.name }}
                 </q-item-label>
 
-                <q-item clickable to="/app/home" v-ripple>
+                <q-item clickable @click="navegar('usuario.perfil')" v-ripple>
                     <q-item-section avatar>
-                        <q-icon name="home" />
+                        <q-icon name="account_circle" />
                     </q-item-section>
                     <q-item-section>
-                        Início
-                    </q-item-section>
-                </q-item>
-
-                <q-item v-for="modulo in listaModulos" :key="modulo.id" clickable to="/app/{{ modulo.slug }}" v-ripple>
-                    <q-item-section avatar>
-                        <q-icon :name="modulo.icone" />
-                    </q-item-section>
-                    <q-item-section>
-                        {{ modulo.nome }}
+                        Meu perfil
                     </q-item-section>
                 </q-item>
 
@@ -76,25 +67,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { setToken } from 'src/services/storage'
-import { useModulos } from 'src/composables/useModulos'
 import { Dark } from 'quasar'
 import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 
 const drawer = ref(false)
 const router = useRouter()
 const authStore = useAuthStore()
-const { listaModulos, trazerModulos } = useModulos()
 
 const {
     animacaoEntrar,
     animacaoSair
 } = useTransicaoEntrePaginas()
-
-onMounted(trazerModulos)
 
 const logout = async () => {
     await setToken(null)
@@ -105,5 +92,9 @@ const logout = async () => {
 const alternarTema = () => {
     Dark.toggle()
     // futuramente, tem que aplicar a escolha do tema pro usuário no backend
+}
+
+const navegar = (rota) => {
+    router.push({ name: rota }) // ou router.push({ name: 'doacoes.index' })
 }
 </script>

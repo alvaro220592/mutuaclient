@@ -2,7 +2,10 @@
     <div>
         Suas doações oferecidas aqui
 
-        <LinkBasico nomeRota="doacoes.opcoes" titulo="Voltar" />
+        <br>
+        <LinkBasico nomeRota="doacoes.oferecidas.novo" icone="add" titulo="Nova" />
+        <br>
+        <LinkBasico nomeRota="doacoes.opcoes" icone="arrow_back" titulo="Voltar" />
     </div>
 </template>
 
