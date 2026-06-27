@@ -1,64 +1,14 @@
 <template>
     <div>
-        <div class="text-h6 q-mb-lg text-center">
-            Suas solicitações de doação
-        </div>
+        <q-toolbar class="q-mb-lg">
+            <q-btn flat round dense icon="arrow_back" @click="$router.back()" />
+
+            <q-toolbar-title>
+                Suas solicitações de doação
+            </q-toolbar-title>
+        </q-toolbar>
 
         <div class="column q-gutter-md">
-            <!-- <q-card v-for="doacao in doacoes" :key="doacao.id">
-                <q-card-section class="row items-center justify-between">
-                    <div class="bg-pink-2">
-                        <div class="text-h6">{{ doacao.categoria_doacao.nome }}</div>
-                        <div class="text-subtitle2">{{ doacao.detalhes }}</div>
-                    </div>
-
-                    <div class="row items-center q-gutter-sm bg-green-4">
-                        <q-badge :color="doacao.ativo ? 'positive' : 'grey'">
-                            {{ doacao.ativo ? 'Ativa' : 'Inativa' }}
-                        </q-badge>
-
-                        <q-btn flat round icon="more_vert">
-                            <q-menu>
-                                <q-list dense>
-                                    <q-item clickable>
-                                        <q-item-section>Editar</q-item-section>
-                                    </q-item>
-
-                                    <q-item clickable>
-                                        <q-item-section>
-                                            {{ doacao.ativo ? 'Desativar' : 'Ativar' }}
-                                        </q-item-section>
-                                    </q-item>
-
-                                    <q-item clickable>
-                                        <q-item-section class="text-negative">
-                                            Excluir
-                                        </q-item-section>
-                                    </q-item>
-                                </q-list>
-                            </q-menu>
-                        </q-btn>
-                    </div>
-                </q-card-section>
-            </q-card> -->
-
-            <!-- <div class="meucard" v-for="doacao in doacoes" :key="doacao.id">
-                <div class="meutextocontainer">
-                    <div class="meutitulocontainer">
-                        <span>Título</span>
-                    </div>
-                    <div>
-                        veritatis corrupti! Nemo, dignissimos.
-                        Provident harum doloremque explicabo ratione in facere doloribus dolorum!
-                    </div>
-                </div>
-
-                <div class="meumenucontainer">
-                    <span class="bg-green-5">Ativo</span>
-                    <q-icon name="more_vert" />
-                </div>
-            </div> -->
-
             <q-card flat bordered v-for="doacao in doacoes" :key="doacao.id">
                 <q-card-section class="row items-center justify-between">
                     <div class="row items-center q-gutter-sm">
@@ -75,32 +25,18 @@
                         <q-menu>
                             <q-list dense style="min-width: 150px">
                                 <q-item clickable v-close-popup @click="editarDoacao(doacao)">
-                                    <q-item-section avatar>
-                                        <q-icon name="edit" />
-                                    </q-item-section>
-
                                     <q-item-section>
                                         Editar
                                     </q-item-section>
                                 </q-item>
 
                                 <q-item clickable v-close-popup @click="alternarStatus(doacao)">
-                                    <q-item-section avatar>
-                                        <q-icon :name="doacao.ativo ? 'visibility_off' : 'visibility'" />
-                                    </q-item-section>
-
                                     <q-item-section>
                                         {{ doacao.ativo ? 'Desativar' : 'Ativar' }}
                                     </q-item-section>
                                 </q-item>
 
-                                <q-separator />
-
-                                <q-item clickable v-close-popup @click="excluirDoacao(doacao)" class="text-negative">
-                                    <q-item-section avatar>
-                                        <q-icon name="delete" color="negative" />
-                                    </q-item-section>
-
+                                <q-item clickable v-close-popup @click="excluirDoacao(doacao)">
                                     <q-item-section>
                                         Excluir
                                     </q-item-section>
@@ -120,17 +56,18 @@
             </q-card>
         </div>
 
-        <br>
-        <LinkBasico nomeRota="doacoes.solicitadas.novo" icone="add" titulo="Nova" />
-        <br>
-        <LinkBasico nomeRota="doacoes.opcoes" icone="arrow_back" titulo="Voltar" />
+
+        <q-page-sticky position="bottom-right" :offset="[18, 18]">
+            <q-btn fab icon="add" :color="Dark.isActive ? 'primary' : 'dark'"
+                @click="$router.push({ name: 'doacoes.solicitadas.novo' })" />
+        </q-page-sticky>
     </div>
 </template>
 
 <script setup>
-import LinkBasico from 'src/components/LinkBasico.vue';
 import { get } from 'src/services/http';
 import { onMounted, ref } from 'vue';
+import { Dark } from 'quasar'
 
 const doacoes = ref([])
 

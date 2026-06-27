@@ -3,17 +3,12 @@
 
         <!-- HEADER SIMPLES -->
         <q-header elevated>
-            <q-toolbar>
-
+            <q-toolbar class="bg-dark">
                 <q-btn flat dense icon="menu" @click="drawer = !drawer" />
 
                 <q-toolbar-title>
-                    Mútua
+                    <img :src="logoDark" width="30%" style="display: block;">
                 </q-toolbar-title>
-
-
-                <q-btn flat round :icon="Dark.isActive ? 'light_mode' : 'dark_mode'" @click="alternarTema" />
-
             </q-toolbar>
         </q-header>
 
@@ -23,10 +18,14 @@
             <q-list>
 
                 <q-item-label header>
-                    Olá, {{ authStore.user?.name }}
+                    <div style="width: 50%;">
+                        <img :src="logo" class="full-width">
+                    </div>
                 </q-item-label>
 
-                <q-item clickable @click="navegar('usuario.perfil')" v-ripple>
+                <q-separator />
+
+                <q-item class="" clickable @click="navegar('usuario.perfil')" v-ripple>
                     <q-item-section avatar>
                         <q-icon name="account_circle" />
                     </q-item-section>
@@ -35,7 +34,16 @@
                     </q-item-section>
                 </q-item>
 
-                <q-item clickable @click.prevent="logout" v-ripple>
+                <q-item class="" clickable @click="alternarTema" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon :name="Dark.isActive ? 'light_mode' : 'dark_mode'" />
+                    </q-item-section>
+                    <q-item-section>
+                        Alterar tema
+                    </q-item-section>
+                </q-item>
+
+                <q-item class="" clickable @click.prevent="logout" v-ripple>
                     <q-item-section avatar>
                         <q-icon name="logout" />
                     </q-item-section>
@@ -67,12 +75,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { setToken } from 'src/services/storage'
 import { Dark } from 'quasar'
 import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
+import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
+import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
+
+const logo = computed(() =>
+    Dark.isActive ? logoDark : logoLight
+)
 
 const drawer = ref(false)
 const router = useRouter()

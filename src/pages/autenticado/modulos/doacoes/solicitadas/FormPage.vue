@@ -4,10 +4,7 @@
 
         <div class="box">
 
-            <!-- TÍTULO -->
-            <div class="text-h6 q-mb-lg text-center">
-                Insira os dados da doação
-            </div>
+            <TituloPagina titulo="Insira os dados da doação" :botaoVoltar="true" />
 
 
             <div class="column q-gutter-md">
@@ -19,8 +16,6 @@
                     :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
 
                 <q-btn color="primary" label="Salvar" @click.prevent="onSalvar" />
-
-                <LinkBasico nomeRota="doacoes.oferecidas.index" icone="arrow_back" titulo="Voltar" />
             </div>
         </div>
     </q-page>
@@ -35,12 +30,12 @@
 </style>
 
 <script setup>
-import LinkBasico from 'src/components/LinkBasico.vue';
 import { dadosPerfilUsuario } from 'src/services/perfilUsuario';
 import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { get, post } from 'src/services/http';
+import TituloPagina from 'src/components/TituloPagina.vue';
 
 const router = useRouter()
 const $q = useQuasar()
