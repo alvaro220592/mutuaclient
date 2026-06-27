@@ -1,7 +1,7 @@
 <template>
     <q-page class="flex flex-center q-pa-md">
 
-        <div class="reset-box">
+        <div class="box">
 
             <!-- TÍTULO -->
             <div class="text-h6 q-mb-sm text-center">
@@ -36,7 +36,7 @@
 </template>
 
 <style scoped>
-.reset-box {
+.box {
     width: 100%;
     max-width: 380px;
 }

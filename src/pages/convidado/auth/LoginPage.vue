@@ -1,7 +1,7 @@
 <template>
     <q-page class="flex flex-center q-pa-md">
 
-        <div class="login-box">
+        <div class="box">
 
             <!-- TÍTULO -->
             <div class="text-h6 q-mb-lg text-center">
@@ -36,7 +36,8 @@
 
                     <q-btn flat no-caps color="primary" label="Esqueci minha senha" :to="{ name: 'recuperar-senha' }" />
 
-                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial" :to="{ name: 'boas-vindas' }" />
+                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial"
+                        :to="{ name: 'boas-vindas' }" />
 
                 </div>
 
@@ -48,7 +49,7 @@
 </template>
 
 <style scoped>
-.login-box {
+.box {
     width: 100%;
     max-width: 380px;
 }

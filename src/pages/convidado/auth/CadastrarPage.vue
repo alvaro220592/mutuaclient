@@ -1,7 +1,7 @@
 <template>
     <q-page class="flex flex-center q-pa-md">
 
-        <div class="register-box">
+        <div class="box">
 
             <!-- TÍTULO -->
             <div class="text-h6 q-mb-lg text-center">
@@ -37,7 +37,8 @@
 
                     <q-btn flat no-caps color="primary" label="Já tenho cadastro" :to="{ name: 'login' }" />
 
-                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial" :to="{ name: 'boas-vindas' }" />
+                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial"
+                        :to="{ name: 'boas-vindas' }" />
 
                 </div>
 
@@ -49,7 +50,7 @@
 </template>
 
 <style scoped>
-.register-box {
+.box {
     width: 100%;
     max-width: 380px;
 }

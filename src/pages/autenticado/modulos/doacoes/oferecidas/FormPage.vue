@@ -19,10 +19,10 @@ const router = useRouter()
 const $q = useQuasar()
 
 onMounted(() => {
-    verificarPerfilUsuario()
+    verificarInfoUsuario()
 })
 
-const verificarPerfilUsuario = async () => {
+const verificarInfoUsuario = async () => {
     const dados = await dadosPerfilUsuario()
 
     if (!dados.usuario.endereco || !dados.usuario.telefone) {

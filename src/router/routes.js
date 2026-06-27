@@ -118,7 +118,7 @@ const routes = [
           {
             path: 'perfil',
             name: 'usuario.perfil',
-            component: () => import('pages/autenticado/usuario/PerfilPage.vue'),
+            component: () => import('pages/autenticado/usuario/InfoPage.vue'),
           }
         ]
       }

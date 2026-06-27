@@ -1,7 +1,7 @@
 <template>
     <q-page class="flex flex-center q-pa-md">
 
-        <div class="perfil-box">
+        <div class="box">
 
             <!-- TÍTULO -->
             <div class="text-h6 q-mb-lg text-center">
@@ -56,7 +56,7 @@
 </template>
 
 <style scoped>
-.perfil-box {
+.box {
     width: 100%;
     max-width: 380px;
 }
