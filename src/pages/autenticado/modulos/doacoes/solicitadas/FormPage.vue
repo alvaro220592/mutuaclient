@@ -30,7 +30,7 @@ import { onMounted, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import TituloPagina from 'src/components/TituloPagina.vue';
-import { buscarCategorias, buscarSolicitada, salvarSolicitada, atualizarSolicitada } from 'src/services/doacao';
+import { buscarCategorias, buscarDoacao, salvarSolicitada, atualizarSolicitada } from 'src/services/doacao';
 
 const router = useRouter()
 const route = useRoute()
@@ -115,7 +115,7 @@ const trazerCategorias = async () => {
 
 const carregarDoacao = async (id) => {
     try {
-        const dados = await buscarSolicitada(id)
+        const dados = await buscarDoacao(id)
         categoriaSelecionada.value = dados.doacao.categoria_doacao_id
         detalhes.value = dados.doacao.detalhes
 
@@ -132,8 +132,7 @@ const salvar = async () => {
         }
 
         if (modoEdicao.value) {
-            const dados = await atualizarSolicitada(route.params.id, payload, true)
-            alert(JSON.stringify(dados))
+            await atualizarSolicitada(route.params.id, payload, true)
 
         } else {
             await salvarSolicitada(payload, true)

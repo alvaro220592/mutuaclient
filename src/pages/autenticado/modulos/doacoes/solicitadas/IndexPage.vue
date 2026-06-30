@@ -1,87 +1,96 @@
 <template>
     <div>
-        <q-toolbar class="q-mb-lg">
-            <q-btn flat round dense icon="arrow_back" @click="$router.back()" />
+        <titulo-pagina :botaoVoltar="true" titulo="Suas solicitações de doação" />
 
-            <q-toolbar-title>
-                Suas solicitações de doação
-            </q-toolbar-title>
-        </q-toolbar>
-
-        <div class="column q-gutter-md">
-            <q-card flat bordered v-for="doacao in doacoes" :key="doacao.id">
-                <q-card-section class="row items-center justify-between">
-                    <div class="row items-center q-gutter-sm">
-                        <div class="text-subtitle1">
-                            {{ doacao.categoria_doacao.nome }}
-                        </div>
-
-                        <q-badge :color="doacao.ativo ? 'positive' : 'grey'"
-                            :label="doacao.ativo ? 'Ativa' : 'Inativa'" />
-                    </div>
-
-                    <!-- menu de opções -->
-                    <q-btn flat round dense icon="more_vert">
-                        <q-menu>
-                            <q-list dense style="min-width: 150px">
-                                <q-item clickable v-close-popup @click="editarDoacao(doacao)">
-                                    <q-item-section>
-                                        Editar
-                                    </q-item-section>
-                                </q-item>
-
-                                <q-item clickable v-close-popup @click="alternarStatus(doacao)">
-                                    <q-item-section>
-                                        {{ doacao.ativo ? 'Desativar' : 'Ativar' }}
-                                    </q-item-section>
-                                </q-item>
-
-                                <q-item clickable v-close-popup @click="mostrarConfirmacaoExclusao(doacao)">
-                                    <q-item-section>
-                                        Excluir
-                                    </q-item-section>
-                                </q-item>
-                            </q-list>
-                        </q-menu>
-                    </q-btn>
-
-
-                </q-card-section>
-
-                <!-- <q-separator /> -->
-
-                <q-card-section>
-                    {{ doacao.detalhes }}
-                </q-card-section>
-            </q-card>
+        <div v-if="doacoes.data.length === 0" class="text-center text-grey q-mt-xl">
+            Nenhuma solicitação encontrada.
         </div>
 
+        <q-infinite-scroll v-else @load="carregarMais">
+            <div class="column q-gutter-md">
+                <DoacaoCard v-for="doacao in doacoes.data" :key="doacao.id" :doacao="doacao" @editar="editarDoacao"
+                    @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
+            </div>
+        </q-infinite-scroll>
 
-        <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="add" color="primary" @click="$router.push({ name: 'doacoes.solicitadas.novo' })" />
-        </q-page-sticky>
+        <botao-flutuante-novo-cadastro nomeRota="doacoes.solicitadas.novo" />
     </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { buscarSolicitadas, excluirSolicitada, mudarStatusSolicitada } from 'src/services/doacao';
+import { buscarSolicitadas, excluir, mudarStatus } from 'src/services/doacao';
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar';
+import TituloPagina from 'src/components/TituloPagina.vue';
+import DoacaoCard from 'src/components/doacao/DoacaoCard.vue';
+import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue';
 
 const $q = useQuasar()
 
 const router = useRouter()
 
-const doacoes = ref([])
+const doacoes = ref({
+    data: [],
+    current_page: 1,
+    last_page: 1
+})
 
 onMounted(() => {
     trazerDoacoes()
 })
 
 const trazerDoacoes = async () => {
-    const dados = await buscarSolicitadas()
+    const dados = await buscarSolicitadas(1)
     doacoes.value = dados.doacoes
+}
+
+const carregarMais = async (_, done) => {
+    try {
+        // Se já estamos na última página, não há mais
+        // registros para buscar. Finaliza o carregamento.
+        if (
+            doacoes.value.current_page >=
+            doacoes.value.last_page
+        ) {
+            done()
+            return
+        }
+
+        // Descobre qual é a próxima página
+        // (ex.: estamos na 1, então busca a 2)
+        const proximaPagina = doacoes.value.current_page + 1
+
+        // Faz a requisição da próxima página
+        const dados = await buscarSolicitadas(proximaPagina)
+
+        // Atualiza o objeto de paginação inteiro
+        doacoes.value = {
+            // Sobrescreve os metadados de paginação
+            // (current_page, last_page, total etc.)
+            ...dados.doacoes,
+
+            // Mantém os registros que já estavam na tela
+            // e adiciona os novos no final
+            data: [
+                ...doacoes.value.data,
+                ...dados.doacoes.data
+            ]
+        }
+    } catch (erro) {
+        // Exibe uma notificação caso a requisição falhe
+        $q.notify({
+            type: 'negative',
+            message:
+                erro.message ||
+                'Erro ao carregar mais solicitações.',
+            position: 'top-right'
+        })
+    } finally {
+        // Informa ao QInfiniteScroll que o carregamento
+        // terminou, independentemente de sucesso ou erro
+        done()
+    }
 }
 
 const editarDoacao = (doacao) => {
@@ -95,7 +104,7 @@ const editarDoacao = (doacao) => {
 
 const alternarStatus = async (doacao) => {
     try {
-        const dados = await mudarStatusSolicitada({ id: doacao.id })
+        const dados = await mudarStatus({ id: doacao.id })
 
         doacao.ativo = doacao.ativo ? 0 : 1
 
@@ -144,7 +153,7 @@ const mostrarConfirmacaoExclusao = async (doacao) => {
 }
 
 const confirmarExclusao = async (id) => {
-    const dados = await excluirSolicitada(id)
+    const dados = await excluir(id)
 
     try {
         $q.notify({

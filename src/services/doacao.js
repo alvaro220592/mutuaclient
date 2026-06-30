@@ -1,7 +1,7 @@
 import { get, metodoDelete, post } from "./http";
 
-export function buscarSolicitadas() {
-    return get('/doacoes/solicitadas')
+export function buscarSolicitadas(pagina) {
+    return get(`/doacoes/solicitadas?page=${pagina}`)
 }
 
 export function buscarCategorias() {
@@ -17,14 +17,14 @@ export function atualizarSolicitada(id, corpoRequisicao) {
 }
 
 // edição
-export function buscarSolicitada(id) {
-    return get(`/doacoes/solicitadas/edit/${id}`)
+export function buscarDoacao(id) {
+    return get(`/doacoes/buscar-doacao/${id}`)
 }
 
-export function mudarStatusSolicitada(corpoRequisicao) {
-    return post('/doacoes/solicitadas/mudar-status', corpoRequisicao, true)
+export function mudarStatus(corpoRequisicao) {
+    return post('/doacoes/mudar-status', corpoRequisicao, true)
 }
 
-export function excluirSolicitada(id) {
-    return metodoDelete(`/doacoes/solicitadas/delete/${id}`, true)
+export function excluir(id) {
+    return metodoDelete(`/doacoes/delete/${id}`, true)
 }
