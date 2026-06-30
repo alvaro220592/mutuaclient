@@ -3,11 +3,13 @@
 
         <!-- Topo -->
         <q-header elevated>
-            <q-toolbar>
+            <q-toolbar class="bg-dark">
 
                 <q-toolbar-title>
-                    Mútua
+                    <img :src="logoDark" width="30%" style="display: block;">
                 </q-toolbar-title>
+
+                <q-icon class="text-h6" :name="Dark.isActive ? 'light_mode' : 'dark_mode'" @click="alternarTema" />
 
             </q-toolbar>
         </q-header>
@@ -30,11 +32,16 @@
 </template>
 
 <script setup>
-import { useTransicaoEntrePaginas }
-    from 'src/composables/useTransicaoEntrePaginas'
+import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
+import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
+import { Dark } from 'quasar'
 
 const {
     animacaoEntrar,
     animacaoSair
 } = useTransicaoEntrePaginas()
+
+const alternarTema = () => {
+    Dark.toggle()
+}
 </script>

@@ -10,7 +10,7 @@
 
 <script setup>
 import LinkBasico from 'src/components/LinkBasico.vue';
-import { dadosPerfilUsuario } from 'src/services/perfilUsuario';
+import { dadosUsuario } from 'src/services/info-usuario';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
@@ -23,7 +23,7 @@ onMounted(() => {
 })
 
 const verificarInfoUsuario = async () => {
-    const dados = await dadosPerfilUsuario()
+    const dados = await dadosUsuario()
 
     if (!dados.usuario.endereco || !dados.usuario.telefone) {
         router.push({

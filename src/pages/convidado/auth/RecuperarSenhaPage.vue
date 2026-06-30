@@ -30,12 +30,7 @@
     </q-page>
 </template>
 
-<style scoped>
-.box {
-    width: 100%;
-    max-width: 380px;
-}
-</style>
+<style scoped></style>
 
 <script setup>
 import { ref } from 'vue';
@@ -54,11 +49,11 @@ const enviarEmailRecuperacao = async () => {
     try {
         carregando.value = true
 
-        await recuperarSenha(email.value)
+        await recuperarSenha({ email: email.value })
 
         $q.notify({
             type: 'positive',
-            message: 'O código de verificação foi enviado a você por e-mail',
+            message: 'O código de verificação foi enviado por e-mail',
             position: 'top-right'
         })
 

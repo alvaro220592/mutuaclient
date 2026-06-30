@@ -3,9 +3,7 @@
 
         <div style="width: 100%; max-width: 380px;">
 
-            <div class="text-h6 q-mb-sm text-center">
-                Como você deseja participar?
-            </div>
+            <TituloPagina :botaoVoltar="true" titulo="Como você deseja participar?" />
 
             <div class="text-body2 text-grey text-center q-mb-xl">
                 Escolha se deseja oferecer ajuda ou cadastrar uma necessidade.
@@ -54,18 +52,13 @@
 
                     </q-card-section>
                 </q-card>
-
-                <LinkBasico nomeRota="home" titulo="Voltar" />
-
             </div>
-
         </div>
-
     </q-page>
 </template>
 
 <script setup>
-import LinkBasico from 'src/components/LinkBasico.vue';
+import TituloPagina from 'src/components/TituloPagina.vue';
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

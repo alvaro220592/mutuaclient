@@ -60,7 +60,7 @@
 import { useAuthStore } from 'src/stores/auth'
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router'
-import { modulos } from 'src/services/modulos';
+import { modulos } from 'src/services/modulo';
 
 const authStore = useAuthStore()
 const router = useRouter()

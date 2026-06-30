@@ -15,29 +15,25 @@
                 <q-input type="textarea" outlined v-model="detalhes"
                     :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
 
-                <q-btn color="primary" label="Salvar" @click.prevent="onSalvar" />
+                <q-btn color="primary" label="Salvar" @click.prevent="salvar" />
             </div>
         </div>
     </q-page>
 
 </template>
 
-<style scoped>
-.box {
-    width: 100%;
-    max-width: 380px;
-}
-</style>
+<style scoped></style>
 
 <script setup>
-import { dadosPerfilUsuario } from 'src/services/perfilUsuario';
-import { onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router'
+import { dadosUsuario } from 'src/services/info-usuario';
+import { onMounted, ref, watch, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-import { get, post } from 'src/services/http';
 import TituloPagina from 'src/components/TituloPagina.vue';
+import { buscarCategorias, buscarSolicitada, salvarSolicitada, atualizarSolicitada } from 'src/services/doacao';
 
 const router = useRouter()
+const route = useRoute()
 const $q = useQuasar()
 
 const categorias = ref([])
@@ -46,10 +42,15 @@ const categoriaSelecionada = ref(null)
 const categoriaOutrosId = ref()
 const categoriaOutrosSelecionada = ref(false)
 const detalhes = ref(null)
+const modoEdicao = computed(() => !!route.params.id)
 
-onMounted(() => {
+onMounted(async () => {
     verificarInfoUsuario()
     trazerCategorias()
+
+    if (modoEdicao.value) {
+        await carregarDoacao(route.params.id)
+    }
 })
 
 watch(categoriaSelecionada, (novoValor) => {
@@ -61,7 +62,7 @@ watch(categoriaSelecionada, (novoValor) => {
 })
 
 const verificarInfoUsuario = async () => {
-    const dados = await dadosPerfilUsuario()
+    const dados = await dadosUsuario()
 
     if (!dados.usuario.endereco || !dados.usuario.telefone) {
         router.push({
@@ -98,7 +99,7 @@ function filtrarCategorias(val, update) {
 
 const trazerCategorias = async () => {
     try {
-        const dados = await get('/doacoes/categorias')
+        const dados = await buscarCategorias()
         categorias.value = dados.categorias
         categoriasFiltradas.value = dados.categorias
         categoriaOutrosId.value = dados.categoriaOutrosId
@@ -112,13 +113,31 @@ const trazerCategorias = async () => {
     }
 }
 
-const onSalvar = async () => {
+const carregarDoacao = async (id) => {
     try {
-        await post('/doacoes/novo', {
+        const dados = await buscarSolicitada(id)
+        categoriaSelecionada.value = dados.doacao.categoria_doacao_id
+        detalhes.value = dados.doacao.detalhes
+
+    } catch (error) {
+        alert(JSON.stringify(error))
+    }
+}
+
+const salvar = async () => {
+    try {
+        const payload = {
             categoria_doacao_id: categoriaSelecionada.value,
             detalhes: detalhes.value,
-            perfil_doacao_id: 2,
-        }, true)
+        }
+
+        if (modoEdicao.value) {
+            const dados = await atualizarSolicitada(route.params.id, payload, true)
+            alert(JSON.stringify(dados))
+
+        } else {
+            await salvarSolicitada(payload, true)
+        }
 
         $q.notify({
             type: 'positive',
@@ -127,7 +146,6 @@ const onSalvar = async () => {
         })
 
         router.replace({ name: 'doacoes.solicitadas.index' })
-
     }
     catch (erro) {
         $q.notify({

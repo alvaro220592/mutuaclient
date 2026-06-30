@@ -19,9 +19,22 @@
 
                 <q-input outlined v-model="codigo_recuperacao" label="Código de 6 dígitos" type="tel" maxlength="6" />
 
-                <q-input outlined v-model="password" label="Nova senha" type="password" />
+                <q-input v-model="password" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'"
+                    hint="Password with toggle">
+                    <template v-slot:append>
+                        <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                            @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
+                    </template>
+                </q-input>
 
-                <q-input outlined v-model="password_confirmation" label="Confirmar senha" type="password" />
+                <q-input v-model="password_confirmation" outlined
+                    :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'" hint="Password with toggle">
+                    <template v-slot:append>
+                        <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
+                            class="cursor-pointer"
+                            @click="campoTipoSenhaConfirmacaoSenha = !campoTipoSenhaConfirmacaoSenha" />
+                    </template>
+                </q-input>
 
                 <q-btn color="primary" label="Salvar" @click.prevent="onRedefinirSenha" :loading="carregando"
                     :disable="carregando" />
@@ -35,12 +48,7 @@
     </q-page>
 </template>
 
-<style scoped>
-.box {
-    width: 100%;
-    max-width: 380px;
-}
-</style>
+<style scoped></style>
 
 <script setup>
 import { ref } from 'vue';
@@ -58,12 +66,19 @@ const codigo_recuperacao = ref('')
 const password = ref('')
 const password_confirmation = ref('')
 const carregando = ref(false)
+const campoTipoSenhaSenha = ref(true)
+const campoTipoSenhaConfirmacaoSenha = ref(true)
 
 const onRedefinirSenha = async () => {
     try {
         carregando.value = true
 
-        await redefinirSenha(email.value, codigo_recuperacao.value, password.value, password_confirmation.value)
+        await redefinirSenha({
+            email: email.value,
+            codigo_recuperacao: codigo_recuperacao.value,
+            password: password.value,
+            password_confirmation: password_confirmation.value,
+        })
 
         $q.notify({
             type: 'positive',

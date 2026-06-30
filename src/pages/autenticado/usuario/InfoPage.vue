@@ -55,12 +55,7 @@
     </q-page>
 </template>
 
-<style scoped>
-.box {
-    width: 100%;
-    max-width: 380px;
-}
-</style>
+<style scoped></style>
 
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -68,7 +63,7 @@ import { useAuthStore } from 'src/stores/auth'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { post } from 'src/services/http'
-import { dadosPerfilUsuario } from 'src/services/perfilUsuario'
+import { dadosUsuario } from 'src/services/info-usuario'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -111,7 +106,7 @@ const info = async () => {
     try {
         const url = '/user/info-perfil'
 
-        const dados = await dadosPerfilUsuario(url)
+        const dados = await dadosUsuario(url)
 
         nome.value = dados.usuario?.name
         telefone.value = dados.usuario.telefone?.telefone
@@ -147,7 +142,7 @@ const salvar = async () => {
     carregando.value = true
 
     try {
-        const url = '/user/salvar-perfil'
+        const url = '/user/update'
 
         const body = {
             nome: nome.value,

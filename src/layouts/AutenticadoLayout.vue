@@ -25,7 +25,8 @@
 
                 <q-separator />
 
-                <q-item class="" clickable @click="navegar('usuario.perfil')" v-ripple>
+                <q-item :class="Dark.isActive ? 'text-primary' : 'text-dark'" clickable
+                    @click="navegar('usuario.perfil')" v-ripple>
                     <q-item-section avatar>
                         <q-icon name="account_circle" />
                     </q-item-section>
@@ -105,7 +106,6 @@ const logout = async () => {
 
 const alternarTema = () => {
     Dark.toggle()
-    // futuramente, tem que aplicar a escolha do tema pro usuário no backend
 }
 
 const navegar = (rota) => {

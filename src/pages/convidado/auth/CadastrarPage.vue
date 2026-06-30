@@ -15,9 +15,22 @@
 
                 <q-input outlined v-model="email" label="E-mail" />
 
-                <q-input outlined v-model="password" label="Senha" type="password" />
+                <q-input v-model="password" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'"
+                    hint="Password with toggle">
+                    <template v-slot:append>
+                        <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                            @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
+                    </template>
+                </q-input>
 
-                <q-input outlined v-model="password_confirmation" label="Confirmar senha" type="password" />
+                <q-input v-model="password_confirmation" outlined
+                    :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'" hint="Password with toggle">
+                    <template v-slot:append>
+                        <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
+                            class="cursor-pointer"
+                            @click="campoTipoSenhaConfirmacaoSenha = !campoTipoSenhaConfirmacaoSenha" />
+                    </template>
+                </q-input>
 
                 <q-btn color="primary" label="Cadastrar" @click.prevent="onCadastrar" />
 
@@ -49,12 +62,7 @@
     </q-page>
 </template>
 
-<style scoped>
-.box {
-    width: 100%;
-    max-width: 380px;
-}
-</style>
+<style scoped></style>
 
 <script setup>
 import { ref } from 'vue';
@@ -75,9 +83,17 @@ import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 const router = useRouter()
 const authStore = useAuthStore()
 
+const campoTipoSenhaSenha = ref(true)
+const campoTipoSenhaConfirmacaoSenha = ref(true)
+
 const onCadastrar = async () => {
     try {
-        const data = await cadastrar(name.value, email.value, password.value, password_confirmation.value)
+        const data = await cadastrar({
+            name: name.value,
+            email: email.value,
+            password: password.value,
+            password_confirmation: password_confirmation.value,
+        })
 
         await setToken(data.token)
 

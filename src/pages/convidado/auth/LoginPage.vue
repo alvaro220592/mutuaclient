@@ -13,7 +13,13 @@
 
                 <q-input outlined v-model="email" label="E-mail" />
 
-                <q-input outlined v-model="password" label="Senha" type="password" />
+                <q-input v-model="password" otlined :type="campoTipoSenha ? 'password' : 'text'"
+                    hint="Password with toggle">
+                    <template v-slot:append>
+                        <q-icon :name="campoTipoSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                            @click="campoTipoSenha = !campoTipoSenha" />
+                    </template>
+                </q-input>
 
                 <q-btn color="primary" label="Entrar" @click.prevent="onLoginNormal" :loading="carregando"
                     :disable="carregando" />
@@ -48,22 +54,11 @@
     </q-page>
 </template>
 
-<style scoped>
-.box {
-    width: 100%;
-    max-width: 380px;
-}
-</style>
+<style scoped></style>
 
 <script setup>
 import { ref } from 'vue';
 import { useQuasar } from 'quasar'
-
-const $q = useQuasar()
-const email = ref('alvaro220592@gmail.com')
-const password = ref('password')
-const carregando = ref(false)
-
 import { login } from 'src/services/auth'
 import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 import { useRouter } from 'vue-router'
@@ -72,15 +67,23 @@ import { useAuthStore } from 'src/stores/auth';
 
 const router = useRouter()
 const authStore = useAuthStore()
+const $q = useQuasar()
+
+const email = ref('alvaro220592@gmail.com')
+const password = ref('password')
+const carregando = ref(false)
+const campoTipoSenha = ref(true)
 
 const onLoginNormal = async () => {
     try {
         carregando.value = true
 
-        const data = await login(email.value, password.value)
+        const data = await login({
+            email: email.value,
+            password: password.value,
+        })
 
         await setToken(data.token)
-
 
         authStore.setAuth(data.user, data.token)
 

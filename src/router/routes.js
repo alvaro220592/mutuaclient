@@ -73,6 +73,11 @@ const routes = [
             component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'),
           },
           {
+            path: 'solicitadas/:id/editar',
+            name: 'doacoes.solicitadas.editar',
+            component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'),
+          },
+          {
             path: 'oferecidas/novo',
             name: 'doacoes.oferecidas.novo',
             component: () => import('src/pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'),

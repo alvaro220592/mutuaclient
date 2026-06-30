@@ -4,24 +4,24 @@ import { post } from './http'
 
 import { removeToken, getToken } from 'src/services/storage'
 
-export async function login(email, password) {
-    return await post('/auth/login', { email, password }, false)
+export function login(corpoRequisicao) {
+    return post('/auth/login', corpoRequisicao, false)
 }
 
-export async function recuperarSenha(email) {
-    return await post('/auth/recuperar-senha', { email }, false)
+export function recuperarSenha(corpoRequisicao) {
+    return post('/auth/recuperar-senha', corpoRequisicao, false)
 }
 
-export async function cadastrar(name, email, password, password_confirmation) {
-    return await post('/auth/cadastrar', { name, email, password, password_confirmation }, false)
+export function cadastrar(corpoRequisicao) {
+    return post('/auth/cadastrar', corpoRequisicao, false)
 }
 
-export async function redefinirSenha(email, codigo_recuperacao, password, password_confirmation) {
-    return await post('/auth/redefinir-senha', { email, codigo_recuperacao, password, password_confirmation }, false)
+export function redefinirSenha(corpoRequisicao) {
+    return post('/auth/redefinir-senha', corpoRequisicao, false)
 }
 
-export async function logout() {
-    await removeToken()
+export function logout() {
+    removeToken()
 }
 
 export async function usuarioAutenticado() {
