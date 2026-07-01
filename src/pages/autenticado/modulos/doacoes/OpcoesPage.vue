@@ -1,9 +1,9 @@
 <template>
     <q-page class="flex flex-center q-pa-md">
 
-        <div style="width: 100%; max-width: 380px;">
+        <div style="box">
 
-            <TituloPagina :botaoVoltar="true" titulo="Como você deseja participar?" />
+            <TituloPagina titulo="Como você deseja participar?" />
 
             <div class="text-body2 text-grey text-center q-mb-xl">
                 Escolha se deseja oferecer ajuda ou cadastrar uma necessidade.

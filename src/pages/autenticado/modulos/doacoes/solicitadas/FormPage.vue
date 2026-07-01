@@ -4,7 +4,7 @@
 
         <div class="box">
 
-            <TituloPagina titulo="Insira os dados da doação" :botaoVoltar="true" />
+            <TituloPagina titulo="Insira os dados da doação" />
 
 
             <div class="column q-gutter-md">

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <titulo-pagina :botaoVoltar="true" titulo="Suas solicitações de doação" />
+        <TituloPagina titulo="Suas solicitações de doação" />
 
         <div v-if="doacoes.data.length === 0" class="text-center text-grey q-mt-xl">
             Nenhuma solicitação encontrada.
@@ -13,87 +13,55 @@
             </div>
         </q-infinite-scroll>
 
-        <botao-flutuante-novo-cadastro nomeRota="doacoes.solicitadas.novo" />
+        <BotaoFlutuanteNovoCadastro nomeRota="doacoes.solicitadas.novo" />
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { buscarSolicitadas, excluir, mudarStatus } from 'src/services/doacao';
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar';
-import TituloPagina from 'src/components/TituloPagina.vue';
-import DoacaoCard from 'src/components/doacao/DoacaoCard.vue';
-import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue';
 
-const $q = useQuasar()
+import { buscarSolicitadas } from 'src/services/doacao'
+import { useDoacaoAcoes } from 'src/composables/useDoacaoAcoes'
+import { useRolagemInfinita } from 'src/composables/useRolagemInfinita'
+import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue'
+import DoacaoCard from 'src/components/doacao/DoacaoCard.vue'
+import TituloPagina from 'src/components/TituloPagina.vue'
 
 const router = useRouter()
 
-const doacoes = ref({
-    data: [],
-    current_page: 1,
-    last_page: 1
-})
+// Cria uma instância do composable.
+// O parâmetro é uma função que sabe buscar
+// uma página de solicitações.
+const paginacao = useRolagemInfinita(
+    async function (pagina) {
+        const dados = await buscarSolicitadas(pagina)
 
-onMounted(() => {
-    trazerDoacoes()
-})
-
-const trazerDoacoes = async () => {
-    const dados = await buscarSolicitadas(1)
-    doacoes.value = dados.doacoes
-}
-
-const carregarMais = async (_, done) => {
-    try {
-        // Se já estamos na última página, não há mais
-        // registros para buscar. Finaliza o carregamento.
-        if (
-            doacoes.value.current_page >=
-            doacoes.value.last_page
-        ) {
-            done()
-            return
-        }
-
-        // Descobre qual é a próxima página
-        // (ex.: estamos na 1, então busca a 2)
-        const proximaPagina = doacoes.value.current_page + 1
-
-        // Faz a requisição da próxima página
-        const dados = await buscarSolicitadas(proximaPagina)
-
-        // Atualiza o objeto de paginação inteiro
-        doacoes.value = {
-            // Sobrescreve os metadados de paginação
-            // (current_page, last_page, total etc.)
-            ...dados.doacoes,
-
-            // Mantém os registros que já estavam na tela
-            // e adiciona os novos no final
-            data: [
-                ...doacoes.value.data,
-                ...dados.doacoes.data
-            ]
-        }
-    } catch (erro) {
-        // Exibe uma notificação caso a requisição falhe
-        $q.notify({
-            type: 'negative',
-            message:
-                erro.message ||
-                'Erro ao carregar mais solicitações.',
-            position: 'top-right'
-        })
-    } finally {
-        // Informa ao QInfiniteScroll que o carregamento
-        // terminou, independentemente de sucesso ou erro
-        done()
+        // O composable espera receber apenas
+        // o objeto paginado.
+        return dados.doacoes
     }
-}
+)
 
-const editarDoacao = (doacao) => {
+// O composable criou uma ref chamada "registros".
+// Nesta tela, ela representa as doações.
+const doacoes = paginacao.registros
+
+// Função que carrega a primeira página.
+const trazerDoacoes = paginacao.carregarPrimeiraPagina
+
+// Função usada pelo QInfiniteScroll.
+const carregarMais = paginacao.carregarMais
+
+// Cria uma instância do composable de ações.
+const acoesDoacao = useDoacaoAcoes(doacoes)
+
+// Obtém as funções do composable.
+const alternarStatus = acoesDoacao.alternarStatus
+
+const mostrarConfirmacaoExclusao = acoesDoacao.mostrarConfirmacaoExclusao
+
+const editarDoacao = function (doacao) {
     router.push({
         name: 'doacoes.solicitadas.editar',
         params: {
@@ -102,77 +70,7 @@ const editarDoacao = (doacao) => {
     })
 }
 
-const alternarStatus = async (doacao) => {
-    try {
-        const dados = await mudarStatus({ id: doacao.id })
-
-        doacao.ativo = doacao.ativo ? 0 : 1
-
-        $q.notify({
-            type: 'positive',
-            message: dados.message,
-            position: 'top-right'
-        })
-
-        router.replace({ name: 'doacoes.solicitadas.index' })
-    }
-    catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro.message),
-            position: 'top-right'
-        })
-    }
-}
-
-const mostrarConfirmacaoExclusao = async (doacao) => {
-    try {
-        $q.dialog({
-            title: 'Excluir solicitação',
-            message: 'Esta ação não poderá ser desfeita.',
-            persistent: true,
-            cancel: {
-                label: 'Cancelar',
-                flat: true
-            },
-            ok: {
-                label: 'Excluir',
-                color: 'negative'
-            }
-        }).onOk(async () => {
-            try {
-                await confirmarExclusao(doacao.id)
-            }
-            catch (erro) {
-                alert(JSON.stringify(erro))
-            }
-        })
-    } catch (error) {
-        alert(JSON.stringify(error))
-    }
-}
-
-const confirmarExclusao = async (id) => {
-    const dados = await excluir(id)
-
-    try {
-        $q.notify({
-            type: 'positive',
-            message: dados.message,
-            position: 'top-right'
-        })
-
-        doacoes.value = doacoes.value.filter(
-            d => d.id !== id
-        )
-
-    } catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro.message),
-            position: 'top-right'
-        })
-    }
-}
-
+onMounted(function () {
+    trazerDoacoes()
+})
 </script>
