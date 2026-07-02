@@ -38,6 +38,8 @@
         <q-card-section class="q-pt-none">
             <div class="q-mb-md">{{ doacao.detalhes }}</div>
 
+            <div v-if="usuario" class="text-caption text-grey-7">{{ usuario }}</div>
+
             <div class="row justify-between items-center">
                 <div class="text-caption text-grey-7 q-mt-sm">
                     {{ new Date(doacao.created_at).toLocaleString('pt-BR', {
@@ -57,6 +59,10 @@ defineProps({
     doacao: {
         type: Object,
         required: true
+    },
+    usuario: {
+        type: String,
+        required: false
     }
 })
 

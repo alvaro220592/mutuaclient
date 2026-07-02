@@ -38,20 +38,6 @@
 
                     </q-card-section>
                 </q-card>
-
-                <q-card clickable bordered @click="navegar('home')">
-                    <q-card-section>
-
-                        <div class="text-subtitle1">
-                            Área ADMIN
-                        </div>
-
-                        <div class="text-caption text-grey">
-                            Listagem e mapeamento dos registros
-                        </div>
-
-                    </q-card-section>
-                </q-card>
             </div>
         </div>
     </q-page>

@@ -3,15 +3,7 @@
 
         <div class="box">
 
-            <!-- cabeçalho -->
-            <div class="q-mb-xl">
-
-                <TituloPagina :titulo="`Olá, ${authStore.user?.name}!`" />
-
-                <div class="text-body2 text-center text-grey-7">
-                    O que deseja acessar hoje?
-                </div>
-            </div>
+            <TituloPagina titulo="Selecione o módulo" />
 
             <div class="column q-gutter-md">
                 <template v-if="carregando">
@@ -24,7 +16,7 @@
                 </template>
                 <template v-else>
                     <q-card v-for="modulo in listaModulos" :key="modulo.id" clickable
-                        @click="navegar(modulo.slug + '.opcoes')" bordered>
+                        @click="navegar('admin.' + modulo.slug + '.index')" bordered>
 
                         <q-card-section>
                             <div class="text-subtitle1">
@@ -45,13 +37,12 @@
 </template>
 
 <script setup>
-import { useAuthStore } from 'src/stores/auth'
+
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { modulos } from 'src/services/modulo';
 import TituloPagina from 'src/components/TituloPagina.vue';
 
-const authStore = useAuthStore()
 const router = useRouter()
 const listaModulos = ref()
 const carregando = ref(false)

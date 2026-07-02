@@ -49,6 +49,15 @@
 
                 <q-separator class="q-mb-lg" />
 
+                <q-item clickable @click="navegar('admin.index')" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="shield" />
+                    </q-item-section>
+                    <q-item-section>
+                        Área admin
+                    </q-item-section>
+                </q-item>
+
                 <q-item clickable @click="navegar('usuario.perfil')" v-ripple>
                     <q-item-section avatar>
                         <q-icon name="account_circle" />

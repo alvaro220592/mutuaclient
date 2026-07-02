@@ -48,51 +48,110 @@ const routes = [
         name: 'home',
         component: () => import('pages/autenticado/HomePage.vue')
       },
-      // doações
+
+      /** ************* ADMIN ************* */
+      {
+        path: 'admin',
+        children: [
+          {
+            path: '',
+            name: 'admin.index',
+            component: () =>
+              import('pages/autenticado/modulos/admin/IndexPage.vue')
+          },
+          {
+            path: 'doacoes',
+            name: 'admin.doacoes.index',
+            component: () =>
+              import('pages/autenticado/modulos/admin/doacoes/IndexPage.vue')
+          },
+          {
+            path: 'doacoes/novo',
+            name: 'admin.doacoes.novo',
+            component: () => import('pages/autenticado/modulos/admin/doacoes/FormPage.vue')
+          },
+          {
+            path: ':id/editar',
+            name: 'admin.doacoes.editar',
+            component: () => import('pages/autenticado/modulos/admin/doacoes/FormPage.vue')
+          }
+        ]
+      },
+
       {
         path: 'doacoes',
         children: [
           {
             path: 'opcoes',
             name: 'doacoes.opcoes',
-            component: () => import('pages/autenticado/modulos/doacoes/OpcoesPage.vue')
+            component: () =>
+              import(
+                'pages/autenticado/modulos/doacoes/OpcoesPage.vue'
+              )
           },
 
-          // SOLICITADAS
           {
-            path: 'opcoes/solicitadas', // 'opcoes' inserido na url para ajudar na animação de transição entre as urls
-            name: 'doacoes.solicitadas.index',
-            component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/IndexPage.vue'),
-          },
-          {
-            path: 'solicitadas/novo',
-            name: 'doacoes.solicitadas.novo',
-            component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'),
-          },
-          {
-            path: 'solicitadas/:id/editar',
-            name: 'doacoes.solicitadas.editar',
-            component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'),
+            path: 'solicitadas',
+            children: [
+              {
+                path: '',
+                name: 'doacoes.solicitadas.index',
+                component: () =>
+                  import(
+                    'pages/autenticado/modulos/doacoes/solicitadas/IndexPage.vue'
+                  )
+              },
+              {
+                path: 'novo',
+                name: 'doacoes.solicitadas.novo',
+                component: () =>
+                  import(
+                    'pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'
+                  )
+              },
+              {
+                path: ':id/editar',
+                name: 'doacoes.solicitadas.editar',
+                component: () =>
+                  import(
+                    'pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'
+                  )
+              }
+            ]
           },
 
-          // OFERECIDAS
           {
-            path: 'opcoes/oferecidas', // 'opcoes' inserido na url para ajudar na animação de transição entre as urls
-            name: 'doacoes.oferecidas.index',
-            component: () => import('pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue'),
-          },
-          {
-            path: 'oferecidas/novo',
-            name: 'doacoes.oferecidas.novo',
-            component: () => import('src/pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'),
-          },
-          {
-            path: 'oferecidas/:id/editar',
-            name: 'doacoes.oferecidas.editar',
-            component: () => import('src/pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'),
-          },
+            path: 'oferecidas',
+            children: [
+              {
+                path: '',
+                name: 'doacoes.oferecidas.index',
+                component: () =>
+                  import(
+                    'pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue'
+                  )
+              },
+              {
+                path: 'novo',
+                name: 'doacoes.oferecidas.novo',
+                component: () =>
+                  import(
+                    'pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'
+                  )
+              },
+              {
+                path: ':id/editar',
+                name: 'doacoes.oferecidas.editar',
+                component: () =>
+                  import(
+                    'pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'
+                  )
+              }
+            ]
+          }
         ]
       },
+
       // adoção de animais
       {
         path: 'adocao-animais',

@@ -26,6 +26,19 @@ export function atualizarOferecida(id, corpoRequisicao) {
     return post(`/doacoes/oferecidas/update/${id}`, corpoRequisicao, true)
 }
 
+// TODAS
+export function buscar(pagina) {
+    return get(`/doacoes?page=${pagina}`)
+}
+
+export function salvar(corpoRequisicao) {
+    return post('/doacoes/store', corpoRequisicao, true)
+}
+
+export function atualizar(id, corpoRequisicao) {
+    return post(`/doacoes/update/${id}`, corpoRequisicao, true)
+}
+
 // para edição
 export function buscarDoacao(id) {
     return get(`/doacoes/buscar-doacao/${id}`)
@@ -41,4 +54,8 @@ export function excluir(id) {
 
 export function buscarCategorias() {
     return get('/doacoes/categorias')
+}
+
+export function buscarPerfisDoacao() {
+    return get('/doacoes/perfis-doacao')
 }
