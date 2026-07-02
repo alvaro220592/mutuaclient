@@ -3,7 +3,7 @@
         <TituloPagina titulo="Suas solicitações de doação" />
 
         <div v-if="doacoes.data.length === 0" class="text-center text-grey q-mt-xl">
-            Nenhuma solicitação encontrada.
+            Nenhum registro encontrado
         </div>
 
         <q-infinite-scroll v-else @load="carregarMais">

@@ -70,7 +70,7 @@ export function useDoacaoAcoes(doacoes) {
     const mostrarConfirmacaoExclusao =
         function (doacao) {
             $q.dialog({
-                title: 'Excluir solicitação',
+                title: 'Excluir registro',
                 message:
                     'Esta ação não poderá ser desfeita.',
                 persistent: true,

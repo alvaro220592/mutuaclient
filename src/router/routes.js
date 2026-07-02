@@ -57,15 +57,12 @@ const routes = [
             name: 'doacoes.opcoes',
             component: () => import('pages/autenticado/modulos/doacoes/OpcoesPage.vue')
           },
+
+          // SOLICITADAS
           {
             path: 'opcoes/solicitadas', // 'opcoes' inserido na url para ajudar na animação de transição entre as urls
             name: 'doacoes.solicitadas.index',
             component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/IndexPage.vue'),
-          },
-          {
-            path: 'opcoes/oferecidas', // 'opcoes' inserido na url para ajudar na animação de transição entre as urls
-            name: 'doacoes.oferecidas.index',
-            component: () => import('pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue'),
           },
           {
             path: 'solicitadas/novo',
@@ -77,9 +74,21 @@ const routes = [
             name: 'doacoes.solicitadas.editar',
             component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'),
           },
+
+          // OFERECIDAS
+          {
+            path: 'opcoes/oferecidas', // 'opcoes' inserido na url para ajudar na animação de transição entre as urls
+            name: 'doacoes.oferecidas.index',
+            component: () => import('pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue'),
+          },
           {
             path: 'oferecidas/novo',
             name: 'doacoes.oferecidas.novo',
+            component: () => import('src/pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'),
+          },
+          {
+            path: 'oferecidas/:id/editar',
+            name: 'doacoes.oferecidas.editar',
             component: () => import('src/pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'),
           },
         ]

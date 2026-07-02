@@ -39,7 +39,7 @@
         <!-- DRAWER SIMPLES -->
         <q-drawer v-model="drawer" bordered>
 
-            <q-list>
+            <q-list class="text-primary">
 
                 <q-item-label header>
                     <div style="width: 50%;">
@@ -47,10 +47,9 @@
                     </div>
                 </q-item-label>
 
-                <q-separator />
+                <q-separator class="q-mb-lg" />
 
-                <q-item :class="Dark.isActive ? 'text-primary' : 'text-dark'" clickable
-                    @click="navegar('usuario.perfil')" v-ripple>
+                <q-item clickable @click="navegar('usuario.perfil')" v-ripple>
                     <q-item-section avatar>
                         <q-icon name="account_circle" />
                     </q-item-section>

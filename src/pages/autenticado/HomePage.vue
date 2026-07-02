@@ -17,7 +17,7 @@
 
             <div class="column q-gutter-md">
                 <template v-if="carregando">
-                    <q-card v-for="i in 3" :key="i" bordered>
+                    <q-card v-for="i in 1" :key="i" bordered>
                         <q-card-section>
                             <q-skeleton type="text" width="40%" />
                             <q-skeleton class="q-mt-sm" type="text" />
