@@ -17,8 +17,7 @@ export function useRolagemInfinita(
         async function () {
 
             // Busca a página 1.
-            const dados =
-                await buscarPagina(1)
+            const dados = await buscarPagina(1)
 
             // Substitui o estado.
             registros.value = dados

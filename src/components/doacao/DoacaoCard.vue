@@ -3,7 +3,7 @@
         <q-card-section class="row items-center justify-between">
             <div class="row items-center q-gutter-sm">
                 <div class="text-subtitle1">
-                    {{ doacao.categoria_doacao.nome }}
+                    {{ doacao.categoria.nome }}
                 </div>
             </div>
 

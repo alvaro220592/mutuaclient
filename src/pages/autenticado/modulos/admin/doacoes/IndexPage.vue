@@ -76,21 +76,18 @@
             ]" />
         </div>
 
-        <DoacoesModoLista v-if="modoVisualizacao === 'lista'" :doacoes="doacoes" :funcaoCarregarMais="carregarMais"
-            @editar="editarDoacao" @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
-
-        <!-- BIBLIOTECA: OpenStreetMap + Leaflet -->
-        <DoacoesModoMapa v-else />
-
-
-
-
 
         <div v-if="doacoes.data.length === 0" class="text-center text-grey q-mt-xl">
             Nenhum registro encontrado
         </div>
 
+        <div v-else>
+            <DoacoesModoLista v-if="modoVisualizacao === 'lista'" :doacoes="doacoes" :funcaoCarregarMais="carregarMais"
+                @editar="editarDoacao" @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
 
+            <!-- BIBLIOTECA: OpenStreetMap + Leaflet. referencia: https://medium.com/@smhabibjr/implement-an-interactive-map-in-the-vue-js-8a865010fb41 -->
+            <DoacoesModoMapa :doacoes="doacoes" v-else />
+        </div>
 
         <BotaoFlutuanteNovoCadastro nomeRota="admin.doacoes.novo" />
     </div>
@@ -140,7 +137,7 @@ const alternarStatus = acoesDoacao.alternarStatus
 
 const mostrarConfirmacaoExclusao = acoesDoacao.mostrarConfirmacaoExclusao
 
-const modoVisualizacao = ref('lista')
+const modoVisualizacao = ref('mapa')
 
 const editarDoacao = function (doacao) {
     router.push({
