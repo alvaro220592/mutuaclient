@@ -7,7 +7,7 @@ import {
 } from 'vue-router'
 
 import routes from './routes'
-import { getToken } from 'src/services/storage'
+import { trazerToken } from 'src/services/storage'
 
 export let routerInstance
 
@@ -43,7 +43,7 @@ export default defineRouter(() => {
     ) => {
 
       const token =
-        await getToken()
+        await trazerToken()
 
       const logado =
         !!token

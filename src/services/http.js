@@ -1,4 +1,4 @@
-import { getToken, removeToken } from './storage'
+import { trazerToken, removerToken } from './storage'
 
 import { routerInstance } from 'src/router'
 
@@ -21,7 +21,7 @@ function tratarErro(response, data, auth) {
         response.status === 401 && auth === true
 
     if (tokenExpirado) {
-        removeToken()
+        removerToken()
         routerInstance.push({ name: 'login' })
 
         throw {
@@ -40,7 +40,7 @@ function tratarErro(response, data, auth) {
 
 export async function get(url) {
 
-    const token = await getToken()
+    const token = await trazerToken()
 
     const response = await fetch(`${API_BASE_URL}${url}`, {
         method: 'GET',
@@ -66,7 +66,7 @@ export async function post(url, body = {}, auth = false) {
     }
 
     if (auth) {
-        const token = await getToken()
+        const token = await trazerToken()
         if (token) {
             headers.Authorization = `Bearer ${token}`
         }
@@ -95,7 +95,7 @@ export async function metodoDelete(url, auth = false) {
     }
 
     if (auth) {
-        const token = await getToken()
+        const token = await trazerToken()
         if (token) {
             headers.Authorization = `Bearer ${token}`
         }

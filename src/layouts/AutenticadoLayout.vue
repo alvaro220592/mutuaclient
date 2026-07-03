@@ -1,22 +1,6 @@
 <template>
     <q-layout view="hHh lpR fFf">
 
-        <!-- <q-btn v-if="mostrarBotaoVoltar" flat round dense icon="arrow_back" class="self-start"
-            @click="$router.back()" /> -->
-
-        <!-- HEADER SIMPLES -->
-        <!-- <q-header elevated>
-            <q-toolbar class="bg-dark">
-                <q-btn flat dense icon="menu" @click="drawer = !drawer" />
-
-                <q-toolbar-title>
-                    <img :src="logoDark" width="30%" style="display: block;">
-                </q-toolbar-title>
-
-
-            </q-toolbar>
-        </q-header> -->
-
         <q-header class="bg-dark" elevated>
             <div class="row items-center q-pa-sm">
 
@@ -49,7 +33,7 @@
 
                 <q-separator class="q-mb-lg" />
 
-                <q-item clickable @click="navegar('admin.index')" v-ripple>
+                <q-item v-if="authStore.user?.is_admin" clickable @click="navegar('admin.index')" v-ripple>
                     <q-item-section avatar>
                         <q-icon name="shield" />
                     </q-item-section>
@@ -116,7 +100,6 @@
 }
 
 .meu-item-container {
-
     flex: 1;
     text-align: right;
     display: flex;
@@ -140,7 +123,7 @@
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
-import { setToken } from 'src/services/storage'
+import { armazenarTema, armazenarToken } from 'src/services/storage'
 import { Dark } from 'quasar'
 import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
@@ -165,13 +148,14 @@ const mostrarBotaoVoltar = computed(() => {
 })
 
 const logout = async () => {
-    await setToken(null)
+    await armazenarToken(null)
     authStore.setAuth(null, null)
     router.replace('/login')
 }
 
-const alternarTema = () => {
+const alternarTema = async () => {
     Dark.toggle()
+    await armazenarTema(Dark.mode)
 }
 
 const navegar = (rota) => {

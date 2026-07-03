@@ -76,7 +76,7 @@ const password_confirmation = ref('password')
 
 import { cadastrar } from 'src/services/auth'
 import { useRouter } from 'vue-router'
-import { setToken } from 'src/services/storage'
+import { armazenarToken } from 'src/services/storage'
 import { useAuthStore } from 'src/stores/auth';
 import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 
@@ -95,7 +95,7 @@ const onCadastrar = async () => {
             password_confirmation: password_confirmation.value,
         })
 
-        await setToken(data.token)
+        await armazenarToken(data.token)
 
         authStore.setAuth(data.user, data.token)
 
@@ -118,7 +118,7 @@ const onLoginGoogle = async () => {
 
         const data = await loginGoogleBackend(idToken)
 
-        await setToken(data.token)
+        await armazenarToken(data.token)
 
         authStore.setAuth(data.user, data.token)
 

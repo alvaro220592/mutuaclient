@@ -10,24 +10,19 @@
 
             <div class="row items-center q-col-gutter-sm">
 
-                <!-- TIPO -->
+                <!-- PERFIL -->
                 <div class="col-12 col-md-2">
-                    <q-select dense outlined label="Tipo" />
+                    <q-select dense outlined label="Perfil" />
+                </div>
+
+                <!-- CATEGORIA -->
+                <div class="col-12 col-md-2">
+                    <q-select dense outlined label="Categoria" />
                 </div>
 
                 <!-- STATUS -->
                 <div class="col-12 col-md-2">
                     <q-select dense outlined label="Status" />
-                </div>
-
-                <!-- PERFIL -->
-                <div class="col-12 col-md-3">
-                    <q-select dense outlined label="Perfil" />
-                </div>
-
-                <!-- CATEGORIA -->
-                <div class="col-12 col-md-3">
-                    <q-select dense outlined label="Categoria" />
                 </div>
 
                 <!-- BUSCA -->
@@ -60,9 +55,7 @@
 
                 <!-- LIMPAR -->
                 <q-btn flat dense color="negative" label="Limpar filtros" />
-
             </div>
-
         </q-card>
 
 
@@ -71,8 +64,8 @@
 
             <!-- VISUALIZAÇÃO POR LISTA OU MAPA -->
             <q-btn-toggle v-model="modoVisualizacao" :options="[
+                { label: 'Mapa', value: 'mapa', icon: 'map' },
                 { label: 'Lista', value: 'lista', icon: 'view_list' },
-                { label: 'Mapa', value: 'mapa', icon: 'map' }
             ]" />
         </div>
 

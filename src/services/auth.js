@@ -2,7 +2,7 @@
 
 import { post } from './http'
 
-import { removeToken, getToken } from 'src/services/storage'
+import { removerToken, trazerToken } from 'src/services/storage'
 
 export function login(corpoRequisicao) {
     return post('/auth/login', corpoRequisicao, false)
@@ -21,10 +21,10 @@ export function redefinirSenha(corpoRequisicao) {
 }
 
 export function logout() {
-    removeToken()
+    removerToken()
 }
 
 export async function usuarioAutenticado() {
-    const token = await getToken()
+    const token = await trazerToken()
     return !!token
 }

@@ -62,7 +62,7 @@ import { useQuasar } from 'quasar'
 import { login } from 'src/services/auth'
 import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 import { useRouter } from 'vue-router'
-import { setToken } from 'src/services/storage'
+import { armazenarToken } from 'src/services/storage'
 import { useAuthStore } from 'src/stores/auth';
 
 const router = useRouter()
@@ -83,7 +83,7 @@ const onLoginNormal = async () => {
             password: password.value,
         })
 
-        await setToken(data.token)
+        await armazenarToken(data.token)
 
         authStore.setAuth(data.user, data.token)
 
@@ -108,7 +108,7 @@ const onLoginGoogle = async () => {
 
         const data = await loginGoogleBackend(idToken)
 
-        await setToken(data.token)
+        await armazenarToken(data.token)
 
         authStore.setAuth(data.user, data.token)
 
