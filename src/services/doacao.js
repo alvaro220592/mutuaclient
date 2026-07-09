@@ -27,8 +27,11 @@ export function atualizarOferecida(id, corpoRequisicao) {
 }
 
 // TODAS
-export function buscar(pagina) {
-    return get(`/doacoes?page=${pagina}`)
+export function buscar(pagina, filtros = {}) {
+    return get('/doacoes?' + new URLSearchParams({
+        page: pagina,
+        ...filtros
+    }))
 }
 
 export function salvar(corpoRequisicao) {

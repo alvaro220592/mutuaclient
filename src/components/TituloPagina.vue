@@ -1,7 +1,11 @@
 <template>
     <q-toolbar class="q-mb-lg justify-center q-gutter-sm">
-        <div class="text-h6">
-            {{ props.titulo }}
+        <div class="col text-center">
+            <div class="text-h6">
+                {{ props.titulo }}
+            </div>
+
+            <div class="text-caption text-grey-7">{{ props.descricao }}</div>
         </div>
     </q-toolbar>
 </template>
@@ -13,6 +17,11 @@ const props = defineProps({
         default: '',
         required: true,
     },
+
+    descricao: {
+        type: String,
+        required: false
+    }
 })
 </script>
 

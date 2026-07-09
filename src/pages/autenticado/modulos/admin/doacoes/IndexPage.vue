@@ -1,9 +1,6 @@
 <template>
     <div>
-        <TituloPagina titulo="Doações (colocar o nome do perfil da doação no card)" />
-
-
-
+        <TituloPagina titulo="Doações" descricao="Acesso ADMIN" />
 
         <!-- BARRA DE FILTROS -->
         <q-card flat bordered class="q-pa-sm q-mb-md">
@@ -12,74 +9,69 @@
 
                 <!-- PERFIL -->
                 <div class="col-12 col-md-2">
-                    <q-select dense outlined label="Perfil" />
+                    <q-select dense outlined v-model="filtros.perfil" label="Perfil" :options="perfisDoacao"
+                        option-label="nome" option-value="id" emit-value map-options />
                 </div>
 
                 <!-- CATEGORIA -->
                 <div class="col-12 col-md-2">
-                    <q-select dense outlined label="Categoria" />
+                    <q-select dense outlined v-model="filtros.categoria" label="Categoria" :options="categoriasDoacao"
+                        option-label="nome" option-value="id" emit-value map-options />
                 </div>
 
                 <!-- STATUS -->
                 <div class="col-12 col-md-2">
-                    <q-select dense outlined label="Status" />
+                    <q-select dense outlined label="Status" v-model="filtros.statusAtivo" :options="statusOptions"
+                        option-label="label" option-value="value" emit-value map-options />
                 </div>
 
                 <!-- BUSCA -->
-                <div class="col-12 col-md-2">
+                <!-- <div class="col-12 col-md-2">
                     <q-input dense outlined label="Buscar">
                         <template v-slot:append>
                             <q-icon name="search" />
                         </template>
-                    </q-input>
+</q-input>
+</div> -->
+
+                <!-- BOTÃO BUSCAR -->
+                <div class="col-12 col-md-2">
+                    <q-btn color="primary" label="Buscar" @click="buscarComFiltros" />
                 </div>
 
             </div>
 
-            <!-- FILTROS ATIVOS (CHIPS) -->
-            <div class="row q-gutter-sm q-mt-sm">
+            <q-space class="q-mb-sm" />
 
-                <q-chip removable color="primary" text-color="white">
-                    Ativas
-                </q-chip>
-
-                <q-chip removable color="secondary" text-color="white">
-                    Oferecidas
-                </q-chip>
-
-                <q-chip removable color="orange" text-color="white">
-                    Perfil: Básico
-                </q-chip>
-
-                <q-space />
-
-                <!-- LIMPAR -->
-                <q-btn flat dense color="negative" label="Limpar filtros" />
+            <!-- LIMPAR -->
+            <div class="row justify-center">
+                <q-btn v-if="filtros.perfil !== null || filtros.categoria !== null" @click="limparFiltros" flat dense
+                    color="negative" label="Limpar filtros" />
             </div>
+
         </q-card>
 
-
-
+        <!-- VISUALIZAÇÃO -->
         <div class="text-center q-mt-lg q-mb-sm">
 
-            <!-- VISUALIZAÇÃO POR LISTA OU MAPA -->
             <q-btn-toggle v-model="modoVisualizacao" :options="[
                 { label: 'Mapa', value: 'mapa', icon: 'map' },
-                { label: 'Lista', value: 'lista', icon: 'view_list' },
+                { label: 'Lista', value: 'lista', icon: 'view_list' }
             ]" />
-        </div>
 
+        </div>
 
         <div v-if="doacoes.data.length === 0" class="text-center text-grey q-mt-xl">
             Nenhum registro encontrado
         </div>
 
         <div v-else>
+
             <DoacoesModoLista v-if="modoVisualizacao === 'lista'" :doacoes="doacoes" :funcaoCarregarMais="carregarMais"
                 @editar="editarDoacao" @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
 
-            <!-- BIBLIOTECA: OpenStreetMap + Leaflet. referencia: https://medium.com/@smhabibjr/implement-an-interactive-map-in-the-vue-js-8a865010fb41 -->
-            <DoacoesModoMapa :doacoes="doacoes" v-else />
+            <DoacoesModoMapa v-else :doacoes="doacoes" />
+
         </div>
 
         <BotaoFlutuanteNovoCadastro nomeRota="admin.doacoes.novo" />
@@ -93,6 +85,7 @@ import { useRouter } from 'vue-router'
 import { buscar } from 'src/services/doacao'
 import { useDoacaoAcoes } from 'src/composables/useDoacaoAcoes'
 import { useRolagemInfinita } from 'src/composables/useRolagemInfinita'
+
 import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue'
 import TituloPagina from 'src/components/TituloPagina.vue'
 import DoacoesModoLista from './DoacoesModoLista.vue'
@@ -100,48 +93,104 @@ import DoacoesModoMapa from './DoacoesModoMapa.vue'
 
 const router = useRouter()
 
-// Cria uma instância do composable.
-// O parâmetro é uma função que sabe buscar
-// uma página de doações.
-const paginacao = useRolagemInfinita(
-    async function (pagina) {
-        const dados = await buscar(pagina)
+/* =========================
+   FILTROS CENTRALIZADOS
+========================= */
+const filtros = ref({
+    statusAtivo: true,
+    perfil: null,
+    categoria: null
+})
 
-        // O composable espera receber apenas o objeto paginado.
-        return dados.doacoes
+/* =========================
+   DADOS AUXILIARES
+========================= */
+const categoriasDoacao = ref([])
+const perfisDoacao = ref([])
+
+// const categoriaSelecionadaObj = computed(() =>
+//     categoriasDoacao.value.find(c => c.id == filtros.value.categoria)
+// )
+
+// const perfilSelecionadoObj = computed(() =>
+//     perfisDoacao.value.find(p => p.id == filtros.value.perfil)
+// )
+
+const statusOptions = [
+    { label: 'Ativo', value: true },
+    { label: 'Inativo', value: false }
+]
+
+/* =========================
+   LIMPAR FILTROS
+========================= */
+const limparFiltros = async () => {
+    filtros.value = {
+        statusAtivo: true,
+        perfil: null,
+        categoria: null
     }
-)
 
-// O composable criou uma ref chamada "registros".
-// Nesta tela, ela representa as doações.
+    await buscarComFiltros()
+}
+
+/* =========================
+   PAGINAÇÃO INFINITA
+========================= */
+const paginacao = useRolagemInfinita(async function (pagina) {
+    const dados = await buscar(pagina)
+
+    if (pagina === 1) {
+        categoriasDoacao.value = dados.categoriasDoacao
+        perfisDoacao.value = dados.perfisDoacao.map(perfil => ({
+            ...perfil,
+            nome: perfil.nome.charAt(0).toUpperCase() + perfil.nome.slice(1) + 's'
+        }))
+    }
+
+    return dados.doacoes
+})
+
+/* =========================
+   BUSCAR COM FILTROS
+========================= */
+const buscarComFiltros = async () => {
+    paginacao.registros.value = {
+        data: [],
+        current_page: 1,
+        last_page: 1
+    }
+
+    const dados = await buscar(1, filtros.value)
+
+    paginacao.registros.value = dados.doacoes
+}
+
 const doacoes = paginacao.registros
-
-// Função que carrega a primeira página.
 const trazerDoacoes = paginacao.carregarPrimeiraPagina
-
-// Função usada pelo QInfiniteScroll.
 const carregarMais = paginacao.carregarMais
 
-// Cria uma instância do composable de ações.
+/* =========================
+   AÇÕES
+========================= */
 const acoesDoacao = useDoacaoAcoes(doacoes)
 
-// Obtém as funções do composable.
 const alternarStatus = acoesDoacao.alternarStatus
-
 const mostrarConfirmacaoExclusao = acoesDoacao.mostrarConfirmacaoExclusao
 
 const modoVisualizacao = ref('mapa')
 
-const editarDoacao = function (doacao) {
+const editarDoacao = (doacao) => {
     router.push({
         name: 'admin.doacoes.editar',
-        params: {
-            id: doacao.id
-        }
+        params: { id: doacao.id }
     })
 }
 
-onMounted(function () {
+/* =========================
+   INIT
+========================= */
+onMounted(() => {
     trazerDoacoes()
 })
 </script>

@@ -32,7 +32,7 @@
                     </template>
                 </q-input>
 
-                <q-btn color="primary" label="Cadastrar" @click.prevent="onCadastrar" />
+                <q-btn color="primary" label="Criar conta" @click.prevent="onCadastrar" />
 
                 <!-- Separador -->
                 <div class="row items-center">
@@ -41,8 +41,7 @@
                     <div class="col"><q-separator /></div>
                 </div>
 
-                <q-btn color="white" text-color="black"
-                    icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                     label="Entrar com Google" @click.prevent="onLoginGoogle" />
 
                 <!-- ações secundárias -->

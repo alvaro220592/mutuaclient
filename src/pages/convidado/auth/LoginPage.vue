@@ -31,14 +31,13 @@
                     <div class="col"><q-separator /></div>
                 </div>
 
-                <q-btn color="white" text-color="black"
-                    icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                     label="Entrar com Google" @click.prevent="onLoginGoogle" />
 
                 <!-- ações secundárias -->
                 <div class="column q-gutter-sm q-mt-md">
 
-                    <q-btn flat no-caps color="primary" label="Cadastrar" :to="{ name: 'cadastrar' }" />
+                    <q-btn flat no-caps color="primary" label="Criar conta" :to="{ name: 'cadastrar' }" />
 
                     <q-btn flat no-caps color="primary" label="Esqueci minha senha" :to="{ name: 'recuperar-senha' }" />
 

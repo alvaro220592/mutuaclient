@@ -74,7 +74,7 @@ onMounted(() => {
                 icon: L.divIcon({
                     className: '',
                     html: `
-                <div class="meu-marker ${doacao.perfil_doacao_id === 1
+                <div class="meu-marker ${doacao.perfil.nome == 'oferecida'
                             ? 'oferecida'
                             : 'solicitada'
                         }">
