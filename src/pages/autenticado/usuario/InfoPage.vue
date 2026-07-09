@@ -3,10 +3,7 @@
 
         <div class="box">
 
-            <!-- TÍTULO -->
-            <div class="text-h6 q-mb-lg text-center">
-                Meu perfil
-            </div>
+            <TituloPagina titulo="Meu perfil" descricao="Suas informações de conta" />
 
             <!-- FORM -->
             <div class="column q-gutter-md">
@@ -41,15 +38,8 @@
                 <q-btn color="primary" label="Salvar alterações" @click.prevent="salvar" :loading="carregando"
                     :disable="carregando" />
 
-                <!-- ações secundárias -->
-                <div class="column q-gutter-sm q-mt-md">
-
-                    <q-btn flat no-caps color="primary" label="Voltar" :to="{ name: 'home' }" />
-
-                </div>
-
+                <q-btn color="negative" label="Excluir minha conta" @click="excluirConta" />
             </div>
-
         </div>
 
     </q-page>
@@ -62,8 +52,10 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-import { post } from 'src/services/http'
+import { metodoDelete, post } from 'src/services/http'
 import { dadosUsuario } from 'src/services/info-usuario'
+import TituloPagina from 'src/components/TituloPagina.vue'
+import { armazenarToken } from 'src/services/storage'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -212,5 +204,47 @@ const buscaCep = async () => {
     uf.value = res.uf
 
     campoNumero.value.focus()
+}
+
+const excluirConta = () => {
+    $q.dialog({
+        title: 'Excluir conta',
+        message: 'Esta ação não poderá ser desfeita.<br>Todas as suas doações, dados pessoais e histórico serão removidos permanentemente.',
+        html: true,
+        persistent: true,
+        cancel: {
+            label: 'Cancelar',
+            flat: true
+        },
+        ok: {
+            label: 'Excluir',
+            color: 'negative'
+        }
+    }).onOk(async function () {
+        try {
+            const url = '/user/excluir-conta'
+
+            await metodoDelete(url, true)
+
+            await armazenarToken(null)
+
+            authStore.setAuth(null, null)
+
+            router.replace({ name: 'login' })
+
+            $q.notify({
+                type: 'positive',
+                message: 'Conta excluída com sucesso',
+                position: 'top-right'
+            })
+        }
+        catch (erro) {
+            $q.notify({
+                type: 'negative',
+                message: erro.message,
+                position: 'top-right'
+            })
+        }
+    })
 }
 </script>
