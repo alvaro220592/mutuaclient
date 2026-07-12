@@ -27,7 +27,7 @@
                 <!-- Rodapé -->
                 <q-footer bordered class="bg-dark">
                     <q-toolbar class="justify-center">
-                        <q-btn flat icon="menu">
+                        <q-btn flat label="Menu">
 
                             <q-menu class="text-primary" anchor="top middle" self="bottom middle" auto-close>
                                 <q-list style="min-width: 220px">
@@ -52,7 +52,7 @@
                                         </q-item-section>
                                     </q-item>
 
-                                    <q-item clickable @click="navegar('termos-uso')">
+                                    <q-item clickable @click="navegar('termos-uso.index')">
                                         <q-item-section avatar>
                                             <q-icon name="sym_o_gavel" />
                                         </q-item-section>

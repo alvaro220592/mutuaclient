@@ -37,7 +37,12 @@ const routes = [
         path: 'politica-privacidade',
         name: 'politica-privacidade.index',
         component: () => import('pages/convidado/politica-privacidade/IndexPage.vue')
-      }
+      },
+      {
+        path: 'termos-uso',
+        name: 'termos-uso.index',
+        component: () => import('pages/convidado/termo-uso/IndexPage.vue')
+      },
     ],
   },
 
