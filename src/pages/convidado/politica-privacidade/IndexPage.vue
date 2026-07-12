@@ -42,4 +42,9 @@ const trazerAtual = async () => {
 :deep(h2) {
     font-size: 18px;
 }
+
+:deep(ul) {
+    list-style: '- ';
+    padding-left: 15px;
+}
 </style>
