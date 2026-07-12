@@ -36,6 +36,9 @@
                     <q-btn flat no-caps color="primary" label="Entrar" :to="{ name: 'login' }" />
 
                     <q-btn flat no-caps color="primary" label="Criar conta" :to="{ name: 'cadastrar' }" />
+
+                    <q-btn flat no-caps color="primary" label="Política de privacidade"
+                        :to="{ name: 'politica-privacidade.index' }" />
                 </q-card-section>
             </q-card>
         </div>

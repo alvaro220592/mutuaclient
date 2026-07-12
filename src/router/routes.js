@@ -32,6 +32,12 @@ const routes = [
         name: 'redefinir-senha',
         component: () => import('pages/convidado/auth/RedefinirSenhaPage.vue')
       },
+
+      {
+        path: 'politica-privacidade',
+        name: 'politica-privacidade.index',
+        component: () => import('pages/convidado/politica-privacidade/IndexPage.vue')
+      }
     ],
   },
 
@@ -54,26 +60,28 @@ const routes = [
         path: 'admin',
         children: [
           {
-            path: '',
-            name: 'admin.index',
+            path: 'modulos',
+            name: 'admin.modulos.index',
             component: () =>
-              import('pages/autenticado/modulos/admin/IndexPage.vue')
+              import('pages/autenticado/admin/modulos/IndexPage.vue')
           },
           {
-            path: 'doacoes',
+            path: 'modulos/doacoes',
             name: 'admin.doacoes.index',
             component: () =>
-              import('pages/autenticado/modulos/admin/doacoes/IndexPage.vue')
+              import('pages/autenticado/admin/modulos/doacoes/IndexPage.vue')
           },
           {
-            path: 'doacoes/novo',
+            path: 'modulos/doacoes/novo',
             name: 'admin.doacoes.novo',
-            component: () => import('pages/autenticado/modulos/admin/doacoes/FormPage.vue')
+            component: () =>
+              import('pages/autenticado/admin/modulos/doacoes/FormPage.vue')
           },
           {
-            path: ':id/editar',
+            path: 'modulos/doacoes/:id/editar',
             name: 'admin.doacoes.editar',
-            component: () => import('pages/autenticado/modulos/admin/doacoes/FormPage.vue')
+            component: () =>
+              import('pages/autenticado/admin/modulos/doacoes/FormPage.vue')
           }
         ]
       },
@@ -194,7 +202,7 @@ const routes = [
             component: () => import('pages/autenticado/usuario/InfoPage.vue'),
           }
         ]
-      }
+      },
     ]
   },
 

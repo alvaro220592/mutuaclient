@@ -33,14 +33,41 @@
 
                 <q-separator class="q-mb-lg" />
 
-                <q-item v-if="authStore.user?.is_admin" clickable @click="navegar('admin.index')" v-ripple>
-                    <q-item-section avatar>
-                        <q-icon name="shield" />
-                    </q-item-section>
-                    <q-item-section>
-                        Área admin
-                    </q-item-section>
-                </q-item>
+                <q-expansion-item v-if="authStore.user?.is_admin" icon="shield" label="Área admin">
+                    <q-list class="q-ml-md">
+
+                        <q-item clickable @click="navegar('admin.modulos.index')" v-ripple>
+                            <q-item-section avatar>
+                                <q-icon name="sym_o_dashboard" />
+                            </q-item-section>
+
+                            <q-item-section>
+                                Módulos
+                            </q-item-section>
+                        </q-item>
+
+                        <q-item clickable @click="navegar('admin.usuarios.index')" v-ripple>
+                            <q-item-section avatar>
+                                <q-icon name="sym_o_people" />
+                            </q-item-section>
+
+                            <q-item-section>
+                                Usuários
+                            </q-item-section>
+                        </q-item>
+
+                        <q-item clickable @click="navegar('admin.documentos.index')" v-ripple>
+                            <q-item-section avatar>
+                                <q-icon name="sym_o_description" />
+                            </q-item-section>
+
+                            <q-item-section>
+                                Documentos
+                            </q-item-section>
+                        </q-item>
+
+                    </q-list>
+                </q-expansion-item>
 
                 <q-item clickable @click="navegar('usuario.perfil')" v-ripple>
                     <q-item-section avatar>
