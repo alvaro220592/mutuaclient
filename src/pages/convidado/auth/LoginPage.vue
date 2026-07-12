@@ -3,18 +3,14 @@
 
         <div class="box">
 
-            <!-- TÍTULO -->
-            <div class="text-h6 q-mb-lg text-center">
-                Insira seus dados para entrar
-            </div>
+            <titulo-pagina titulo="Login" descricao="Insira seus dados para entrar" />
 
             <!-- FORM -->
             <div class="column q-gutter-md">
 
                 <q-input outlined v-model="email" label="E-mail" />
 
-                <q-input v-model="password" otlined :type="campoTipoSenha ? 'password' : 'text'"
-                    hint="Password with toggle">
+                <q-input v-model="password" label="Senha" outlined :type="campoTipoSenha ? 'password' : 'text'">
                     <template v-slot:append>
                         <q-icon :name="campoTipoSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                             @click="campoTipoSenha = !campoTipoSenha" />
@@ -60,6 +56,7 @@ import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 import { useRouter } from 'vue-router'
 import { armazenarToken } from 'src/services/storage'
 import { useAuthStore } from 'src/stores/auth';
+import TituloPagina from 'src/components/TituloPagina.vue';
 
 const router = useRouter()
 const authStore = useAuthStore()

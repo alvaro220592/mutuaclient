@@ -3,10 +3,7 @@
 
         <div class="box">
 
-            <!-- TÍTULO -->
-            <div class="text-h6 q-mb-lg text-center">
-                Crie sua conta
-            </div>
+            <titulo-pagina titulo="Criar conta" descricao="Insira os dados da nova conta" />
 
             <!-- FORM -->
             <div class="column q-gutter-md">
@@ -15,16 +12,15 @@
 
                 <q-input outlined v-model="email" label="E-mail" />
 
-                <q-input v-model="password" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'"
-                    hint="Password with toggle">
+                <q-input v-model="password" label="Senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
                     <template v-slot:append>
                         <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                             @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
                     </template>
                 </q-input>
 
-                <q-input v-model="password_confirmation" outlined
-                    :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'" hint="Password with toggle">
+                <q-input v-model="password_confirmation" label="Confirme a senha" outlined
+                    :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'">
                     <template v-slot:append>
                         <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
                             class="cursor-pointer"
@@ -74,6 +70,7 @@ import { useRouter } from 'vue-router'
 import { armazenarToken } from 'src/services/storage'
 import { useAuthStore } from 'src/stores/auth';
 import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
+import TituloPagina from 'src/components/TituloPagina.vue';
 
 const router = useRouter()
 const authStore = useAuthStore()

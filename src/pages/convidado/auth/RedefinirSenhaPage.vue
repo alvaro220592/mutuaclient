@@ -3,14 +3,7 @@
 
         <div class="box">
 
-            <!-- TÍTULO -->
-            <div class="text-h6 q-mb-sm text-center">
-                Redefinir senha
-            </div>
-
-            <div class="text-body2 text-center text-grey-7 q-mb-md">
-                Digite o código enviado por e-mail e sua nova senha
-            </div>
+            <titulo-pagina titulo="Redefinir senha" descricao="Digite o código enviado por e-mail e sua nova senha" />
 
             <!-- FORM -->
             <div class="column q-gutter-md">
@@ -19,16 +12,15 @@
 
                 <q-input outlined v-model="codigo_recuperacao" label="Código de 6 dígitos" type="tel" maxlength="6" />
 
-                <q-input v-model="password" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'"
-                    hint="Password with toggle">
+                <q-input v-model="password" label="Senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
                     <template v-slot:append>
                         <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                             @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
                     </template>
                 </q-input>
 
-                <q-input v-model="password_confirmation" outlined
-                    :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'" hint="Password with toggle">
+                <q-input v-model="password_confirmation" label="Confirme a senha" outlined
+                    :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'">
                     <template v-slot:append>
                         <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
                             class="cursor-pointer"
@@ -56,6 +48,7 @@ import { useQuasar } from 'quasar'
 import { useRouter, useRoute } from 'vue-router'
 
 import { redefinirSenha } from 'src/services/auth'
+import TituloPagina from 'src/components/TituloPagina.vue';
 
 const router = useRouter()
 const route = useRoute()

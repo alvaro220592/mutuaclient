@@ -3,14 +3,7 @@
 
         <div class="box">
 
-            <!-- TÍTULO -->
-            <div class="text-h6 q-mb-lg text-center">
-                Redefinir senha
-            </div>
-
-            <div class="text-body2 text-center q-mb-md text-grey-7">
-                Informe seu e-mail para receber o link de recuperação
-            </div>
+            <titulo-pagina titulo="Redefinir senha" descricao="Informe seu e-mail para receber o link de recuperação" />
 
             <!-- FORM -->
             <div class="column q-gutter-md">
@@ -42,6 +35,7 @@ const carregando = ref(false)
 
 import { recuperarSenha } from 'src/services/auth'
 import { useRouter } from 'vue-router'
+import TituloPagina from 'src/components/TituloPagina.vue';
 
 const router = useRouter()
 
