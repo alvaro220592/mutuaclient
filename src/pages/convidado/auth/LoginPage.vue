@@ -41,9 +41,6 @@
 
                     <q-btn flat no-caps color="primary" label="Esqueci minha senha" :to="{ name: 'recuperar-senha' }" />
 
-                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial"
-                        :to="{ name: 'boas-vindas' }" />
-
                 </div>
 
             </div>

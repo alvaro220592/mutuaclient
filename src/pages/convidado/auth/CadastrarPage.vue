@@ -48,10 +48,6 @@
                 <div class="column q-gutter-sm q-mt-md">
 
                     <q-btn flat no-caps color="primary" label="Já tenho cadastro" :to="{ name: 'login' }" />
-
-                    <q-btn flat no-caps color="primary" label="Voltar para tela inicial"
-                        :to="{ name: 'boas-vindas' }" />
-
                 </div>
 
             </div>

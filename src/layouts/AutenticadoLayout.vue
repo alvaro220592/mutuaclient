@@ -186,6 +186,6 @@ const alternarTema = async () => {
 }
 
 const navegar = (rota) => {
-    router.push({ name: rota }) // ou router.push({ name: 'doacoes.index' })
+    router.push({ name: rota })
 }
 </script>
