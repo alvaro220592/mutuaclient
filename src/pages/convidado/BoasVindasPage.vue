@@ -34,8 +34,9 @@ import TituloPagina from 'src/components/TituloPagina.vue';
                     acontecer.
                 </p>
 
-                <blockquote class="text-italic text-grey-7 q-pl-md">
-                    "A competição é a lei da selva, a cooperação é a lei da civilização" - Piotr Kropotkin
+                <blockquote class="text-italic text-grey-7 q-pl-md text-center">
+                    "A competição é a lei da selva, a cooperação é a lei da civilização"
+                    <br>- Piotr Kropotkin
                 </blockquote>
             </div>
         </div>

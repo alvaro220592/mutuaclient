@@ -82,18 +82,6 @@
                                         </q-item-section>
                                     </q-item>
 
-                                    <q-separator />
-
-                                    <q-item clickable @click="navegar('contato')">
-                                        <q-item-section avatar>
-                                            <q-icon name="sym_o_mail" />
-                                        </q-item-section>
-
-                                        <q-item-section>
-                                            Contato
-                                        </q-item-section>
-                                    </q-item>
-
                                 </q-list>
                             </q-menu>
 

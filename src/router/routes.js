@@ -60,6 +60,7 @@ const routes = [
         component: () => import('pages/autenticado/HomePage.vue')
       },
 
+
       /** ************* ADMIN ************* */
       {
         path: 'admin',
@@ -198,6 +199,8 @@ const routes = [
           }
         ]
       },
+
+      // perfil do usuario
       {
         path: 'usuario',
         children: [
@@ -205,6 +208,18 @@ const routes = [
             path: 'perfil',
             name: 'usuario.perfil',
             component: () => import('pages/autenticado/usuario/InfoPage.vue'),
+          }
+        ]
+      },
+
+      // contato
+      {
+        path: 'contato',
+        children: [
+          {
+            path: '/email',
+            name: 'contato.email.index',
+            component: () => import('pages/autenticado/contato/email/IndexPage.vue')
           }
         ]
       },

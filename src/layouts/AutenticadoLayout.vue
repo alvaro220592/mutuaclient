@@ -69,12 +69,30 @@
                     </q-list>
                 </q-expansion-item>
 
+                <q-item clickable @click="navegar('home')" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="home" />
+                    </q-item-section>
+                    <q-item-section>
+                        Início
+                    </q-item-section>
+                </q-item>
+
                 <q-item clickable @click="navegar('usuario.perfil')" v-ripple>
                     <q-item-section avatar>
                         <q-icon name="account_circle" />
                     </q-item-section>
                     <q-item-section>
                         Meu perfil
+                    </q-item-section>
+                </q-item>
+
+                <q-item clickable @click="navegar('contato.email.index')" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="email" />
+                    </q-item-section>
+                    <q-item-section>
+                        Contato
                     </q-item-section>
                 </q-item>
 

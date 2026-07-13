@@ -33,9 +33,9 @@
                 <!-- ações secundárias -->
                 <div class="column q-gutter-sm q-mt-md">
 
-                    <q-btn flat no-caps color="primary" label="Criar conta" :to="{ name: 'cadastrar' }" />
+                    <q-btn flat no-caps label="Criar conta" :to="{ name: 'cadastrar' }" />
 
-                    <q-btn flat no-caps color="primary" label="Esqueci minha senha" :to="{ name: 'recuperar-senha' }" />
+                    <q-btn flat no-caps label="Esqueci minha senha" :to="{ name: 'recuperar-senha' }" />
 
                 </div>
 
