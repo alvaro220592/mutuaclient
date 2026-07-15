@@ -136,33 +136,7 @@
     </q-layout>
 </template>
 
-<style>
-.meu-header-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 2px;
-}
-
-.meu-item-container {
-    flex: 1;
-    text-align: right;
-    display: flex;
-    align-items: center;
-}
-
-.meu-item-container-esquerda {
-    justify-content: flex-start;
-}
-
-.meu-item-container-centro {
-    justify-content: center;
-}
-
-.meu-item-container-direita {
-    justify-content: flex-end;
-}
-</style>
+<style></style>
 
 <script setup>
 import { ref, computed } from 'vue'

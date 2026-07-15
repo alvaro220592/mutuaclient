@@ -36,42 +36,35 @@ export default defineRouter(() => {
     })
 
   routerInstance.beforeEach(
-    async (
-      to,
-      from,
-      next
-    ) => {
+    async (to, from, next) => {
 
-      const token =
-        await trazerToken()
+      const token = await trazerToken()
 
-      const logado =
-        !!token
+      const logado = !!token
 
-      const rotaPrivada =
-        to.meta?.auth === true
+      const rotaPrivada = to.meta?.auth === true
 
-      const rotaPublica =
-        to.meta?.auth === false
+      const rotaPublica = to.meta?.auth === false
 
-      if (
-        rotaPrivada
-        &&
-        !logado
-      ) {
-        return next(
-          '/login'
-        )
+      if (rotaPrivada && !logado) {
+        return next('/login')
       }
 
+
+      // verificando se o usuário já aceitou termos de uso e política de privacidade
+      const jaConsentiu = false
+
       if (
-        rotaPublica
-        &&
-        logado
+        to.meta.requerConsentimento
+        && !jaConsentiu
+        // && !usuarioAdmin
       ) {
-        return next(
-          '/app'
-        )
+        next({ name: 'consentimento' })
+        return
+      }
+
+      if (rotaPublica && logado) {
+        return next('/app')
       }
 
       next()

@@ -56,4 +56,9 @@ colocar em produção na playstore
         esperado: android/app/build/outputs/bundle/release/app-release.aab
         subir esse arquivo no google play console (https://developer.android.com/distribute/console?hl=pt-br)
 
-    
+gerar ícone:
+    # Node.js >=22 is required.
+    npm i -g @quasar/icongenie
+    colocar uma imagem quadrada de 1024px na raíz do projeto.
+    npx icongenie generate -m capacitor -i nomeDaImagem.png
+    npx cap sync android

@@ -4,7 +4,7 @@ const routes = [
   // =========================
   {
     path: '/',
-    meta: { auth: false },
+    meta: { auth: false, requerConsentimento: false },
     component: () => import('layouts/ConvidadoLayout.vue'),
     children: [
       {
@@ -57,6 +57,7 @@ const routes = [
       {
         path: '',
         name: 'home',
+        meta: { requerConsentimento: true },
         component: () => import('pages/autenticado/HomePage.vue')
       },
 
@@ -68,28 +69,23 @@ const routes = [
           {
             path: 'modulos',
             name: 'admin.modulos.index',
-            component: () =>
-              import('pages/autenticado/admin/modulos/IndexPage.vue')
+            component: () => import('pages/autenticado/admin/modulos/IndexPage.vue')
           },
           {
             path: 'modulos/doacoes',
             name: 'admin.doacoes.index',
-            component: () =>
-              import('pages/autenticado/admin/modulos/doacoes/IndexPage.vue')
+            component: () => import('pages/autenticado/admin/modulos/doacoes/IndexPage.vue')
           },
           {
             path: 'modulos/doacoes/novo',
             name: 'admin.doacoes.novo',
-            component: () =>
-              import('pages/autenticado/admin/modulos/doacoes/FormPage.vue')
+            component: () => import('pages/autenticado/admin/modulos/doacoes/FormPage.vue')
           },
           {
             path: 'modulos/doacoes/:id/editar',
             name: 'admin.doacoes.editar',
-            component: () =>
-              import('pages/autenticado/admin/modulos/doacoes/FormPage.vue')
-          }
-        ]
+            component: () => import('pages/autenticado/admin/modulos/doacoes/FormPage.vue')
+          }]
       },
 
       {
@@ -98,10 +94,7 @@ const routes = [
           {
             path: 'opcoes',
             name: 'doacoes.opcoes',
-            component: () =>
-              import(
-                'pages/autenticado/modulos/doacoes/OpcoesPage.vue'
-              )
+            component: () => import('pages/autenticado/modulos/doacoes/OpcoesPage.vue')
           },
 
           {
@@ -110,26 +103,17 @@ const routes = [
               {
                 path: '',
                 name: 'doacoes.solicitadas.index',
-                component: () =>
-                  import(
-                    'pages/autenticado/modulos/doacoes/solicitadas/IndexPage.vue'
-                  )
+                component: () => import('pages/autenticado/modulos/doacoes/solicitadas/IndexPage.vue')
               },
               {
                 path: 'novo',
                 name: 'doacoes.solicitadas.novo',
-                component: () =>
-                  import(
-                    'pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'
-                  )
+                component: () => import('pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue')
               },
               {
                 path: ':id/editar',
                 name: 'doacoes.solicitadas.editar',
-                component: () =>
-                  import(
-                    'pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue'
-                  )
+                component: () => import('pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue')
               }
             ]
           },
@@ -140,26 +124,17 @@ const routes = [
               {
                 path: '',
                 name: 'doacoes.oferecidas.index',
-                component: () =>
-                  import(
-                    'pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue'
-                  )
+                component: () => import('pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue')
               },
               {
                 path: 'novo',
                 name: 'doacoes.oferecidas.novo',
-                component: () =>
-                  import(
-                    'pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'
-                  )
+                component: () => import('pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue')
               },
               {
                 path: ':id/editar',
                 name: 'doacoes.oferecidas.editar',
-                component: () =>
-                  import(
-                    'pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue'
-                  )
+                component: () => import('pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue')
               }
             ]
           }
@@ -223,6 +198,19 @@ const routes = [
           }
         ]
       },
+    ]
+  },
+
+  {
+    path: '/consentimento',
+    meta: { auth: true, requerConsentimento: false },
+    component: () => import('layouts/ConsentimentoLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'consentimento',
+        component: () => import('pages/autenticado/ConsentimentoPage.vue')
+      }
     ]
   },
 
