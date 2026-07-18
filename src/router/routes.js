@@ -84,7 +84,13 @@ const routes = [
             path: 'modulos/doacoes/:id/editar',
             name: 'admin.doacoes.editar',
             component: () => import('pages/autenticado/admin/modulos/doacoes/FormPage.vue')
-          }]
+          },
+          {
+            path: 'modulos/usuarios',
+            name: 'admin.usuarios.index',
+            component: () => import('pages/autenticado/admin/usuarios/IndexPage.vue')
+          },
+        ]
       },
 
       {
