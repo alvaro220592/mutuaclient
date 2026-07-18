@@ -32,16 +32,15 @@ const routes = [
         name: 'redefinir-senha',
         component: () => import('pages/convidado/auth/RedefinirSenhaPage.vue')
       },
-
       {
         path: 'politica-privacidade',
         name: 'politica-privacidade.index',
-        component: () => import('pages/convidado/politica-privacidade/IndexPage.vue')
+        component: () => import('pages/convidado/politica-privacidade/PoliticaPrivacidadeWrapper.vue')
       },
       {
         path: 'termos-uso',
         name: 'termos-uso.index',
-        component: () => import('pages/convidado/termo-uso/IndexPage.vue')
+        component: () => import('pages/convidado/termo-uso/TermoUsoWrapper.vue')
       },
     ],
   },
@@ -195,6 +194,21 @@ const routes = [
             path: '/email',
             name: 'contato.email.index',
             component: () => import('pages/autenticado/contato/email/IndexPage.vue')
+          }
+        ]
+      },
+      {
+        path: 'documentos',
+        children: [
+          {
+            path: '/termos-uso',
+            name: 'autenticado.termos-uso.index',
+            component: () => import('pages/autenticado/documentos/termo-uso/IndexPage.vue')
+          },
+          {
+            path: '/politica-privacidade',
+            name: 'autenticado.politica-privacidade.index',
+            component: () => import('pages/autenticado/documentos/politica-privacidade/IndexPage.vue')
           }
         ]
       },

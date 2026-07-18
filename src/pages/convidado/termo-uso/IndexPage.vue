@@ -1,12 +1,8 @@
 <template>
-
     <q-page class="flex flex-center q-pa-md">
-
         <div class="box">
             <TituloPagina titulo="Termos de Uso" :descricao="'Última atualização: ' + termoUso.dataCriacaoPtBr" />
-
             <div v-html="termoUso.conteudo"></div>
-
         </div>
     </q-page>
 </template>

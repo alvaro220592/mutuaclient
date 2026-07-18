@@ -3,8 +3,6 @@
 
         <q-header class="bg-dark" elevated>
             <div class="row items-center q-pa-sm">
-                Precisa colocar um link no drawer pra poder ler os doc de termos de uso e politica <br>
-                precisa habilitar os links da area admin que estao sem uso
 
                 <div class="col row items-center justify-start">
                     <q-btn v-if="mostrarBotaoVoltar" class="text-subtitle1" flat round dense icon="arrow_back"
@@ -35,6 +33,15 @@
 
                 <q-separator class="q-mb-lg" />
 
+                <q-item clickable @click="navegar('home')" v-ripple>
+                    <q-item-section avatar>
+                        <q-icon name="home" />
+                    </q-item-section>
+                    <q-item-section>
+                        Início
+                    </q-item-section>
+                </q-item>
+
                 <q-expansion-item v-if="authStore.user?.is_admin" icon="shield" label="Área admin">
                     <q-list class="q-ml-md">
 
@@ -57,28 +64,34 @@
                                 Usuários
                             </q-item-section>
                         </q-item>
+                    </q-list>
+                </q-expansion-item>
 
-                        <q-item clickable @click="navegar('admin.documentos.index')" v-ripple>
+                <q-expansion-item icon="description" label="Documentos">
+                    <q-list class="q-ml-md">
+
+                        <q-item clickable @click="navegar('autenticado.termos-uso.index')" v-ripple>
                             <q-item-section avatar>
-                                <q-icon name="sym_o_description" />
+                                <q-icon name="sym_o_article_person" />
                             </q-item-section>
 
                             <q-item-section>
-                                Documentos
+                                Termos de Uso
+                            </q-item-section>
+                        </q-item>
+
+                        <q-item clickable @click="navegar('autenticado.politica-privacidade.index')" v-ripple>
+                            <q-item-section avatar>
+                                <q-icon name="sym_o_ballot" />
+                            </q-item-section>
+
+                            <q-item-section>
+                                Política de privacidade
                             </q-item-section>
                         </q-item>
 
                     </q-list>
                 </q-expansion-item>
-
-                <q-item clickable @click="navegar('home')" v-ripple>
-                    <q-item-section avatar>
-                        <q-icon name="home" />
-                    </q-item-section>
-                    <q-item-section>
-                        Início
-                    </q-item-section>
-                </q-item>
 
                 <q-item clickable @click="navegar('usuario.perfil')" v-ripple>
                     <q-item-section avatar>
