@@ -6,8 +6,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 function tratarErro(response, data, auth) {
 
-    const erroLogin =
-        response.status === 401 && auth === false
+    const erroLogin = response.status === 401 && auth === false
 
     if (erroLogin) {
         throw {
@@ -17,8 +16,7 @@ function tratarErro(response, data, auth) {
         }
     }
 
-    const tokenExpirado =
-        response.status === 401 && auth === true
+    const tokenExpirado = response.status === 401 && auth === true
 
     if (tokenExpirado) {
         removerToken()
@@ -27,6 +25,19 @@ function tratarErro(response, data, auth) {
         throw {
             status: 401,
             message: 'Sessão expirada',
+            data
+        }
+    }
+
+    // politica de privacidade e termos de uso
+    const documentosPendentes = response.status === 428 && data?.codigo === 'DOCUMENTOS_PENDENTES'
+
+    if (documentosPendentes) {
+        routerInstance.push({ name: 'consentimento' })
+
+        throw {
+            status: 428,
+            message: data.message,
             data
         }
     }

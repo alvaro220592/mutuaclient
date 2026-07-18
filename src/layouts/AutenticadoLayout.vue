@@ -3,6 +3,8 @@
 
         <q-header class="bg-dark" elevated>
             <div class="row items-center q-pa-sm">
+                Precisa colocar um link no drawer pra poder ler os doc de termos de uso e politica <br>
+                precisa habilitar os links da area admin que estao sem uso
 
                 <div class="col row items-center justify-start">
                     <q-btn v-if="mostrarBotaoVoltar" class="text-subtitle1" flat round dense icon="arrow_back"

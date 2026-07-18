@@ -1,17 +1,15 @@
 <template>
     <q-layout view="hHh lpR fFf">
 
+        <!-- Header -->
         <q-header class="bg-dark" elevated>
             <div class="row items-center q-pa-sm">
-
-                <div class="col row justify-center">
-                    <img :src="logoDark" width="100%" style="display: block;">
+                <div class="col row justify-start">
+                    <img :src="logoDark" width="60%" style="display: block;">
                 </div>
-
                 <div class="col row items-center justify-end">
                     <q-btn flat dense class="text-subtitle1" icon="logout" @click="logout" />
                 </div>
-
             </div>
         </q-header>
 

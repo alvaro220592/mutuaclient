@@ -50,19 +50,6 @@ export default defineRouter(() => {
         return next('/login')
       }
 
-
-      // verificando se o usuário já aceitou termos de uso e política de privacidade
-      const jaConsentiu = false
-
-      if (
-        to.meta.requerConsentimento
-        && !jaConsentiu
-        // && !usuarioAdmin
-      ) {
-        next({ name: 'consentimento' })
-        return
-      }
-
       if (rotaPublica && logado) {
         return next('/app')
       }

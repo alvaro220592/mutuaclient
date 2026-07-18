@@ -209,7 +209,7 @@ const routes = [
       {
         path: '',
         name: 'consentimento',
-        component: () => import('pages/autenticado/ConsentimentoPage.vue')
+        component: () => import('pages/autenticado/consentimento/ConsentimentoPage.vue')
       }
     ]
   },
