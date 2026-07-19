@@ -1,49 +1,43 @@
 <template>
-    <q-page class="flex flex-center q-pa-md">
+    <div>
 
-        <div class="box">
+        <titulo-pagina titulo="Login" descricao="Insira seus dados para entrar" />
 
-            <titulo-pagina titulo="Login" descricao="Insira seus dados para entrar" />
+        <!-- FORM -->
+        <div class="column q-gutter-md">
 
-            <!-- FORM -->
-            <div class="column q-gutter-md">
+            <q-input outlined v-model="email" label="E-mail" />
 
-                <q-input outlined v-model="email" label="E-mail" />
+            <q-input v-model="password" label="Senha" outlined :type="campoTipoSenha ? 'password' : 'text'">
+                <template v-slot:append>
+                    <q-icon :name="campoTipoSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                        @click="campoTipoSenha = !campoTipoSenha" />
+                </template>
+            </q-input>
 
-                <q-input v-model="password" label="Senha" outlined :type="campoTipoSenha ? 'password' : 'text'">
-                    <template v-slot:append>
-                        <q-icon :name="campoTipoSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                            @click="campoTipoSenha = !campoTipoSenha" />
-                    </template>
-                </q-input>
+            <q-btn color="primary" label="Entrar" @click.prevent="onLoginNormal" :loading="carregando"
+                :disable="carregando" />
 
-                <q-btn color="primary" label="Entrar" @click.prevent="onLoginNormal" :loading="carregando"
-                    :disable="carregando" />
-
-                <!-- Separador -->
-                <div class="row items-center">
-                    <div class="col"><q-separator /></div>
-                    <div class="q-px-sm text-caption text-grey-6">ou</div>
-                    <div class="col"><q-separator /></div>
-                </div>
-
-                <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                    label="Entrar com Google" @click.prevent="onLoginGoogle" />
-
-                <!-- ações secundárias -->
-                <div class="column q-gutter-sm q-mt-md">
-
-                    <q-btn flat no-caps label="Criar conta" :to="{ name: 'cadastrar' }" />
-
-                    <q-btn flat no-caps label="Esqueci minha senha" :to="{ name: 'recuperar-senha' }" />
-
-                </div>
-
+            <!-- Separador -->
+            <div class="row items-center">
+                <div class="col"><q-separator /></div>
+                <div class="q-px-sm text-caption text-grey-6">ou</div>
+                <div class="col"><q-separator /></div>
             </div>
 
-        </div>
+            <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                label="Entrar com Google" @click.prevent="onLoginGoogle" />
 
-    </q-page>
+            <!-- ações secundárias -->
+            <div class="column q-gutter-sm q-mt-md">
+
+                <q-btn flat no-caps label="Criar conta" :to="{ name: 'cadastrar' }" />
+
+                <q-btn flat no-caps label="Esqueci minha senha" :to="{ name: 'recuperar-senha' }" />
+
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped></style>
@@ -62,8 +56,8 @@ const router = useRouter()
 const authStore = useAuthStore()
 const $q = useQuasar()
 
-const email = ref('alvaro220592@gmail.com')
-const password = ref('password')
+const email = ref('')
+const password = ref('')
 const carregando = ref(false)
 const campoTipoSenha = ref(true)
 

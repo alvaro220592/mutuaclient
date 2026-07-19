@@ -1,23 +1,18 @@
 <template>
+    <div>
+        <TituloPagina titulo="Insira os dados da doação" />
 
-    <q-page class="flex flex-center q-pa-md">
+        <div class="column q-gutter-md">
+            <q-select outlined v-model="categoriaSelecionada" :options="categoriasFiltradas" option-label="nome"
+                option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarCategorias"
+                behavior="dialog" clearable label="Selecione uma categoria" />
 
-        <div class="box">
+            <q-input type="textarea" outlined v-model="detalhes"
+                :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
 
-            <TituloPagina titulo="Insira os dados da doação" />
-
-            <div class="column q-gutter-md">
-                <q-select outlined v-model="categoriaSelecionada" :options="categoriasFiltradas" option-label="nome"
-                    option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarCategorias"
-                    behavior="dialog" clearable label="Selecione uma categoria" />
-
-                <q-input type="textarea" outlined v-model="detalhes"
-                    :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
-
-                <q-btn color="primary" label="Salvar" @click.prevent="salvar" />
-            </div>
+            <q-btn color="primary" label="Salvar" @click.prevent="salvar" />
         </div>
-    </q-page>
+    </div>
 
 </template>
 

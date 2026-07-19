@@ -1,56 +1,50 @@
 <template>
-    <q-page class="flex flex-center q-pa-md">
+    <div>
+        <titulo-pagina titulo="Criar conta" descricao="Insira os dados da nova conta" />
 
-        <div class="box">
+        <!-- FORM -->
+        <div class="column q-gutter-md">
 
-            <titulo-pagina titulo="Criar conta" descricao="Insira os dados da nova conta" />
+            <q-input outlined v-model="name" label="Usuário" />
 
-            <!-- FORM -->
-            <div class="column q-gutter-md">
+            <q-input outlined v-model="email" label="E-mail" />
 
-                <q-input outlined v-model="name" label="Usuário" />
+            <q-input v-model="password" label="Senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
+                <template v-slot:append>
+                    <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                        @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
+                </template>
+            </q-input>
 
-                <q-input outlined v-model="email" label="E-mail" />
+            <q-input v-model="password_confirmation" label="Confirme a senha" outlined
+                :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'">
+                <template v-slot:append>
+                    <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="campoTipoSenhaConfirmacaoSenha = !campoTipoSenhaConfirmacaoSenha" />
+                </template>
+            </q-input>
 
-                <q-input v-model="password" label="Senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
-                    <template v-slot:append>
-                        <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                            @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
-                    </template>
-                </q-input>
+            <q-btn color="primary" label="Criar conta" @click.prevent="onCadastrar" />
 
-                <q-input v-model="password_confirmation" label="Confirme a senha" outlined
-                    :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'">
-                    <template v-slot:append>
-                        <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
-                            class="cursor-pointer"
-                            @click="campoTipoSenhaConfirmacaoSenha = !campoTipoSenhaConfirmacaoSenha" />
-                    </template>
-                </q-input>
+            <!-- Separador -->
+            <div class="row items-center">
+                <div class="col"><q-separator /></div>
+                <div class="q-px-sm text-caption text-grey-6">ou</div>
+                <div class="col"><q-separator /></div>
+            </div>
 
-                <q-btn color="primary" label="Criar conta" @click.prevent="onCadastrar" />
+            <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                label="Entrar com Google" @click.prevent="onLoginGoogle" />
 
-                <!-- Separador -->
-                <div class="row items-center">
-                    <div class="col"><q-separator /></div>
-                    <div class="q-px-sm text-caption text-grey-6">ou</div>
-                    <div class="col"><q-separator /></div>
-                </div>
+            <!-- ações secundárias -->
+            <div class="column q-gutter-sm q-mt-md">
 
-                <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                    label="Entrar com Google" @click.prevent="onLoginGoogle" />
-
-                <!-- ações secundárias -->
-                <div class="column q-gutter-sm q-mt-md">
-
-                    <q-btn flat no-caps label="Já tenho cadastro" :to="{ name: 'login' }" />
-                </div>
-
+                <q-btn flat no-caps label="Já tenho cadastro" :to="{ name: 'login' }" />
             </div>
 
         </div>
-
-    </q-page>
+    </div>
 </template>
 
 <style scoped></style>
@@ -60,10 +54,10 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
-const name = ref('alvaro')
-const email = ref('alvaro220592@gmail.com')
-const password = ref('password')
-const password_confirmation = ref('password')
+const name = ref('')
+const email = ref('')
+const password = ref('')
+const password_confirmation = ref('')
 
 import { cadastrar } from 'src/services/auth'
 import { useRouter } from 'vue-router'

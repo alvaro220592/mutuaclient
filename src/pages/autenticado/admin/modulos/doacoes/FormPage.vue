@@ -1,32 +1,26 @@
 <template>
+    <div>
+        <TituloPagina titulo="Insira os dados da doação" />
 
-    <q-page class="flex flex-center q-pa-md">
+        <div class="column q-gutter-md">
+            <q-select outlined v-model="usuarioSelecionado" :options="usuariosFiltrados" option-label="name"
+                option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarUsuarios"
+                behavior="dialog" clearable label="Selecione um usuario para atribuir" />
 
-        <div class="box">
+            <q-select outlined v-model="perfilDoacaoSelecionado" :options="perfisDoacaoFiltrados" option-label="nome"
+                option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarPerfisDoacao"
+                behavior="dialog" clearable label="Selecione um perfil de doação" />
 
-            <TituloPagina titulo="Insira os dados da doação" />
+            <q-select outlined v-model="categoriaSelecionada" :options="categoriasFiltradas" option-label="nome"
+                option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarCategorias"
+                behavior="dialog" clearable label="Selecione uma categoria" />
 
-            <div class="column q-gutter-md">
-                <q-select outlined v-model="usuarioSelecionado" :options="usuariosFiltrados" option-label="name"
-                    option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarUsuarios"
-                    behavior="dialog" clearable label="Selecione um usuario para atribuir" />
+            <q-input type="textarea" outlined v-model="detalhes"
+                :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
 
-                <q-select outlined v-model="perfilDoacaoSelecionado" :options="perfisDoacaoFiltrados"
-                    option-label="nome" option-value="id" emit-value map-options use-input input-debounce="0"
-                    @filter="filtrarPerfisDoacao" behavior="dialog" clearable label="Selecione um perfil de doação" />
-
-                <q-select outlined v-model="categoriaSelecionada" :options="categoriasFiltradas" option-label="nome"
-                    option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarCategorias"
-                    behavior="dialog" clearable label="Selecione uma categoria" />
-
-                <q-input type="textarea" outlined v-model="detalhes"
-                    :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
-
-                <q-btn color="primary" label="Salvar" @click.prevent="onSalvar" />
-            </div>
+            <q-btn color="primary" label="Salvar" @click.prevent="onSalvar" />
         </div>
-    </q-page>
-
+    </div>
 </template>
 
 <style scoped></style>

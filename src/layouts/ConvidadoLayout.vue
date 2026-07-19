@@ -2,9 +2,8 @@
     <q-layout view="hHh lpR fFf">
 
         <!-- Topo -->
-        <q-header elevated>
-            <q-toolbar class="bg-dark">
-
+        <q-header flat class="bg-dark">
+            <q-toolbar>
                 <q-toolbar-title>
                     <img :src="logoDark" width="30%" style="display: block;">
                 </q-toolbar-title>
@@ -14,31 +13,35 @@
 
         <!-- Conteúdo -->
         <q-page-container>
-            <q-page class="q-pa-md">
-                <router-view v-slot="{ Component }">
 
-                    <transition appear mode="out-in" :enter-active-class="animacaoEntrar"
-                        :leave-active-class="animacaoSair">
-                        <component :is="Component" :key="$route.fullPath" />
-                    </transition>
+            <q-page class="flex flex-center q-pa-md" :class="Dark.isActive ? '' : 'bg-grey-2'">
 
-                </router-view>
+                <div class="box">
+                    <q-card class="q-pa-md" flat>
+                        <!-- <transition appear mode="out-in" :enter-active-class="animacaoEntrar" :leave-active-class="animacaoSair"> -->
+                        <router-view v-slot="{ Component }">
+                            <component :is="Component" :key="$route.fullPath" />
+                        </router-view>
+                        <!-- </transition> -->
+                    </q-card>
+                </div>
 
                 <!-- Rodapé -->
                 <q-footer bordered class="bg-dark">
-                    <q-toolbar class="justify-center">
-                        <q-btn flat label="Menu">
+                    <q-toolbar class="justify-between">
+                        <q-btn color="white" outline label="Entrar" @click="navegar('login')" />
 
+                        <q-btn flat icon="menu" label="">
                             <q-menu class="text-primary" anchor="top middle" self="bottom middle" auto-close>
                                 <q-list style="min-width: 220px">
 
-                                    <q-item clickable @click="navegar('login')">
+                                    <q-item clickable @click="navegar('boas-vindas')">
                                         <q-item-section avatar>
-                                            <q-icon name="sym_o_login" />
+                                            <q-icon name="sym_o_home" />
                                         </q-item-section>
 
                                         <q-item-section>
-                                            Login e cadastro
+                                            Início
                                         </q-item-section>
                                     </q-item>
 
@@ -71,17 +74,6 @@
                                             Alterar tema
                                         </q-item-section>
                                     </q-item>
-
-                                    <q-item clickable @click="navegar('boas-vindas')">
-                                        <q-item-section avatar>
-                                            <q-icon name="sym_o_home" />
-                                        </q-item-section>
-
-                                        <q-item-section>
-                                            Início
-                                        </q-item-section>
-                                    </q-item>
-
                                 </q-list>
                             </q-menu>
 
@@ -97,17 +89,17 @@
 </template>
 
 <script setup>
-import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
+// import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
 import { Dark } from 'quasar'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const {
-    animacaoEntrar,
-    animacaoSair
-} = useTransicaoEntrePaginas()
+// const {
+//     animacaoEntrar,
+//     animacaoSair
+// } = useTransicaoEntrePaginas()
 
 const alternarTema = () => {
     Dark.toggle()

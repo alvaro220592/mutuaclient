@@ -1,21 +1,17 @@
 <template>
-    <q-page class="flex flex-center q-pa-md">
+    <div>
+        <titulo-pagina titulo="Contato" descricao="Envie uma mensagem à nossa equipe" />
 
-        <div class="box">
+        <!-- FORM -->
+        <div class="column q-gutter-md">
 
-            <titulo-pagina titulo="Contato" descricao="Envie uma mensagem à nossa equipe" />
+            <q-input outlined v-model="mensagem" label="Insira sua mensagem" type="textarea" />
 
-            <!-- FORM -->
-            <div class="column q-gutter-md">
+            <q-btn color="primary" label="Enviar" @click.prevent="enviarEmail" :loading="carregando"
+                :disable="carregando" />
 
-                <q-input outlined v-model="mensagem" label="Insira sua mensagem" type="textarea" />
-
-                <q-btn color="primary" label="Enviar" @click.prevent="enviarEmail" :loading="carregando"
-                    :disable="carregando" />
-
-            </div>
         </div>
-    </q-page>
+    </div>
 </template>
 
 <script setup>

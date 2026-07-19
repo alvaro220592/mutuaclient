@@ -1,26 +1,20 @@
 <template>
-    <q-page class="flex flex-center q-pa-md">
+    <div>
+        <titulo-pagina titulo="Redefinir senha" descricao="Informe seu e-mail para receber o link de recuperação" />
 
-        <div class="box">
+        <!-- FORM -->
+        <div class="column q-gutter-md">
 
-            <titulo-pagina titulo="Redefinir senha" descricao="Informe seu e-mail para receber o link de recuperação" />
+            <q-input outlined v-model="email" label="E-mail" type="email" />
 
-            <!-- FORM -->
-            <div class="column q-gutter-md">
+            <q-btn color="primary" label="Enviar link" @click.prevent="enviarEmailRecuperacao" :loading="carregando"
+                :disable="carregando" />
 
-                <q-input outlined v-model="email" label="E-mail" type="email" />
-
-                <q-btn color="primary" label="Enviar link" @click.prevent="enviarEmailRecuperacao" :loading="carregando"
-                    :disable="carregando" />
-
-                <!-- ações secundárias -->
-                <q-btn flat no-caps label="Voltar para login" :to="{ name: 'login' }" />
-
-            </div>
+            <!-- ações secundárias -->
+            <q-btn flat no-caps label="Voltar para login" :to="{ name: 'login' }" />
 
         </div>
-
-    </q-page>
+    </div>
 </template>
 
 <style scoped></style>
@@ -30,7 +24,7 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
-const email = ref('alvaro220592@gmail.com')
+const email = ref('')
 const carregando = ref(false)
 
 import { recuperarSenha } from 'src/services/auth'

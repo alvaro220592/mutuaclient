@@ -1,14 +1,10 @@
 <template>
+    <div>
+        <TituloPagina titulo="Política de Privacidade"
+            :descricao="'Última atualização: ' + politicaPrivacidade.dataCriacaoPtBr" />
 
-    <q-page class="flex flex-center q-pa-md">
-
-        <div class="box">
-            <TituloPagina titulo="Política de Privacidade"
-                :descricao="'Última atualização: ' + politicaPrivacidade.dataCriacaoPtBr" />
-
-            <div v-html="politicaPrivacidade.conteudo"></div>
-        </div>
-    </q-page>
+        <div v-html="politicaPrivacidade.conteudo"></div>
+    </div>
 </template>
 
 <script setup>

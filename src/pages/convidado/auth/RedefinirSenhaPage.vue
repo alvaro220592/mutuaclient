@@ -1,43 +1,37 @@
 <template>
-    <q-page class="flex flex-center q-pa-md">
+    <div>
+        <titulo-pagina titulo="Redefinir senha" descricao="Digite o código enviado por e-mail e sua nova senha" />
 
-        <div class="box">
+        <!-- FORM -->
+        <div class="column q-gutter-md">
 
-            <titulo-pagina titulo="Redefinir senha" descricao="Digite o código enviado por e-mail e sua nova senha" />
+            <q-input outlined v-model="email" label="E-mail" type="email" />
 
-            <!-- FORM -->
-            <div class="column q-gutter-md">
+            <q-input outlined v-model="codigo_recuperacao" label="Código de 6 dígitos" type="tel" maxlength="6" />
 
-                <q-input outlined v-model="email" label="E-mail" type="email" />
+            <q-input v-model="password" label="Senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
+                <template v-slot:append>
+                    <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                        @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
+                </template>
+            </q-input>
 
-                <q-input outlined v-model="codigo_recuperacao" label="Código de 6 dígitos" type="tel" maxlength="6" />
+            <q-input v-model="password_confirmation" label="Confirme a senha" outlined
+                :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'">
+                <template v-slot:append>
+                    <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="campoTipoSenhaConfirmacaoSenha = !campoTipoSenhaConfirmacaoSenha" />
+                </template>
+            </q-input>
 
-                <q-input v-model="password" label="Senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
-                    <template v-slot:append>
-                        <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                            @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
-                    </template>
-                </q-input>
+            <q-btn color="primary" label="Salvar" @click.prevent="onRedefinirSenha" :loading="carregando"
+                :disable="carregando" />
 
-                <q-input v-model="password_confirmation" label="Confirme a senha" outlined
-                    :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'">
-                    <template v-slot:append>
-                        <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
-                            class="cursor-pointer"
-                            @click="campoTipoSenhaConfirmacaoSenha = !campoTipoSenhaConfirmacaoSenha" />
-                    </template>
-                </q-input>
-
-                <q-btn color="primary" label="Salvar" @click.prevent="onRedefinirSenha" :loading="carregando"
-                    :disable="carregando" />
-
-                <q-btn flat no-caps label="Voltar" :to="{ name: 'recuperar-senha' }" />
-
-            </div>
+            <q-btn flat no-caps label="Voltar" :to="{ name: 'recuperar-senha' }" />
 
         </div>
-
-    </q-page>
+    </div>
 </template>
 
 <style scoped></style>

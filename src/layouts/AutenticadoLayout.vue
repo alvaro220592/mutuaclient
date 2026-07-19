@@ -1,7 +1,7 @@
 <template>
     <q-layout view="hHh lpR fFf">
 
-        <q-header class="bg-dark" elevated>
+        <q-header class="bg-dark" flat>
             <div class="row items-center q-pa-sm">
 
                 <div class="col row items-center justify-start">
@@ -135,16 +135,21 @@
 
         <!-- CONTEÚDO -->
         <q-page-container>
-            <q-page class="q-pa-md">
 
-                <router-view v-slot="{ Component }">
+            <q-page class="flex flex-center q-pa-md" :class="Dark.isActive ? '' : 'bg-grey-2'">
 
-                    <transition appear mode="out-in" :enter-active-class="animacaoEntrar"
-                        :leave-active-class="animacaoSair">
-                        <component :is="Component" :key="$route.fullPath" />
-                    </transition>
+                <div class="box">
+                    <q-card class="q-pa-md" flat>
 
-                </router-view>
+                        <!-- <transition appear mode="out-in" :enter-active-class="animacaoEntrar" :leave-active-class="animacaoSair"> -->
+                        <router-view v-slot="{ Component }">
+
+                            <component :is="Component" :key="$route.fullPath" />
+                        </router-view>
+                        <!-- </transition> -->
+
+                    </q-card>
+                </div>
             </q-page>
         </q-page-container>
 
@@ -159,7 +164,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { armazenarTema, armazenarToken } from 'src/services/storage'
 import { Dark } from 'quasar'
-import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
+// import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
 import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
 
@@ -172,10 +177,10 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 
-const {
-    animacaoEntrar,
-    animacaoSair
-} = useTransicaoEntrePaginas()
+// const {
+//     animacaoEntrar,
+//     animacaoSair
+// } = useTransicaoEntrePaginas()
 
 const mostrarBotaoVoltar = computed(() => {
     return route.name !== 'home'

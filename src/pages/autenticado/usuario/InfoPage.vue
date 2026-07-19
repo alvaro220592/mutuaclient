@@ -1,48 +1,44 @@
 <template>
-    <q-page class="flex flex-center q-pa-md">
+    <div>
+        <TituloPagina titulo="Meu perfil" descricao="Suas informações de conta" />
 
-        <div class="box">
+        <!-- FORM -->
+        <div class="column q-gutter-md">
 
-            <TituloPagina titulo="Meu perfil" descricao="Suas informações de conta" />
+            <q-input outlined v-model="nome" label="Nome" />
 
-            <!-- FORM -->
-            <div class="column q-gutter-md">
+            <q-input outlined v-model="telefone" label="Telefone" mask="(##) #####-####" />
 
-                <q-input outlined v-model="nome" label="Nome" />
+            <q-input outlined v-model="cep" label="CEP" mask="#####-###" @update:model-value="onCepChange" />
 
-                <q-input outlined v-model="telefone" label="Telefone" mask="(##) #####-####" />
+            <q-input outlined v-model="logradouro" label="Logradouro" />
 
-                <q-input outlined v-model="cep" label="CEP" mask="#####-###" @update:model-value="onCepChange" />
+            <q-input outlined v-model="num_endereco" ref="campoNumero" label="Número" type="number" min="0" />
 
-                <q-input outlined v-model="logradouro" label="Logradouro" />
+            <q-input outlined v-model="complemento" label="Complemento" />
 
-                <q-input outlined v-model="num_endereco" ref="campoNumero" label="Número" type="number" min="0" />
+            <q-input outlined v-model="cidade" label="Cidade" />
 
-                <q-input outlined v-model="complemento" label="Complemento" />
+            <q-input outlined v-model="uf" label="Estado" />
 
-                <q-input outlined v-model="cidade" label="Cidade" />
-
-                <q-input outlined v-model="uf" label="Estado" />
-
-                <!-- Separador -->
-                <div class="row items-center">
-                    <div class="col"><q-separator /></div>
-                    <div class="q-px-sm text-caption text-grey-6">Se quiser mudar sua senha</div>
-                    <div class="col"><q-separator /></div>
-                </div>
-
-                <q-input outlined v-model="novaSenha" label="Nova senha" type="password" />
-
-                <q-input outlined v-model="confirmacaoSenha" label="Confirmar nova senha" type="password" />
-
-                <q-btn color="primary" label="Salvar alterações" @click.prevent="salvar" :loading="carregando"
-                    :disable="carregando" />
-
-                <q-btn color="negative" label="Excluir minha conta" @click="excluirConta" />
+            <!-- Separador -->
+            <div class="row items-center">
+                <div class="col"><q-separator /></div>
+                <div class="q-px-sm text-caption text-grey-6">Se quiser mudar sua senha</div>
+                <div class="col"><q-separator /></div>
             </div>
-        </div>
 
-    </q-page>
+            <q-input outlined v-model="novaSenha" label="Nova senha" type="password" />
+
+            <q-input outlined v-model="confirmacaoSenha" label="Confirmar nova senha" type="password" />
+
+            <q-btn color="primary" label="Salvar alterações" @click.prevent="salvar" :loading="carregando"
+                :disable="carregando" />
+
+            <q-btn color="negative" label="Excluir minha conta" @click="excluirConta" />
+        </div>
+    </div>
+
 </template>
 
 <style scoped></style>

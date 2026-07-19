@@ -1,46 +1,43 @@
 <template>
-    <q-page class="flex flex-center q-pa-md">
+    <div>
 
-        <div style="box">
+        <TituloPagina titulo="Como você deseja participar?" />
 
-            <TituloPagina titulo="Como você deseja participar?" />
-
-            <div class="text-body2 text-grey text-center q-mb-xl">
-                Escolha se deseja oferecer ajuda ou cadastrar uma necessidade.
-            </div>
-
-            <div class="column q-gutter-md">
-
-                <q-card clickable flat bordered @click="navegar('doacoes.oferecidas.index')">
-                    <q-card-section>
-
-                        <div class="text-subtitle1">
-                            Quero ajudar
-                        </div>
-
-                        <div class="text-caption text-grey">
-                            Oferecer doações, itens ou apoio.
-                        </div>
-
-                    </q-card-section>
-                </q-card>
-
-                <q-card clickable flat bordered @click="navegar('doacoes.solicitadas.index')">
-                    <q-card-section>
-
-                        <div class="text-subtitle1">
-                            Preciso de ajuda
-                        </div>
-
-                        <div class="text-caption text-grey">
-                            Criar uma solicitação de apoio.
-                        </div>
-
-                    </q-card-section>
-                </q-card>
-            </div>
+        <div class="text-body2 text-grey text-center q-mb-xl">
+            Escolha se deseja oferecer ajuda ou cadastrar uma necessidade.
         </div>
-    </q-page>
+
+        <div class="column q-gutter-md">
+
+            <q-card clickable flat bordered @click="navegar('doacoes.oferecidas.index')">
+                <q-card-section>
+
+                    <div class="text-subtitle1">
+                        Quero ajudar
+                    </div>
+
+                    <div class="text-caption text-grey">
+                        Oferecer doações, itens ou apoio.
+                    </div>
+
+                </q-card-section>
+            </q-card>
+
+            <q-card clickable flat bordered @click="navegar('doacoes.solicitadas.index')">
+                <q-card-section>
+
+                    <div class="text-subtitle1">
+                        Preciso de ajuda
+                    </div>
+
+                    <div class="text-caption text-grey">
+                        Criar uma solicitação de apoio.
+                    </div>
+
+                </q-card-section>
+            </q-card>
+        </div>
+    </div>
 </template>
 
 <script setup>
