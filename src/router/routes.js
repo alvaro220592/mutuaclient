@@ -86,7 +86,7 @@ const routes = [
             component: () => import('pages/autenticado/admin/modulos/doacoes/FormPage.vue')
           },
           {
-            path: 'modulos/usuarios',
+            path: 'usuarios',
             name: 'admin.usuarios.index',
             component: () => import('pages/autenticado/admin/usuarios/IndexPage.vue')
           },

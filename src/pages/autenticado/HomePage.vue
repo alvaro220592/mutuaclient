@@ -23,7 +23,7 @@
                     </q-card>
                 </template>
                 <template v-else>
-                    <q-card v-for="modulo in listaModulos" :key="modulo.id" clickable
+                    <q-card flat v-for="modulo in listaModulos" :key="modulo.id" clickable
                         @click="navegar(modulo.slug + '.opcoes')" bordered>
 
                         <q-card-section>

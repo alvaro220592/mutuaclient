@@ -6,7 +6,7 @@
 
                 <div class="col row items-center justify-start">
                     <q-btn v-if="mostrarBotaoVoltar" class="text-subtitle1" flat round dense icon="arrow_back"
-                        @click="$router.back()" />
+                        @click="voltar()" />
                 </div>
 
                 <div class="col row justify-center">
@@ -194,5 +194,15 @@ const alternarTema = async () => {
 
 const navegar = (rota) => {
     router.push({ name: rota })
+}
+
+const voltar = () => {
+
+    if (window.history.length > 1) {
+        router.back()
+    } else {
+        router.replace({ name: 'home' })
+    }
+
 }
 </script>

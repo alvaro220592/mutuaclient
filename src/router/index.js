@@ -38,6 +38,11 @@ export default defineRouter(() => {
   routerInstance.beforeEach(
     async (to, from, next) => {
 
+
+      console.log('NAVEGANDO')
+      console.log('FROM:', from.fullPath)
+      console.log('TO:', to.fullPath)
+
       const token = await trazerToken()
 
       const logado = !!token

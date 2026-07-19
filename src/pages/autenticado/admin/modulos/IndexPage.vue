@@ -16,7 +16,7 @@
                 </template>
                 <template v-else>
                     <q-card v-for="modulo in listaModulos" :key="modulo.id" clickable
-                        @click="navegar('admin.' + modulo.slug + '.index')" bordered>
+                        @click="navegar('admin.' + modulo.slug + '.index')" flat bordered>
 
                         <q-card-section>
                             <div class="text-subtitle1">

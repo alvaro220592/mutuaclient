@@ -11,7 +11,7 @@
 
             <div class="column q-gutter-md">
 
-                <q-card clickable bordered @click="navegar('doacoes.oferecidas.index')">
+                <q-card clickable flat bordered @click="navegar('doacoes.oferecidas.index')">
                     <q-card-section>
 
                         <div class="text-subtitle1">
@@ -25,7 +25,7 @@
                     </q-card-section>
                 </q-card>
 
-                <q-card clickable bordered @click="navegar('doacoes.solicitadas.index')">
+                <q-card clickable flat bordered @click="navegar('doacoes.solicitadas.index')">
                     <q-card-section>
 
                         <div class="text-subtitle1">
