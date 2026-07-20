@@ -28,14 +28,33 @@
                 <div class="col"><q-separator /></div>
             </div>
 
-            <q-input outlined v-model="novaSenha" label="Nova senha" type="password" />
+            <!-- <q-input outlined v-model="novaSenha" label="Nova senha" type="password" /> -->
 
-            <q-input outlined v-model="confirmacaoSenha" label="Confirmar nova senha" type="password" />
+            <!-- <q-input outlined v-model="confirmacaoSenha" label="Confirmar nova senha" type="password" /> -->
 
-            <q-btn color="primary" label="Salvar alterações" @click.prevent="salvar" :loading="carregando"
+            <q-input v-model="novaSenha" label="Nova senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
+                <template v-slot:append>
+                    <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                        @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
+                </template>
+            </q-input>
+
+            <q-input v-model="confirmacaoSenha" label="Confirmar nova senha" outlined
+                :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'">
+                <template v-slot:append>
+                    <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="campoTipoSenhaConfirmacaoSenha = !campoTipoSenhaConfirmacaoSenha" />
+                </template>
+            </q-input>
+
+            <q-btn class="botao-primario" label="Salvar alterações" @click.prevent="salvar" :loading="carregando"
                 :disable="carregando" />
+            <q-btn class="botao-primario" label="Cancelar" :to="{ name: 'home' }" />
 
-            <q-btn color="negative" label="Excluir minha conta" @click="excluirConta" />
+            <q-separator />
+
+            <q-btn color="negative" icon="warning" label="Excluir minha conta" @click="excluirConta" />
         </div>
     </div>
 
@@ -77,6 +96,9 @@ const uf = ref(end?.uf ?? '')
 
 const novaSenha = ref('')
 const confirmacaoSenha = ref('')
+
+const campoTipoSenhaSenha = ref(true)
+const campoTipoSenhaConfirmacaoSenha = ref(true)
 
 onMounted(() => {
     info()

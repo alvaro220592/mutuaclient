@@ -36,7 +36,7 @@
 
                 <!-- BOTÃO BUSCAR -->
                 <div class="col-12 col-md-2">
-                    <q-btn color="primary" label="Buscar" @click="buscarComFiltros" />
+                    <q-btn class="botao-primario" label="Buscar" @click="buscarComFiltros" />
                 </div>
 
             </div>

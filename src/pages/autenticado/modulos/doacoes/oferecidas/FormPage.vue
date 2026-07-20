@@ -10,7 +10,7 @@
             <q-input type="textarea" outlined v-model="detalhes"
                 :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
 
-            <q-btn color="primary" label="Salvar" @click.prevent="salvar" />
+            <q-btn class="botao-primario" label="Salvar" @click.prevent="salvar" />
         </div>
     </div>
 </template>
@@ -65,10 +65,23 @@ const verificarInfoUsuario = async () => {
             }
         })
 
-        $q.notify({
-            type: 'negative',
-            message: 'Cadastre seu telefone e endereço para solicitar doações',
-            position: 'top-right'
+        $q.dialog({
+            title: 'Complete seu cadastro',
+            message: 'Para completar, você precisa inserir suas informações de telefone e endereço. Se não quiser fazer isso agora, basta clicar para voltar à tela inicial ou em "Cancelar" no final da página.',
+            html: true,
+            persistent: true,
+            cancel: {
+                label: 'Voltar à tela inicial',
+                textColor: 'negative',
+                flat: true
+            },
+            ok: {
+                label: 'Ok',
+                color: 'primary',
+                textColor: 'dark'
+            }
+        }).onCancel(async function () {
+            router.replace({ name: 'home' })
         })
     }
 }

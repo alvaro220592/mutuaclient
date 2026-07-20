@@ -7,7 +7,7 @@
 
             <q-input outlined v-model="mensagem" label="Insira sua mensagem" type="textarea" />
 
-            <q-btn color="primary" label="Enviar" @click.prevent="enviarEmail" :loading="carregando"
+            <q-btn class="botao-primario" label="Enviar" @click.prevent="enviarEmail" :loading="carregando"
                 :disable="carregando" />
 
         </div>

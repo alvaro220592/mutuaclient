@@ -1,17 +1,17 @@
 <template>
     <div>
-        <titulo-pagina titulo="Redefinir senha" descricao="Informe seu e-mail para receber o link de recuperação" />
+        <titulo-pagina titulo="Recuperar senha" descricao="Informe seu e-mail para receber o código de recuperação" />
 
         <!-- FORM -->
         <div class="column q-gutter-md">
 
-            <q-input outlined v-model="email" label="E-mail" type="email" />
+            <q-input outlined v-model="email" label="E-mail" type="email" autocapitalize="off" />
 
-            <q-btn color="primary" label="Enviar link" @click.prevent="enviarEmailRecuperacao" :loading="carregando"
-                :disable="carregando" />
+            <q-btn class="botao-primario" label="Enviar link" @click.prevent="enviarEmailRecuperacao"
+                :loading="carregando" :disable="carregando" />
 
             <!-- ações secundárias -->
-            <q-btn flat no-caps label="Voltar para login" :to="{ name: 'login' }" />
+            <q-btn flat no-caps label="Voltar para o login" :to="{ name: 'login' }" />
 
         </div>
     </div>

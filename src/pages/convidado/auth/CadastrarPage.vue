@@ -7,7 +7,7 @@
 
             <q-input outlined v-model="name" label="Usuário" />
 
-            <q-input outlined v-model="email" label="E-mail" />
+            <q-input outlined v-model="email" label="E-mail" autocapitalize="off" />
 
             <q-input v-model="password" label="Senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
                 <template v-slot:append>
@@ -25,7 +25,7 @@
                 </template>
             </q-input>
 
-            <q-btn color="primary" label="Criar conta" @click.prevent="onCadastrar" />
+            <q-btn class="botao-primario" label="Criar conta" @click.prevent="onCadastrar" />
 
             <!-- Separador -->
             <div class="row items-center">

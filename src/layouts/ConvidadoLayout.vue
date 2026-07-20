@@ -2,14 +2,14 @@
     <q-layout view="hHh lpR fFf">
 
         <!-- Topo -->
-        <q-header flat class="bg-dark">
+        <!-- <q-header flat class="bg-dark">
             <q-toolbar>
                 <q-toolbar-title>
                     <img :src="logoDark" width="30%" style="display: block;">
                 </q-toolbar-title>
 
             </q-toolbar>
-        </q-header>
+        </q-header> -->
 
         <!-- Conteúdo -->
         <q-page-container>
@@ -18,6 +18,13 @@
 
                 <div class="box">
                     <q-card class="q-pa-md" flat>
+
+                        <div class="row justify-center q-mb-md">
+                            <img :src="Dark.isActive ? logoDark : logoLight" width="50%" style="display: block;">
+                        </div>
+
+                        <q-separator class="q-mb-md" />
+
                         <!-- <transition appear mode="out-in" :enter-active-class="animacaoEntrar" :leave-active-class="animacaoSair"> -->
                         <router-view v-slot="{ Component }">
                             <component :is="Component" :key="$route.fullPath" />
@@ -29,7 +36,10 @@
                 <!-- Rodapé -->
                 <q-footer bordered class="bg-dark">
                     <q-toolbar class="justify-between">
-                        <q-btn color="white" outline label="Entrar" @click="navegar('login')" />
+                        <div>
+                            <q-btn v-if="route.name != 'login'" color="white" outline label="Entrar"
+                                @click="navegar('login')" />
+                        </div>
 
                         <q-btn flat icon="menu" label="">
                             <q-menu class="text-primary" anchor="top middle" self="bottom middle" auto-close>
@@ -91,10 +101,12 @@
 <script setup>
 // import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
+import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
 import { Dark } from 'quasar'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 // const {
 //     animacaoEntrar,

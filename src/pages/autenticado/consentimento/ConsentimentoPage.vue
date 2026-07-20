@@ -27,7 +27,7 @@
             </q-card-section>
 
             <q-card-actions vertical>
-                <q-btn color="primary" label="Continuar" class="full-width" :disabled="!aceitou" @click="aceitar" />
+                <q-btn class="botaoprimario full-width" label="Continuar" :disabled="!aceitou" @click="aceitar" />
             </q-card-actions>
         </q-card>
 

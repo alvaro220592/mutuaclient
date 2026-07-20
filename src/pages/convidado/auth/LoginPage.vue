@@ -6,7 +6,7 @@
         <!-- FORM -->
         <div class="column q-gutter-md">
 
-            <q-input outlined v-model="email" label="E-mail" />
+            <q-input outlined v-model="email" label="E-mail" autocapitalize="off" />
 
             <q-input v-model="password" label="Senha" outlined :type="campoTipoSenha ? 'password' : 'text'">
                 <template v-slot:append>
@@ -15,7 +15,7 @@
                 </template>
             </q-input>
 
-            <q-btn color="primary" label="Entrar" @click.prevent="onLoginNormal" :loading="carregando"
+            <q-btn class="botao-primario" label="Entrar" @click.prevent="onLoginNormal" :loading="carregando"
                 :disable="carregando" />
 
             <!-- Separador -->

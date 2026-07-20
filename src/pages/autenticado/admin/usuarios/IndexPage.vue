@@ -16,9 +16,7 @@
                 </q-card>
             </div>
 
-            <div v-if="carregando" class="q-gutter-md q-mb-md row justify-center">
-                <q-spinner color="primary" size="3em" />
-            </div>
+            <SpinnerCarregamento :carregando="carregando" />
 
             <q-infinite-scroll @load="buscarUsuarios" :offset="250" ref="scroll">
                 <div class="column q-gutter-md">
@@ -70,6 +68,7 @@ import { ref } from 'vue'
 import TituloPagina from 'src/components/TituloPagina.vue'
 import { get } from 'src/services/http'
 import { debounce } from 'quasar'
+import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
 
 // Lista exibida
 const usuarios = ref([])

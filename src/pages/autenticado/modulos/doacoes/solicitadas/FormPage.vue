@@ -10,7 +10,7 @@
             <q-input type="textarea" outlined v-model="detalhes"
                 :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
 
-            <q-btn color="primary" label="Salvar" @click.prevent="salvar" />
+            <q-btn class="botao-primario" label="Salvar" @click.prevent="salvar" />
         </div>
     </div>
 

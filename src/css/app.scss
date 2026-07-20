@@ -10,6 +10,12 @@ body.body--light {
 }
 
 body.body--dark {
-  --q-primary: #1976D2;
+  --q-primary: #e2e2e2;
   background-color: #0f0f0f;
+
+  .botao-primario {
+    background-color: #dfdfdf;
+    color: rgb(37, 37, 37);
+    // color: #e2e2e2;
+  }
 }

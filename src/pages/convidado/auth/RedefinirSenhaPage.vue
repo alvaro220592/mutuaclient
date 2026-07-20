@@ -1,22 +1,23 @@
 <template>
     <div>
-        <titulo-pagina titulo="Redefinir senha" descricao="Digite o código enviado por e-mail e sua nova senha" />
+        <titulo-pagina titulo="Redefinir senha" descricao="Digite o código de verificação e crie sua nova senha" />
 
         <!-- FORM -->
         <div class="column q-gutter-md">
 
             <q-input outlined v-model="email" label="E-mail" type="email" />
 
-            <q-input outlined v-model="codigo_recuperacao" label="Código de 6 dígitos" type="tel" maxlength="6" />
+            <q-input outlined v-model="codigo_recuperacao" label="Código de 6 dígitos recebido no e-mail" type="tel"
+                maxlength="6" />
 
-            <q-input v-model="password" label="Senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
+            <q-input v-model="password" label="Nova senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
                 <template v-slot:append>
                     <q-icon :name="campoTipoSenhaSenha ? 'visibility_off' : 'visibility'" class="cursor-pointer"
                         @click="campoTipoSenhaSenha = !campoTipoSenhaSenha" />
                 </template>
             </q-input>
 
-            <q-input v-model="password_confirmation" label="Confirme a senha" outlined
+            <q-input v-model="password_confirmation" label="Confirme a nova senha" outlined
                 :type="campoTipoSenhaConfirmacaoSenha ? 'password' : 'text'">
                 <template v-slot:append>
                     <q-icon :name="campoTipoSenhaConfirmacaoSenha ? 'visibility_off' : 'visibility'"
@@ -25,7 +26,7 @@
                 </template>
             </q-input>
 
-            <q-btn color="primary" label="Salvar" @click.prevent="onRedefinirSenha" :loading="carregando"
+            <q-btn class="botao-primario" label="Salvar" @click.prevent="onRedefinirSenha" :loading="carregando"
                 :disable="carregando" />
 
             <q-btn flat no-caps label="Voltar" :to="{ name: 'recuperar-senha' }" />
