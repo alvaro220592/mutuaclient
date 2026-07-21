@@ -27,12 +27,7 @@
 
             <q-btn class="botao-primario" label="Criar conta" @click.prevent="onCadastrar" />
 
-            <!-- Separador -->
-            <div class="row items-center">
-                <div class="col"><q-separator /></div>
-                <div class="q-px-sm text-caption text-grey-6">ou</div>
-                <div class="col"><q-separator /></div>
-            </div>
+            <separador-horizontal detalhes="ou" />
 
             <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                 label="Entrar com Google" @click.prevent="onLoginGoogle" />
@@ -65,6 +60,7 @@ import { armazenarToken } from 'src/services/storage'
 import { useAuthStore } from 'src/stores/auth';
 import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 import TituloPagina from 'src/components/TituloPagina.vue';
+import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue';
 
 const router = useRouter()
 const authStore = useAuthStore()

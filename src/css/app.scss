@@ -7,6 +7,11 @@
 
 body.body--light {
   --q-primary: #202020;
+  
+  .botao-primario {
+    background-color: #252525;
+    color: #dfdfdf;
+  }
 }
 
 body.body--dark {
@@ -15,7 +20,10 @@ body.body--dark {
 
   .botao-primario {
     background-color: #dfdfdf;
-    color: rgb(37, 37, 37);
-    // color: #e2e2e2;
+    color: #252525;
   }
+}
+
+.q-btn {
+  text-transform: none;
 }

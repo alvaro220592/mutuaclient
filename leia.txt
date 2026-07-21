@@ -62,3 +62,8 @@ gerar ícone:
     colocar uma imagem quadrada de 1024px na raíz do projeto.
     npx icongenie generate -m capacitor -i nomeDaImagem.png
     npx cap sync android
+
+
+ideias:
+    repensar na dinamica de contato, em deixar as pessoas se verem no mapa de acordo com a categoria e se contatarem
+    em vez de cadastrar o endereço completo, cadastrar só o bairro e ver se tem coordenada só pelo bairro

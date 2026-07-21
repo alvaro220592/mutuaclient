@@ -18,12 +18,7 @@
             <q-btn class="botao-primario" label="Entrar" @click.prevent="onLoginNormal" :loading="carregando"
                 :disable="carregando" />
 
-            <!-- Separador -->
-            <div class="row items-center">
-                <div class="col"><q-separator /></div>
-                <div class="q-px-sm text-caption text-grey-6">ou</div>
-                <div class="col"><q-separator /></div>
-            </div>
+            <separador-horizontal :ou="true" />
 
             <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                 label="Entrar com Google" @click.prevent="onLoginGoogle" />
@@ -51,13 +46,14 @@ import { useRouter } from 'vue-router'
 import { armazenarToken } from 'src/services/storage'
 import { useAuthStore } from 'src/stores/auth';
 import TituloPagina from 'src/components/TituloPagina.vue';
+import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue';
 
 const router = useRouter()
 const authStore = useAuthStore()
 const $q = useQuasar()
 
-const email = ref('')
-const password = ref('')
+const email = ref('alvaro220592@gmail.com')
+const password = ref('password')
 const carregando = ref(false)
 const campoTipoSenha = ref(true)
 

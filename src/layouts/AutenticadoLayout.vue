@@ -42,10 +42,11 @@
                     </q-item-section>
                 </q-item>
 
-                <q-expansion-item v-if="authStore.user?.is_admin" icon="shield" label="Área admin">
+                <q-expansion-item v-if="authStore.user?.is_admin" v-model="expansoes.admin" icon="shield"
+                    label="Área admin">
                     <q-list class="q-ml-md">
 
-                        <q-item clickable @click="navegar('admin.modulos.index')" v-ripple>
+                        <q-item clickable @click="navegar('admin.modulos.index', 'admin')" v-ripple>
                             <q-item-section avatar>
                                 <q-icon name="sym_o_dashboard" />
                             </q-item-section>
@@ -55,7 +56,7 @@
                             </q-item-section>
                         </q-item>
 
-                        <q-item clickable @click="navegar('admin.usuarios.index')" v-ripple>
+                        <q-item clickable @click="navegar('admin.usuarios.index', 'admin')" v-ripple>
                             <q-item-section avatar>
                                 <q-icon name="sym_o_people" />
                             </q-item-section>
@@ -67,10 +68,10 @@
                     </q-list>
                 </q-expansion-item>
 
-                <q-expansion-item icon="description" label="Documentos">
+                <q-expansion-item icon="description" label="Documentos" v-model="expansoes.documentos">
                     <q-list class="q-ml-md">
 
-                        <q-item clickable @click="navegar('autenticado.termos-uso.index')" v-ripple>
+                        <q-item clickable @click="navegar('autenticado.termos-uso.index', 'documentos')" v-ripple>
                             <q-item-section avatar>
                                 <q-icon name="sym_o_article_person" />
                             </q-item-section>
@@ -80,7 +81,8 @@
                             </q-item-section>
                         </q-item>
 
-                        <q-item clickable @click="navegar('autenticado.politica-privacidade.index')" v-ripple>
+                        <q-item clickable @click="navegar('autenticado.politica-privacidade.index', 'documentos')"
+                            v-ripple>
                             <q-item-section avatar>
                                 <q-icon name="sym_o_ballot" />
                             </q-item-section>
@@ -159,7 +161,7 @@
 <style></style>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { armazenarTema, armazenarToken } from 'src/services/storage'
@@ -176,6 +178,8 @@ const drawer = ref(false)
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+
+const expansoes = reactive({})
 
 // const {
 //     animacaoEntrar,
@@ -197,7 +201,9 @@ const alternarTema = async () => {
     await armazenarTema(Dark.mode)
 }
 
-const navegar = (rota) => {
+// vai até a url desejada e fecha o expansion item se houver
+function navegar(rota, expansao = null) {
+    if (expansao) { expansoes[expansao] = false }
     router.push({ name: rota })
 }
 

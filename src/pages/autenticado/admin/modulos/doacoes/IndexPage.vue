@@ -3,62 +3,52 @@
         <TituloPagina titulo="Doações" descricao="Acesso ADMIN" />
 
         <!-- BARRA DE FILTROS -->
-        <q-card flat bordered class="q-pa-sm q-mb-md">
+        <!-- <q-card flat bordered class="q-pa-sm q-mb-md"> -->
 
-            <div class="row items-center q-col-gutter-sm">
+        <div class="row items-center q-col-gutter-sm">
 
-                <!-- PERFIL -->
-                <div class="col-12 col-md-2">
-                    <q-select dense outlined v-model="filtros.perfil" label="Perfil" :options="perfisDoacao"
-                        option-label="nome" option-value="id" emit-value map-options />
-                </div>
-
-                <!-- CATEGORIA -->
-                <div class="col-12 col-md-2">
-                    <q-select dense outlined v-model="filtros.categoria" label="Categoria" :options="categoriasDoacao"
-                        option-label="nome" option-value="id" emit-value map-options />
-                </div>
-
-                <!-- STATUS -->
-                <div class="col-12 col-md-2">
-                    <q-select dense outlined label="Status" v-model="filtros.statusAtivo" :options="statusOptions"
-                        option-label="label" option-value="value" emit-value map-options />
-                </div>
-
-                <!-- BUSCA -->
-                <!-- <div class="col-12 col-md-2">
-                    <q-input dense outlined label="Buscar">
-                        <template v-slot:append>
-                            <q-icon name="search" />
-                        </template>
-</q-input>
-</div> -->
-
-                <!-- BOTÃO BUSCAR -->
-                <div class="col-12 col-md-2">
-                    <q-btn class="botao-primario" label="Buscar" @click="buscarComFiltros" />
-                </div>
-
+            <!-- PERFIL -->
+            <div class="col-12 col-md-2">
+                <q-select dense outlined v-model="filtros.perfil" label="Perfil" :options="perfisDoacao"
+                    option-label="nome" option-value="id" emit-value map-options />
             </div>
 
-            <q-space class="q-mb-sm" />
-
-            <!-- LIMPAR -->
-            <div class="row justify-center">
-                <q-btn v-if="filtros.perfil !== null || filtros.categoria !== null" @click="limparFiltros" flat dense
-                    color="negative" label="Limpar filtros" />
+            <!-- CATEGORIA -->
+            <div class="col-12 col-md-2">
+                <q-select dense outlined v-model="filtros.categoria" label="Categoria" :options="categoriasDoacao"
+                    option-label="nome" option-value="id" emit-value map-options />
             </div>
 
-        </q-card>
+            <!-- STATUS -->
+            <div class="col-12 col-md-2">
+                <q-select dense outlined label="Status" v-model="filtros.statusAtivo" :options="statusOptions"
+                    option-label="label" option-value="value" emit-value map-options />
+            </div>
 
-        <!-- VISUALIZAÇÃO -->
+            <!-- BOTÃO BUSCAR -->
+            <div class="col-12 col-md-2">
+                <q-btn class="botao-primario" label="Buscar" @click="buscarComFiltros" />
+            </div>
+
+        </div>
+
+        <q-space class="q-mb-sm" />
+
+        <!-- LIMPAR -->
+        <div class="row justify-center">
+            <q-btn v-if="filtros.perfil !== null || filtros.categoria !== null" @click="limparFiltros" flat dense
+                color="negative" label="Limpar filtros" />
+        </div>
+
+        <!-- </q-card> -->
+
+        <!-- TIPO DE VISUALIZAÇÃO -->
         <div class="text-center q-mt-lg q-mb-sm">
-
-            <q-btn-toggle v-model="modoVisualizacao" :options="[
-                { label: 'Mapa', value: 'mapa', icon: 'map' },
-                { label: 'Lista', value: 'lista', icon: 'view_list' }
-            ]" />
-
+            <q-btn-toggle class="borda-toggle" :toggle-text-color="Dark.isActive ? 'dark' : ''"
+                v-model="modoVisualizacao" :options="[
+                    { label: 'Mapa', value: 'mapa', icon: 'map' },
+                    { label: 'Lista', value: 'lista', icon: 'view_list' }
+                ]" />
         </div>
 
         <div v-if="doacoes.data.length === 0" class="text-center text-grey q-mt-xl">
@@ -66,12 +56,10 @@
         </div>
 
         <div v-else>
-
             <DoacoesModoLista v-if="modoVisualizacao === 'lista'" :doacoes="doacoes" :funcaoCarregarMais="carregarMais"
                 @editar="editarDoacao" @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
 
             <DoacoesModoMapa v-else :doacoes="doacoes" />
-
         </div>
 
         <BotaoFlutuanteNovoCadastro nomeRota="admin.doacoes.novo" />
@@ -81,6 +69,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { Dark } from 'quasar'
 
 import { buscar } from 'src/services/doacao'
 import { useDoacaoAcoes } from 'src/composables/useDoacaoAcoes'
@@ -107,14 +96,6 @@ const filtros = ref({
 ========================= */
 const categoriasDoacao = ref([])
 const perfisDoacao = ref([])
-
-// const categoriaSelecionadaObj = computed(() =>
-//     categoriasDoacao.value.find(c => c.id == filtros.value.categoria)
-// )
-
-// const perfilSelecionadoObj = computed(() =>
-//     perfisDoacao.value.find(p => p.id == filtros.value.perfil)
-// )
 
 const statusOptions = [
     { label: 'Ativo', value: true },
@@ -194,3 +175,9 @@ onMounted(() => {
     trazerDoacoes()
 })
 </script>
+
+<style scoped>
+.borda-toggle {
+    border: 1px solid var(--q-primary);
+}
+</style>

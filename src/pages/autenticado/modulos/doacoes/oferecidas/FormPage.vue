@@ -72,13 +72,13 @@ const verificarInfoUsuario = async () => {
             persistent: true,
             cancel: {
                 label: 'Voltar à tela inicial',
-                textColor: 'negative',
-                flat: true
+                textColor: 'primary',
+                outline: true,
             },
             ok: {
                 label: 'Ok',
+                outline: true,
                 color: 'primary',
-                textColor: 'dark'
             }
         }).onCancel(async function () {
             router.replace({ name: 'home' })

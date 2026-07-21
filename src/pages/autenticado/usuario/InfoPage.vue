@@ -21,16 +21,7 @@
 
             <q-input outlined v-model="uf" label="Estado" />
 
-            <!-- Separador -->
-            <div class="row items-center">
-                <div class="col"><q-separator /></div>
-                <div class="q-px-sm text-caption text-grey-6">Se quiser mudar sua senha</div>
-                <div class="col"><q-separator /></div>
-            </div>
-
-            <!-- <q-input outlined v-model="novaSenha" label="Nova senha" type="password" /> -->
-
-            <!-- <q-input outlined v-model="confirmacaoSenha" label="Confirmar nova senha" type="password" /> -->
+            <SeparadorHorizontal detalhes="Se quiser mudar sua senha" />
 
             <q-input v-model="novaSenha" label="Nova senha" outlined :type="campoTipoSenhaSenha ? 'password' : 'text'">
                 <template v-slot:append>
@@ -50,11 +41,12 @@
 
             <q-btn class="botao-primario" label="Salvar alterações" @click.prevent="salvar" :loading="carregando"
                 :disable="carregando" />
-            <q-btn class="botao-primario" label="Cancelar" :to="{ name: 'home' }" />
 
-            <q-separator />
+            <q-btn outline label="Cancelar" :to="{ name: 'home' }" />
 
-            <q-btn color="negative" icon="warning" label="Excluir minha conta" @click="excluirConta" />
+            <SeparadorHorizontal detalhes="ou" />
+
+            <q-btn color="negative" icon="error_outline" label="Excluir minha conta" @click="excluirConta" />
         </div>
     </div>
 
@@ -71,6 +63,7 @@ import { metodoDelete, post } from 'src/services/http'
 import { dadosUsuario } from 'src/services/info-usuario'
 import TituloPagina from 'src/components/TituloPagina.vue'
 import { armazenarToken } from 'src/services/storage'
+import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -232,7 +225,8 @@ const excluirConta = () => {
         persistent: true,
         cancel: {
             label: 'Cancelar',
-            flat: true
+            outline: true,
+            color: 'primary',
         },
         ok: {
             label: 'Excluir',
