@@ -40,11 +40,19 @@ const trazerAtual = async () => {
 
 <style lang="scss" scoped>
 :deep(h1) {
-    font-size: 30px;
+    font-size: 36px;
 }
 
 :deep(h2) {
-    font-size: 18px;
+    font-size: 28px;
+}
+
+:deep(h3) {
+    font-size: 24px;
+}
+
+:deep(h4) {
+    font-size: 20px;
 }
 
 :deep(ul) {

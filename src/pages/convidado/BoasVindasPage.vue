@@ -6,27 +6,25 @@
         <div class="column q-gutter-md">
 
             <p>
-                Mútua é uma plataforma criada para aproximar pessoas e fortalecer redes de apoio dentro da
-                comunidade.
+                Mútua é uma plataforma criada para aproximar pessoas e fortalecer redes de apoio dentro da comunidade.
             </p>
 
             <p>
-                A proposta inicial é servir como uma ponte entre quem precisa de ajuda e quem deseja ajudar,
-                permitindo
-                que pedidos e oportunidades de apoio sejam encontrados de forma simples, próxima e acessível.
+                Seu objetivo é facilitar a conexão entre pessoas, permitindo que encontrem umas às outras para
+                colaborar, compartilhar informações, oferecer apoio e organizar iniciativas de interesse coletivo de
+                forma simples e acessível.
             </p>
 
             <p>
-                Com o tempo, a plataforma será expandida para incluir novos módulos sociais, como divulgação de
-                animais
-                desaparecidos, localização de pessoas desaparecidas e outras iniciativas voltadas ao cuidado
-                coletivo.
+                A plataforma reúne diferentes recursos voltados ao cuidado com a comunidade, incentivando a cooperação,
+                a solidariedade e o engajamento entre pessoas da mesma região.
             </p>
 
             <p>
-                A ideia central é transformar proximidade em colaboração e tornar o apoio mútuo mais fácil de
-                acontecer.
+                A ideia central do Mútua é transformar proximidade em colaboração, tornando mais fácil criar conexões
+                que gerem impacto positivo na vida das pessoas.
             </p>
+
 
             <blockquote class="text-italic text-grey-7 q-pl-md text-center">
                 "A competição é a lei da selva, a cooperação é a lei da civilização"
