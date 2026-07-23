@@ -62,14 +62,14 @@ onMounted(() => {
     const markers = L.markerClusterGroup();
 
     props.doacoes.data.forEach((doacao) => {
-        const endereco = doacao.usuario.endereco
+        const regiao_usuario = doacao.usuario.regiao_usuario
 
-        if (!endereco?.latitude || !endereco?.longitude) {
+        if (!regiao_usuario?.latitude || !regiao_usuario?.longitude) {
             return
         }
 
         const marker = L.marker(
-            [endereco.latitude, endereco.longitude],
+            [regiao_usuario.latitude, regiao_usuario.longitude],
             {
                 icon: L.divIcon({
                     className: '',

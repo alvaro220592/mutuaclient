@@ -23,11 +23,12 @@
             </q-card-section>
 
             <q-card-section>
-                <q-checkbox v-model="aceitou" label="Li e aceito os Termos de Uso e a Política de Privacidade" />
+                <q-checkbox color="positive" v-model="aceitou"
+                    label="Li e aceito os Termos de Uso e a Política de Privacidade" />
             </q-card-section>
 
             <q-card-actions vertical>
-                <q-btn class="botaoprimario full-width" label="Continuar" :disabled="!aceitou" @click="aceitar" />
+                <q-btn class="botao-primario full-width" label="Continuar" :disabled="!aceitou" @click="aceitar" />
             </q-card-actions>
         </q-card>
 

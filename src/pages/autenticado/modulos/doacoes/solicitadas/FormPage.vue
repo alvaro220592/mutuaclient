@@ -19,7 +19,7 @@
 <style scoped></style>
 
 <script setup>
-import { dadosUsuario } from 'src/services/info-usuario';
+import { useVerificarInfoUsuario } from 'src/composables/useVerificarInfoUsuario'
 import { onMounted, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
@@ -37,6 +37,7 @@ const categoriaOutrosId = ref()
 const categoriaOutrosSelecionada = ref(false)
 const detalhes = ref(null)
 const modoEdicao = computed(() => !!route.params.id)
+const { verificarInfoUsuario } = useVerificarInfoUsuario()
 
 onMounted(async () => {
     verificarInfoUsuario()
@@ -54,25 +55,6 @@ watch(categoriaSelecionada, (novoValor) => {
         categoriaOutrosSelecionada.value = false
     }
 })
-
-const verificarInfoUsuario = async () => {
-    const dados = await dadosUsuario()
-
-    if (!dados.usuario.endereco || !dados.usuario.telefone) {
-        router.push({
-            name: 'usuario.perfil',
-            query: {
-                returnTo: router.currentRoute.value.fullPath
-            }
-        })
-
-        $q.notify({
-            type: 'negative',
-            message: 'Cadastre seu telefone e endereço para solicitar doações',
-            position: 'top-right'
-        })
-    }
-}
 
 function filtrarCategorias(val, update) {
     if (val === '') {

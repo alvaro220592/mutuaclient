@@ -18,7 +18,7 @@
 <style scoped></style>
 
 <script setup>
-import { dadosUsuario } from 'src/services/info-usuario';
+import { useVerificarInfoUsuario } from 'src/composables/useVerificarInfoUsuario'
 import { onMounted, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
@@ -37,6 +37,8 @@ const categoriaOutrosSelecionada = ref(false)
 const detalhes = ref(null)
 const modoEdicao = computed(() => !!route.params.id)
 
+const { verificarInfoUsuario } = useVerificarInfoUsuario()
+
 onMounted(async () => {
     verificarInfoUsuario()
     trazerCategorias()
@@ -53,38 +55,6 @@ watch(categoriaSelecionada, (novoValor) => {
         categoriaOutrosSelecionada.value = false
     }
 })
-
-const verificarInfoUsuario = async () => {
-    const dados = await dadosUsuario()
-
-    if (!dados.usuario.endereco || !dados.usuario.telefone) {
-        router.push({
-            name: 'usuario.perfil',
-            query: {
-                returnTo: router.currentRoute.value.fullPath
-            }
-        })
-
-        $q.dialog({
-            title: 'Complete seu cadastro',
-            message: 'Para completar, você precisa inserir suas informações de telefone e endereço. Se não quiser fazer isso agora, basta clicar para voltar à tela inicial ou em "Cancelar" no final da página.',
-            html: true,
-            persistent: true,
-            cancel: {
-                label: 'Voltar à tela inicial',
-                textColor: 'primary',
-                outline: true,
-            },
-            ok: {
-                label: 'Ok',
-                outline: true,
-                color: 'primary',
-            }
-        }).onCancel(async function () {
-            router.replace({ name: 'home' })
-        })
-    }
-}
 
 function filtrarCategorias(val, update) {
     if (val === '') {

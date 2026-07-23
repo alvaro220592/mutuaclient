@@ -10,7 +10,7 @@
             <q-input outlined v-model="telefone" label="Telefone" mask="(##) #####-####" />
 
             <SeparadorHorizontalComDescricao detalhes="Região"
-                descricao="Informe apenas o CEP para identificar sua região. Seu endereço não será salvo nem exibido publicamente" />
+                descricao="Informe o CEP para identificar sua região. Apenas bairro, cidade e estado serão salvos." />
 
             <q-input outlined v-model="cep" ref="campoCep" label="CEP" mask="#####-###" inputmode="numeric"
                 @update:model-value="onCepChange">
@@ -19,17 +19,18 @@
                 </template>
             </q-input>
 
-            <div v-if="mostrarRegiao">
+            <SpinnerCarregamento :carregando="carregandoBuscaRegiao" />
+
+            <q-card v-if="mostrarRegiao" class="q-pa-sm" flat style="border: 2px dashed #ccc">
                 <div class="text-caption">
                     <q-icon name="location_on" color="red" />
-                    Região
+                    Sua região
                 </div>
 
                 <div>
-                    {{ bairro }}<br>
-                    {{ cidade }}/{{ uf }}
+                    {{ bairro }}, {{ cidade }}/{{ uf }}
                 </div>
-            </div>
+            </q-card>
 
             <SeparadorHorizontal detalhes="Se quiser mudar sua senha" />
 
@@ -75,6 +76,7 @@ import TituloPagina from 'src/components/TituloPagina.vue'
 import { armazenarToken } from 'src/services/storage'
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue'
 import SeparadorHorizontalComDescricao from 'src/components/SeparadorHorizontalComDescricao.vue'
+import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -82,6 +84,8 @@ const route = useRoute()
 const $q = useQuasar()
 
 const carregando = ref(false)
+const carregandoBuscaRegiao = ref(false)
+
 const campoCep = ref(null)
 
 const user = authStore.user
@@ -95,9 +99,6 @@ const cep = ref(end?.cep ?? '')
 const bairro = ref(end?.bairro ?? '')
 const cidade = ref(end?.cidade ?? '')
 const uf = ref(end?.uf ?? '')
-// const logradouro = ref(end?.logradouro ?? '')
-// const num_endereco = ref(end?.numero ?? '')
-// const complemento = ref(end?.complemento ?? '')
 
 const novaSenha = ref('')
 const confirmacaoSenha = ref('')
@@ -106,12 +107,11 @@ const campoTipoSenhaSenha = ref(true)
 const campoTipoSenhaConfirmacaoSenha = ref(true)
 
 const mostrarRegiao = computed(() => {
-    return cep.value && cidade.value && bairro.value && uf.value
+    return cidade.value && bairro.value && uf.value
 })
 
 onMounted(async () => {
     await info()
-    definirMostrarRegiao()
 })
 
 const onCepChange = (valor) => {
@@ -130,13 +130,10 @@ const info = async () => {
 
         nome.value = dados.usuario?.name
         telefone.value = dados.usuario.telefone?.telefone
-        cep.value = dados.usuario.endereco?.cep
-        bairro.value = dados.usuario.endereco?.bairro
-        // logradouro.value = dados.usuario.endereco?.logradouro
-        // num_endereco.value = dados.usuario.endereco?.numero
-        // complemento.value = dados.usuario.endereco?.complemento
-        cidade.value = dados.usuario.endereco?.cidade
-        uf.value = dados.usuario.endereco?.uf
+        cep.value = dados.usuario.regiao_usuario?.cep
+        bairro.value = dados.usuario.regiao_usuario?.bairro
+        cidade.value = dados.usuario.regiao_usuario?.cidade
+        uf.value = dados.usuario.regiao_usuario?.uf
 
     } catch (err) {
 
@@ -227,11 +224,11 @@ const salvar = async () => {
 
 const buscarRegiaoPeloCep = async () => {
     try {
+        carregandoBuscaRegiao.value = true
         const dados = await get('/buscar-regiao-pelo-cep/' + cep.value)
         cidade.value = dados.localidade
         bairro.value = dados.bairro
         uf.value = dados.uf
-        definirMostrarRegiao()
 
     } catch (e) {
         $q.notify({
@@ -239,19 +236,9 @@ const buscarRegiaoPeloCep = async () => {
             message: e.message,
             position: 'top-right'
         })
+    } finally {
+        carregandoBuscaRegiao.value = false
     }
-}
-
-const definirMostrarRegiao = () => {
-    mostrarRegiao.value =
-        cep.value != '' &&
-        cep.value != null &&
-        cidade.value != '' &&
-        cidade.value != null &&
-        bairro.value != '' &&
-        bairro.value != null &&
-        uf.value != '' &&
-        uf.value != null
 }
 
 const limparCampoCep = () => {
@@ -259,8 +246,6 @@ const limparCampoCep = () => {
     cidade.value = ''
     bairro.value = ''
     uf.value = ''
-
-    definirMostrarRegiao()
     campoCep.value.focus()
 }
 

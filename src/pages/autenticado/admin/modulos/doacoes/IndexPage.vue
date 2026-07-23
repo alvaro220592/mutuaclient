@@ -40,8 +40,6 @@
                 color="negative" label="Limpar filtros" />
         </div>
 
-        <!-- </q-card> -->
-
         <!-- TIPO DE VISUALIZAÇÃO -->
         <div class="text-center q-mt-lg q-mb-sm">
             <q-btn-toggle class="borda-toggle" :toggle-text-color="Dark.isActive ? 'dark' : ''"

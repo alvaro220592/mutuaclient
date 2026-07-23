@@ -13,11 +13,14 @@ export function useRolagemInfinita(buscarPagina) {
     const filtrosAtuais = ref({})
 
     const carregarPrimeiraPagina = async function (filtros = {}) {
-        filtrosAtuais.value = filtros
+        try {
+            filtrosAtuais.value = filtros
+            const dados = await buscarPagina(1, filtros)
+            registros.value = dados
 
-        const dados = await buscarPagina(1, filtros)
-
-        registros.value = dados
+        } catch (e) {
+            alert(JSON.stringify(e))
+        }
     }
 
     const carregarMais = async function (_, done) {
