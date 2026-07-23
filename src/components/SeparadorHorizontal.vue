@@ -9,7 +9,7 @@
 <script setup>
 defineProps({
     detalhes: {
-        type: Boolean,
+        type: String,
         required: false
     }
 })

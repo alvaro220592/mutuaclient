@@ -9,17 +9,27 @@
 
             <q-input outlined v-model="telefone" label="Telefone" mask="(##) #####-####" />
 
-            <q-input outlined v-model="cep" label="CEP" mask="#####-###" @update:model-value="onCepChange" />
+            <SeparadorHorizontalComDescricao detalhes="Região"
+                descricao="Informe apenas o CEP para identificar sua região. Seu endereço não será salvo nem exibido publicamente" />
 
-            <q-input outlined v-model="logradouro" label="Logradouro" />
+            <q-input outlined v-model="cep" ref="campoCep" label="CEP" mask="#####-###" inputmode="numeric"
+                @update:model-value="onCepChange">
+                <template v-slot:append v-if="cep">
+                    <q-icon name="close" @click="limparCampoCep" />
+                </template>
+            </q-input>
 
-            <q-input outlined v-model="num_endereco" ref="campoNumero" label="Número" type="number" min="0" />
+            <div v-if="mostrarRegiao">
+                <div class="text-caption">
+                    <q-icon name="location_on" color="red" />
+                    Região
+                </div>
 
-            <q-input outlined v-model="complemento" label="Complemento" />
-
-            <q-input outlined v-model="cidade" label="Cidade" />
-
-            <q-input outlined v-model="uf" label="Estado" />
+                <div>
+                    {{ bairro }}<br>
+                    {{ cidade }}/{{ uf }}
+                </div>
+            </div>
 
             <SeparadorHorizontal detalhes="Se quiser mudar sua senha" />
 
@@ -55,15 +65,16 @@
 <style scoped></style>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-import { metodoDelete, post } from 'src/services/http'
+import { get, metodoDelete, post } from 'src/services/http'
 import { dadosUsuario } from 'src/services/info-usuario'
 import TituloPagina from 'src/components/TituloPagina.vue'
 import { armazenarToken } from 'src/services/storage'
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue'
+import SeparadorHorizontalComDescricao from 'src/components/SeparadorHorizontalComDescricao.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -71,7 +82,7 @@ const route = useRoute()
 const $q = useQuasar()
 
 const carregando = ref(false)
-const campoNumero = ref(null)
+const campoCep = ref(null)
 
 const user = authStore.user
 const end = user?.endereco
@@ -81,11 +92,12 @@ const nome = ref(user?.name ?? '')
 const telefone = ref(tel?.telefone ?? '')
 
 const cep = ref(end?.cep ?? '')
-const logradouro = ref(end?.logradouro ?? '')
-const num_endereco = ref(end?.numero ?? '')
-const complemento = ref(end?.complemento ?? '')
+const bairro = ref(end?.bairro ?? '')
 const cidade = ref(end?.cidade ?? '')
 const uf = ref(end?.uf ?? '')
+// const logradouro = ref(end?.logradouro ?? '')
+// const num_endereco = ref(end?.numero ?? '')
+// const complemento = ref(end?.complemento ?? '')
 
 const novaSenha = ref('')
 const confirmacaoSenha = ref('')
@@ -93,13 +105,18 @@ const confirmacaoSenha = ref('')
 const campoTipoSenhaSenha = ref(true)
 const campoTipoSenhaConfirmacaoSenha = ref(true)
 
-onMounted(() => {
-    info()
+const mostrarRegiao = computed(() => {
+    return cep.value && cidade.value && bairro.value && uf.value
+})
+
+onMounted(async () => {
+    await info()
+    definirMostrarRegiao()
 })
 
 const onCepChange = (valor) => {
     if (valor.length === 9) {
-        buscaCep()
+        buscarRegiaoPeloCep()
     }
 }
 
@@ -114,9 +131,10 @@ const info = async () => {
         nome.value = dados.usuario?.name
         telefone.value = dados.usuario.telefone?.telefone
         cep.value = dados.usuario.endereco?.cep
-        logradouro.value = dados.usuario.endereco?.logradouro
-        num_endereco.value = dados.usuario.endereco?.numero
-        complemento.value = dados.usuario.endereco?.complemento
+        bairro.value = dados.usuario.endereco?.bairro
+        // logradouro.value = dados.usuario.endereco?.logradouro
+        // num_endereco.value = dados.usuario.endereco?.numero
+        // complemento.value = dados.usuario.endereco?.complemento
         cidade.value = dados.usuario.endereco?.cidade
         uf.value = dados.usuario.endereco?.uf
 
@@ -151,9 +169,10 @@ const salvar = async () => {
             nome: nome.value,
             telefone: telefone.value,
             cep: cep.value,
-            logradouro: logradouro.value,
-            num_endereco: num_endereco.value,
-            complemento: complemento.value,
+            bairro: bairro.value,
+            // logradouro: logradouro.value,
+            // num_endereco: num_endereco.value,
+            // complemento: complemento.value,
             cidade: cidade.value,
             uf: uf.value,
             password: novaSenha.value,
@@ -206,15 +225,43 @@ const salvar = async () => {
     }
 }
 
-const buscaCep = async () => {
-    const req = await fetch(`http://viacep.com.br/ws/${cep.value}/json/`)
-    const res = await req.json()
+const buscarRegiaoPeloCep = async () => {
+    try {
+        const dados = await get('/buscar-regiao-pelo-cep/' + cep.value)
+        cidade.value = dados.localidade
+        bairro.value = dados.bairro
+        uf.value = dados.uf
+        definirMostrarRegiao()
 
-    logradouro.value = res.logradouro
-    cidade.value = res.localidade
-    uf.value = res.uf
+    } catch (e) {
+        $q.notify({
+            type: 'negative',
+            message: e.message,
+            position: 'top-right'
+        })
+    }
+}
 
-    campoNumero.value.focus()
+const definirMostrarRegiao = () => {
+    mostrarRegiao.value =
+        cep.value != '' &&
+        cep.value != null &&
+        cidade.value != '' &&
+        cidade.value != null &&
+        bairro.value != '' &&
+        bairro.value != null &&
+        uf.value != '' &&
+        uf.value != null
+}
+
+const limparCampoCep = () => {
+    cep.value = ''
+    cidade.value = ''
+    bairro.value = ''
+    uf.value = ''
+
+    definirMostrarRegiao()
+    campoCep.value.focus()
 }
 
 const excluirConta = () => {

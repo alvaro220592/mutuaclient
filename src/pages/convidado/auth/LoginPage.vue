@@ -18,7 +18,7 @@
             <q-btn class="botao-primario" label="Entrar" @click.prevent="onLoginNormal" :loading="carregando"
                 :disable="carregando" />
 
-            <separador-horizontal :ou="true" />
+            <separador-horizontal detalhes="ou" />
 
             <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                 label="Entrar com Google" @click.prevent="onLoginGoogle" />
