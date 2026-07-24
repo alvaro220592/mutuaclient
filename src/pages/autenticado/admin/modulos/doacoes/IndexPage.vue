@@ -49,7 +49,7 @@
                 ]" />
         </div>
 
-        <div v-if="doacoes.data.length === 0" class="text-center text-grey q-mt-xl">
+        <div v-if="doacoes.length === 0" class="text-center text-grey q-mt-xl">
             Nenhum registro encontrado
         </div>
 
@@ -64,7 +64,7 @@
     </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Dark } from 'quasar'
@@ -171,6 +171,99 @@ const editarDoacao = (doacao) => {
 ========================= */
 onMounted(() => {
     trazerDoacoes()
+})
+</script> -->
+
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { Dark } from 'quasar'
+
+// import { buscar } from 'src/services/doacao'
+import { useDoacaoAcoes } from 'src/composables/useDoacaoAcoes'
+import { carregarDoacoes } from 'src/utils/doacoes.js'
+
+import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue'
+import TituloPagina from 'src/components/TituloPagina.vue'
+import DoacoesModoLista from './DoacoesModoLista.vue'
+import DoacoesModoMapa from './DoacoesModoMapa.vue'
+
+const router = useRouter()
+
+//FILTROS
+const filtros = ref({
+    statusAtivo: true,
+    perfil: null,
+    categoria: null
+})
+
+const statusOptions = [
+    { label: 'Ativo', value: true },
+    { label: 'Inativo', value: false }
+]
+
+// DADOS
+const doacoes = ref([])
+const categoriasDoacao = ref([])
+const perfisDoacao = ref([])
+
+const modoVisualizacao = ref('mapa')
+
+const carregando = ref(false)
+
+const pagina = ref(1)
+
+const terminou = ref(false)
+
+const buscarDoacoes = async () => {
+    await carregarDoacoes({
+        carregando,
+        terminou,
+        pagina,
+        filtros,
+        categoriasDoacao,
+        perfisDoacao,
+        doacoes,
+    })
+}
+
+// FILTROS
+const atualizarLista = async () => {
+    doacoes.value = []
+    pagina.value = 1
+    terminou.value = false
+
+    await buscarDoacoes(1, () => { })
+}
+
+const limparFiltros = async () => {
+    filtros.value = {
+        statusAtivo: true,
+        perfil: null,
+        categoria: null
+    }
+    await atualizarLista()
+}
+
+// AÇÕES
+const {
+    alternarStatus,
+    mostrarConfirmacaoExclusao
+} = useDoacaoAcoes(doacoes)
+
+const editarDoacao = (doacao) => {
+    router.push({
+        name: 'admin.doacoes.editar',
+        params: {
+            id: doacao.id
+        }
+    })
+}
+
+// INICIALIZAÇÃO
+onMounted(() => {
+    buscarDoacoes(1, () => { })
 })
 </script>
 

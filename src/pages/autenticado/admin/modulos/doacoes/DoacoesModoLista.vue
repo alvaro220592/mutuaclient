@@ -1,7 +1,7 @@
 <template>
     <q-infinite-scroll @load="onCarregarMais">
         <div class="column q-gutter-md">
-            <DoacaoCard v-for="doacao in doacoes.data" :key="doacao.id" :usuario="doacao.usuario.name" :doacao="doacao"
+            <DoacaoCard v-for="doacao in doacoes" :key="doacao.id" :usuario="doacao.usuario.name" :doacao="doacao"
                 @editar="$emit('editar', doacao)" @alternar-status="$emit('alternar-status', doacao)"
                 @excluir="$emit('excluir', doacao)" />
         </div>
