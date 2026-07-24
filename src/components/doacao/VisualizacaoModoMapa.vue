@@ -4,22 +4,11 @@
 
         <q-dialog v-model="mostrarModal" position="bottom">
             <q-card style="
-            border-top-left-radius: 22px;
-            border-top-right-radius: 22px;
-            min-height: 40vh;
-        ">
-                <!-- Puxador -->
-                <div class="row justify-center q-pt-sm">
-                    <div style="
-                        width: 42px;
-                        height: 5px;
-                        border-radius: 999px;
-                        background: #cfcfcf;
-                    " />
-                </div>
-
+                border-top-left-radius: 22px;
+                border-top-right-radius: 22px;
+                min-height: 40vh;
+            ">
                 <q-card-section>
-
                     <div class="text-overline text-grey-7">
                         {{ doacaoSelecionada.perfil_doacao_id === 1 ? 'OFERECE' : 'SOLICITA' }}
                     </div>
@@ -31,19 +20,16 @@
                     <div class="text-body1 q-mt-sm">
                         {{ doacaoSelecionada.detalhes ?? 'Sem detalhes.' }}
                     </div>
-
                 </q-card-section>
 
                 <q-separator />
 
                 <q-card-section>
-
                     <div class="text-subtitle2 text-weight-medium q-mb-md">
                         Contato
                     </div>
 
                     <q-list dense>
-
                         <q-item>
                             <q-item-section avatar>
                                 <q-icon name="phone" color="primary" />
@@ -63,17 +49,13 @@
                                 {{ doacaoSelecionada.usuario.email }}
                             </q-item-section>
                         </q-item>
-
                     </q-list>
-
                 </q-card-section>
 
                 <q-separator />
 
-                <q-card-actions class="q-pa-md">
-
-                    <q-btn outline icon="chat" label="Entrar em contato" class="full-width" unelevated rounded />
-
+                <q-card-actions class="q-pa-md justify-center">
+                    <q-btn outline icon="chat" label="Conversar" padding="8px 20px" unelevated rounded />
                 </q-card-actions>
 
             </q-card>
@@ -163,54 +145,6 @@ onMounted(() => {
                 })
             }
         )
-        // .bindPopup(`
-        //     <div style="
-        //         font-family: Roboto, Arial, sans-serif;
-        //         min-width: 200px;
-        //         max-width: 260px;
-        //         padding: 10px;
-        //     ">
-
-        //         <div style="
-        //             font-size: 14px;
-        //             font-weight: 700;
-        //             margin-bottom: 6px;
-        //             color: #222;
-        //         ">
-        //             👤 ${doacao.usuario.name}
-        //         </div>
-
-
-        //         <div style="
-        //             font-size: 13px;
-        //             color: #333;
-        //             background: #f5f5f5;
-        //             padding: 8px;
-        //             border-radius: 6px;
-        //             margin-bottom: 8px;
-        //             line-height: 1.3;
-        //         ">
-        //             ${doacao.perfil_doacao_id === 1 ? 'Oferece' : 'Solicita'}:
-        //             <br>
-        //             <strong>${doacao.categoria?.nome ?? 'Sem categoria'}</strong>
-        //             <br>
-        //             <span>${doacao.detalhes ?? 'Sem detalhes'}</span>
-        //         </div>
-
-        //         <div style="
-        //             font-size: 12px;
-        //             color: #444;
-        //             display: flex;
-        //             align-items: center;
-        //             gap: 6px;
-        //         ">
-        //         📞 ${doacao.usuario.telefone?.telefone ?? 'Sem telefone'}
-        //         <br>
-        //         ✉️ ${doacao.usuario.email}
-        //         </div>
-
-        //     </div>
-        // `)
 
         marker.on('click', () => {
             doacaoSelecionada.value = doacao

@@ -54,10 +54,11 @@
         </div>
 
         <div v-else>
-            <DoacoesModoLista v-if="modoVisualizacao === 'lista'" :doacoes="doacoes" :funcaoCarregarMais="carregarMais"
-                @editar="editarDoacao" @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
+            <VisualizacaoModoLista v-if="modoVisualizacao === 'lista'" :doacoes="doacoes"
+                :funcaoCarregarMais="carregarMais" @editar="editarDoacao" @alternar-status="alternarStatus"
+                @excluir="mostrarConfirmacaoExclusao" />
 
-            <DoacoesModoMapa v-else :doacoes="doacoes" />
+            <VisualizacaoModoMapa v-else :doacoes="doacoes" />
         </div>
 
         <BotaoFlutuanteNovoCadastro nomeRota="admin.doacoes.novo" />
@@ -179,15 +180,13 @@ onMounted(() => {
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Dark } from 'quasar'
-
-// import { buscar } from 'src/services/doacao'
 import { useDoacaoAcoes } from 'src/composables/useDoacaoAcoes'
 import { carregarDoacoes } from 'src/utils/doacoes.js'
 
 import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue'
 import TituloPagina from 'src/components/TituloPagina.vue'
-import DoacoesModoLista from './DoacoesModoLista.vue'
-import DoacoesModoMapa from './DoacoesModoMapa.vue'
+import VisualizacaoModoLista from 'src/components/doacao/VisualizacaoModoLista.vue'
+import VisualizacaoModoMapa from 'src/components/doacao/VisualizacaoModoMapa.vue'
 
 const router = useRouter()
 
