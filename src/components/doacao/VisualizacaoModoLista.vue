@@ -9,19 +9,23 @@
 </template>
 
 <script setup>
-
 import DoacaoCard from 'src/components/doacao/DoacaoCard.vue'
 
-defineProps({
+const props = defineProps({
     doacoes: {
-        type: Object,
+        type: Array,
         required: true
     },
-    onCarregarMais: {
+    funcaoCarregarMais: {
         type: Function,
         required: true
     }
 })
+
+const onCarregarMais = async (_, done) => {
+    await props.funcaoCarregarMais()
+    done()
+}
 
 defineEmits([
     'editar',

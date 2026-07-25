@@ -34,63 +34,52 @@ export function useDoacaoAcoes(doacoes) {
             }
         }
 
-    const confirmarExclusao =
-        async function (id) {
-            try {
-                const dados =
-                    await excluir(id)
+    const confirmarExclusao = async function (id) {
+        try {
+            const dados = await excluir(id)
+            const listaAtual = doacoes.value
 
-                const listaAtual =
-                    doacoes.value.data
-
-                doacoes.value.data =
-                    listaAtual.filter(
-                        function (doacao) {
-                            return doacao.id !== id
-                        }
-                    )
-
-                $q.notify({
-                    type: 'positive',
-                    message: dados.message,
-                    position: 'top-right'
-                })
-            }
-            catch (erro) {
-                $q.notify({
-                    type: 'negative',
-                    message:
-                        erro.message ||
-                        'Erro ao excluir',
-                    position: 'top-right'
-                })
-            }
-        }
-
-    const mostrarConfirmacaoExclusao =
-        function (doacao) {
-            $q.dialog({
-                title: 'Excluir registro',
-                message:
-                    'Esta ação não poderá ser desfeita.',
-                persistent: true,
-                cancel: {
-                    label: 'Cancelar',
-                    flat: true
-                },
-                ok: {
-                    label: 'Excluir',
-                    color: 'negative'
+            doacoes.value = listaAtual.filter(
+                function (doacao) {
+                    return doacao.id !== id
                 }
-            }).onOk(function () {
-                confirmarExclusao(
-                    doacao.id
-                )
+            )
+
+            $q.notify({
+                type: 'positive',
+                message: dados.message,
+                position: 'top-right'
             })
         }
-
-    return {
-        alternarStatus,
-        mostrarConfirmacaoExclusao
+        catch (erro) {
+            $q.notify({
+                type: 'negative',
+                message: erro.message || 'Erro ao excluir',
+                position: 'top-right'
+            })
+        }
     }
+
+    const mostrarConfirmacaoExclusao = function (doacao) {
+        $q.dialog({
+            title: 'Excluir registro',
+            message:
+                'Esta ação não poderá ser desfeita.',
+            persistent: true,
+            cancel: {
+                label: 'Cancelar',
+                flat: true
+            },
+            ok: {
+                label: 'Excluir',
+                color: 'negative'
+            }
+        }).onOk(function () {
+            confirmarExclusao(
+                doacao.id
+            )
+        })
+    }
+
+    return { alternarStatus, mostrarConfirmacaoExclusao }
 }

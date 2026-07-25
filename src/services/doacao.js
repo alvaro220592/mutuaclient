@@ -26,12 +26,27 @@ export function atualizarOferecida(id, corpoRequisicao) {
     return post(`/doacoes/oferecidas/update/${id}`, corpoRequisicao, true)
 }
 
-// TODAS
 export function buscar(pagina, filtros = {}) {
     return get('/doacoes?' + new URLSearchParams({
         page: pagina,
         ...filtros
     }))
+}
+
+export function buscarDoacoesOferecidasMapa(filtros = {}) {
+    return get('/doacoes/oferecidas/mapa?' + new URLSearchParams(filtros))
+}
+
+export function buscarDoacoesOferecidasLista(pagina) {
+    return get(`/doacoes/oferecidas/lista?page=${pagina}`)
+}
+
+export function buscarDoacoesSolicitadasMapa(filtros = {}) {
+    return get('/doacoes/solicitadas/mapa?' + new URLSearchParams(filtros))
+}
+
+export function buscarDoacoesSolicitadasLista(pagina) {
+    return get(`/doacoes/solicitadas/lista?page=${pagina}`)
 }
 
 export function salvar(corpoRequisicao) {
