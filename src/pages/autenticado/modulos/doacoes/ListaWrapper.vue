@@ -1,0 +1,121 @@
+<template>
+    <div>
+        <div class="row items-center justify-center q-col-gutter-sm q-mb-md">
+            <div class="q-pt-md text-caption">
+                Se quiser, filtre os resultados no campo abaixo
+            </div>
+
+            <!-- PERFIL de doação -->
+            <div class="col-12 col-md-2">
+                <q-select dense outlined v-model="filtros.perfil" label="Perfil de doação" :options="perfisDoacao"
+                    option-label="nome" option-value="id" emit-value map-options @update:model-value="aplicarFiltro" />
+            </div>
+        </div>
+
+        <!-- BOTÃO LIMPAR FILTROS -->
+        <div v-if="filtros.perfil !== null" class="row justify-center q-mb-md">
+
+            <q-btn @click="limparFiltros" dense outline label="Limpar filtros" />
+        </div>
+
+        <VisualizacaoModoLista v-if="doacoes.length > 0" :doacoes="doacoes" :funcaoCarregarMais="carregarMais"
+            @editar="editarDoacao" @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
+        <NenhumRegistroEncontrado v-else />
+    </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
+import { carregarDoacoesLista } from 'src/utils/doacoes'
+import VisualizacaoModoLista from 'src/components/doacao/VisualizacaoModoLista.vue'
+import { useDoacaoAcoes } from 'src/composables/useDoacaoAcoes'
+import NenhumRegistroEncontrado from 'src/components/NenhumRegistroEncontrado.vue'
+import { buscarDoacoesLista, buscarPerfisDoacao } from 'src/services/doacao'
+
+const router = useRouter()
+const $q = useQuasar()
+
+const carregando = ref(false)
+const terminou = ref(false)
+const pagina = ref(1)
+const doacoes = ref([])
+const perfisDoacao = ref([])
+
+// Cria uma instância do composable de ações.
+const acoesDoacao = useDoacaoAcoes(doacoes)
+
+//FILTROS
+const filtros = ref({
+    perfil: null,
+})
+
+// Obtém as funções do composable.
+const alternarStatus = acoesDoacao.alternarStatus
+const mostrarConfirmacaoExclusao = acoesDoacao.mostrarConfirmacaoExclusao
+
+const carregarMais = async () => {
+    await carregarDoacoesLista({
+        carregando,
+        terminou,
+        pagina,
+        doacoes,
+        filtros,
+        buscar: buscarDoacoesLista,
+    })
+}
+
+const aplicarFiltro = async () => {
+    doacoes.value = []
+    pagina.value = 1
+    terminou.value = false
+
+    await carregarMais()
+}
+
+const editarDoacao = function (doacao) {
+    router.push({
+        name: 'doacoes.editar',
+        params: {
+            id: doacao.id
+        }
+    })
+}
+
+const trazerPerfisDoacao = async () => {
+    try {
+        const dados = await buscarPerfisDoacao()
+
+        perfisDoacao.value = dados.perfisDoacao.map(perfil => ({
+            ...perfil,
+            nome: perfil.nome.charAt(0).toUpperCase() + perfil.nome.slice(1)
+        }))
+
+    } catch (erro) {
+        $q.notify({
+            type: 'negative',
+            message: JSON.stringify(erro),
+            position: 'top-right'
+        })
+    }
+}
+
+// limpar FILTROS
+const limparFiltros = async () => {
+    filtros.value = {
+        perfil: null,
+    }
+
+    doacoes.value = []
+    pagina.value = 1
+    terminou.value = false
+
+    await carregarMais()
+}
+
+onMounted(async () => {
+    await trazerPerfisDoacao()
+    await carregarMais()
+})
+</script>

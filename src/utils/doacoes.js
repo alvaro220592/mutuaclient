@@ -36,6 +36,7 @@ export const carregarDoacoesLista = async ({
     terminou,
     pagina,
     doacoes,
+    filtros,
     buscar,
 }) => {
 
@@ -46,7 +47,7 @@ export const carregarDoacoesLista = async ({
     try {
         carregando.value = true
 
-        const dados = await buscar(pagina.value)
+        const dados = await buscar(pagina.value, filtros.value)
 
         doacoes.value.push(...dados.doacoes.data)
 

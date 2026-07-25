@@ -1,8 +1,18 @@
 <template>
-    <q-card flat bordered>
+    <q-card flat bordered
+        :class="doacao.perfil.nome == 'oferecida' ? 'card-doacao-oferecida' : 'card-doacao-solicitada'">
+        <div class="q-pa-xs text-center text-white text-weight-bold"
+            :class="doacao.perfil.nome == 'oferecida' ? 'faixa-card-doacao-oferecida' : 'faixa-card-doacao-solicitada'">
+            {{ primeiraLetraMaiuscula(doacao.perfil.nome) }}
+        </div>
+
         <q-card-section class="row items-center justify-between">
-            <div class="row items-center q-gutter-sm">
-                <div class="text-subtitle1">
+            <div>
+                <div class="text-subtitle2 text-weight-bold">
+                    Categoria
+                </div>
+
+                <div class="text-body1">
                     {{ doacao.categoria.nome }}
                 </div>
             </div>
@@ -36,25 +46,39 @@
         <!-- <q-separator /> -->
 
         <q-card-section class="q-pt-none">
-            <div class="q-mb-md">{{ doacao.detalhes }}</div>
 
-            <div v-if="usuario" class="text-caption text-grey-7">{{ usuario }}</div>
-
-            <div class="row justify-between items-center">
-                <div class="text-caption text-grey-7 q-mt-sm">
-                    {{ new Date(doacao.created_at).toLocaleString('pt-BR', {
-                        dateStyle: 'short',
-                        timeStyle: 'short'
-                    }) }}
+            <div class="q-mb-md">
+                <div class="text-subtitle2 text-weight-bold">
+                    Detalhes
                 </div>
 
-                <q-badge :color="doacao.ativo ? 'positive' : 'grey'" :label="doacao.ativo ? 'Ativa' : 'Inativa'" />
+                <div v-if="doacao.detalhes" class="text-body1">
+                    {{ doacao.detalhes }}
+                </div>
+            </div>
+
+            <div class="text-caption text-grey-7">
+                <div class="text-subtitle2 text-weight-bold">
+                    Criado em
+                </div>
+
+                <div class="row justify-between items-center">
+                    <div class="text-body1">
+                        {{ new Date(doacao.created_at).toLocaleString('pt-BR', {
+                            dateStyle: 'short',
+                            timeStyle: 'short'
+                        }) }}
+                    </div>
+                    <q-badge :color="doacao.ativo ? 'positive' : 'grey'" :label="doacao.ativo ? 'Ativa' : 'Inativa'" />
+                </div>
             </div>
         </q-card-section>
     </q-card>
 </template>
 
 <script setup>
+import { primeiraLetraMaiuscula } from 'src/utils/strings';
+
 defineProps({
     doacao: {
         type: Object,
@@ -72,3 +96,23 @@ const emit = defineEmits([
     'excluir'
 ])
 </script>
+
+<style>
+.card-doacao-oferecida {
+    border: 1px solid var(--cor-doacao-oferecida);
+
+}
+
+.card-doacao-solicitada {
+    border: 1px solid var(--cor-doacao-solicitada);
+
+}
+
+.faixa-card-doacao-oferecida {
+    background-color: var(--cor-doacao-oferecida);
+}
+
+.faixa-card-doacao-solicitada {
+    background-color: var(--cor-doacao-solicitada);
+}
+</style>

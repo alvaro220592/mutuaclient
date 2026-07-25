@@ -97,52 +97,62 @@ const routes = [
         path: 'doacoes',
         children: [
           {
-            path: 'opcoes',
-            name: 'doacoes.opcoes',
-            component: () => import('pages/autenticado/modulos/doacoes/OpcoesPage.vue')
+            path: '/',
+            name: 'doacoes.index',
+            component: () => import('pages/autenticado/modulos/doacoes/IndexPage.vue')
+          },
+          {
+            path: '/novo',
+            name: 'doacoes.novo',
+            component: () => import('pages/autenticado/modulos/doacoes/FormPage.vue')
+          },
+          {
+            path: ':id/editar',
+            name: 'doacoes.editar',
+            component: () => import('pages/autenticado/modulos/doacoes/FormPage.vue')
           },
 
-          {
-            path: 'solicitadas',
-            children: [
-              {
-                path: '',
-                name: 'doacoes.solicitadas.index',
-                component: () => import('pages/autenticado/modulos/doacoes/solicitadas/IndexPage.vue')
-              },
-              {
-                path: 'novo',
-                name: 'doacoes.solicitadas.novo',
-                component: () => import('pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue')
-              },
-              {
-                path: ':id/editar',
-                name: 'doacoes.solicitadas.editar',
-                component: () => import('pages/autenticado/modulos/doacoes/solicitadas/FormPage.vue')
-              }
-            ]
-          },
+          // {
+          //   path: 'solicitadas',
+          //   children: [
+          //     {
+          //       path: '',
+          //       name: 'doacoes.solicitadas.index',
+          //       component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas_OBSOLETO/IndexPage.vue')
+          //     },
+          //     {
+          //       path: 'novo',
+          //       name: 'doacoes.solicitadas.novo',
+          //       component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas_OBSOLETO/FormPage.vue')
+          //     },
+          //     {
+          //       path: ':id/editar',
+          //       name: 'doacoes.solicitadas.editar',
+          //       component: () => import('src/pages/autenticado/modulos/doacoes/solicitadas_OBSOLETO/FormPage.vue')
+          //     }
+          //   ]
+          // },
 
-          {
-            path: 'oferecidas',
-            children: [
-              {
-                path: '',
-                name: 'doacoes.oferecidas.index',
-                component: () => import('pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue')
-              },
-              {
-                path: 'novo',
-                name: 'doacoes.oferecidas.novo',
-                component: () => import('pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue')
-              },
-              {
-                path: ':id/editar',
-                name: 'doacoes.oferecidas.editar',
-                component: () => import('pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue')
-              }
-            ]
-          }
+          // {
+          //   path: 'oferecidas',
+          //   children: [
+          //     {
+          //       path: '',
+          //       name: 'doacoes.oferecidas.index',
+          //       component: () => import('pages/autenticado/modulos/doacoes/oferecidas/IndexPage.vue')
+          //     },
+          //     {
+          //       path: 'novo',
+          //       name: 'doacoes.oferecidas.novo',
+          //       component: () => import('pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue')
+          //     },
+          //     {
+          //       path: ':id/editar',
+          //       name: 'doacoes.oferecidas.editar',
+          //       component: () => import('pages/autenticado/modulos/doacoes/oferecidas/FormPage.vue')
+          //     }
+          //   ]
+          // }
         ]
       },
 
