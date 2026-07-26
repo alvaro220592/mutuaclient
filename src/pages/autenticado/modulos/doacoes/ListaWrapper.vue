@@ -1,26 +1,32 @@
 <template>
     <div>
-        <div class="row items-center justify-center q-col-gutter-sm q-mb-md">
-            <div class="q-pt-md text-caption">
-                Se quiser, filtre os resultados no campo abaixo
+        <SpinnerCarregamento v-if="carregando" :carregando="carregando" />
+
+        <div v-else>
+            <div class="row items-center justify-center q-col-gutter-sm q-mb-md">
+                <div class="q-pt-md text-caption">
+                    Se quiser, filtre os resultados no campo abaixo
+                </div>
+
+                <!-- PERFIL de doação -->
+                <div class="col-12 col-md-2">
+                    <q-select dense outlined v-model="filtros.perfil" label="Perfil de doação" :options="perfisDoacao"
+                        option-label="nome" option-value="id" emit-value map-options
+                        @update:model-value="aplicarFiltro" />
+                </div>
             </div>
 
-            <!-- PERFIL de doação -->
-            <div class="col-12 col-md-2">
-                <q-select dense outlined v-model="filtros.perfil" label="Perfil de doação" :options="perfisDoacao"
-                    option-label="nome" option-value="id" emit-value map-options @update:model-value="aplicarFiltro" />
+            <!-- BOTÃO LIMPAR FILTROS -->
+            <div v-if="filtros.perfil !== null" class="row justify-center q-mb-md">
+
+                <q-btn @click="limparFiltros" dense outline label="Limpar filtros" />
             </div>
+
+            <VisualizacaoModoLista v-if="doacoes.length > 0" :doacoes="doacoes" :funcaoCarregarMais="carregarMais"
+                @editar="editarDoacao" @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
+
+            <NenhumRegistroEncontrado v-else />
         </div>
-
-        <!-- BOTÃO LIMPAR FILTROS -->
-        <div v-if="filtros.perfil !== null" class="row justify-center q-mb-md">
-
-            <q-btn @click="limparFiltros" dense outline label="Limpar filtros" />
-        </div>
-
-        <VisualizacaoModoLista v-if="doacoes.length > 0" :doacoes="doacoes" :funcaoCarregarMais="carregarMais"
-            @editar="editarDoacao" @alternar-status="alternarStatus" @excluir="mostrarConfirmacaoExclusao" />
-        <NenhumRegistroEncontrado v-else />
     </div>
 </template>
 
@@ -33,6 +39,7 @@ import VisualizacaoModoLista from 'src/components/doacao/VisualizacaoModoLista.v
 import { useDoacaoAcoes } from 'src/composables/useDoacaoAcoes'
 import NenhumRegistroEncontrado from 'src/components/NenhumRegistroEncontrado.vue'
 import { buscarDoacoesLista, buscarPerfisDoacao } from 'src/services/doacao'
+import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
 
 const router = useRouter()
 const $q = useQuasar()

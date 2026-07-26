@@ -13,7 +13,7 @@
             </q-card-section>
 
             <q-card-section class="q-pa-md scroll">
-                <div v-html="conteudo"></div>
+                <div class="conteudo-consentimento" v-html="conteudo"></div>
             </q-card-section>
 
         </q-card>
@@ -35,24 +35,27 @@ defineProps({
 })
 </script>
 
-<style>
-h1 {
-    font-size: 30px;
-}
+<style lang="scss" scoped>
+.conteudo-consentimento {
+    h1 {
+        font-size: 36px;
+    }
 
-h2 {
-    font-size: 18px;
-}
+    h2 {
+        font-size: 28px;
+    }
 
-ul {
-    list-style: '- ';
-    padding-left: 15px;
-}
+    h3 {
+        font-size: 24px;
+    }
 
-.header-fixo {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    /* background: white; */
+    h4 {
+        font-size: 20px;
+    }
+
+    ul {
+        list-style: '- ';
+        padding-left: 15px;
+    }
 }
 </style>

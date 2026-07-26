@@ -1,36 +1,41 @@
 <template>
     <div>
-        <div class="row items-center justify-center q-col-gutter-sm">
+        <SpinnerCarregamento v-if="carregando" :carregando="carregando" />
 
-            <div class="q-pt-md text-caption">
-                Se quiser, filtre os resultados nos campos abaixo
+        <div v-else>
+            <div class="row items-center justify-center q-col-gutter-sm">
+
+                <div class="q-pt-md text-caption">
+                    Se quiser, filtre os resultados nos campos abaixo
+                </div>
+
+                <!-- PERFIL -->
+                <div class="col-12 col-md-2">
+                    <q-select dense outlined v-model="filtros.perfil" label="Perfil de doação" :options="perfisDoacao"
+                        option-label="nome" option-value="id" emit-value map-options
+                        @update:model-value="buscarDoacoes" />
+                </div>
+
+                <!-- CATEGORIA -->
+                <div class="col-12 col-md-2">
+                    <q-select dense outlined v-model="filtros.categoria" label="Categoria" :options="categoriasDoacao"
+                        option-label="nome" option-value="id" emit-value map-options
+                        @update:model-value="buscarDoacoes" />
+                </div>
             </div>
 
-            <!-- PERFIL -->
-            <div class="col-12 col-md-2">
-                <q-select dense outlined v-model="filtros.perfil" label="Perfil de doação" :options="perfisDoacao"
-                    option-label="nome" option-value="id" emit-value map-options @update:model-value="buscarDoacoes" />
+            <q-space class="q-my-md" />
+
+            <!-- BOTÃO LIMPAR FILTROS -->
+            <div v-if="filtros.perfil !== null || filtros.categoria !== null" class="row justify-center">
+                <q-btn @click="limparFiltros" outline dense label="Limpar filtros" />
             </div>
 
-            <!-- CATEGORIA -->
-            <div class="col-12 col-md-2">
-                <q-select dense outlined v-model="filtros.categoria" label="Categoria" :options="categoriasDoacao"
-                    option-label="nome" option-value="id" emit-value map-options @update:model-value="buscarDoacoes" />
-            </div>
+            <q-space class="q-my-md" />
+
+            <VisualizacaoModoMapa v-if="regiaoUsuario.latitude && regiaoUsuario.longitude" :doacoes="doacoes"
+                :latitudeUsuario="regiaoUsuario.latitude" :longitudeUsuario="regiaoUsuario.longitude" />
         </div>
-
-        <q-space class="q-my-md" />
-
-        <!-- BOTÃO LIMPAR FILTROS -->
-        <div class="row justify-center">
-            <q-btn v-if="filtros.perfil !== null || filtros.categoria !== null" @click="limparFiltros" outline dense
-                label="Limpar filtros" />
-        </div>
-
-        <q-space class="q-my-md" />
-
-        <VisualizacaoModoMapa v-if="regiaoUsuario.latitude && regiaoUsuario.longitude" :doacoes="doacoes"
-            :latitudeUsuario="regiaoUsuario.latitude" :longitudeUsuario="regiaoUsuario.longitude" />
     </div>
 </template>
 
@@ -40,6 +45,7 @@ import { ref, onMounted } from 'vue'
 import { carregarDoacoesMapa } from 'src/utils/doacoes'
 import VisualizacaoModoMapa from 'src/components/doacao/VisualizacaoModoMapa.vue'
 import { buscarDoacoesMapa } from 'src/services/doacao'
+import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
 
 // FILTROS
 const filtros = ref({

@@ -83,7 +83,8 @@ const router = useRouter()
 const filtros = ref({
     statusAtivo: true,
     perfil: null,
-    categoria: null
+    categoria: null,
+    admin: true
 })
 
 const statusOptions = [

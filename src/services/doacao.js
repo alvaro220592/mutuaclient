@@ -26,15 +26,25 @@ import { get, metodoDelete, post } from "./http";
 //     return post(`/doacoes/oferecidas/update/${id}`, corpoRequisicao, true)
 // }
 
+const removerValoresNulos = (objeto) => {
+    return Object.fromEntries(
+        Object.entries(objeto).filter(entrada => entrada[1] != null)
+    )
+}
+
 export function buscarDoacoesLista(pagina, filtros = {}) {
+    const filtrosValidos = removerValoresNulos(filtros)
+
     return get('/doacoes/lista?' + new URLSearchParams({
         page: pagina,
-        ...filtros
+        ...filtrosValidos
     }))
 }
 
 export function buscarDoacoesMapa(filtros = {}) {
-    return get('/doacoes/mapa?' + new URLSearchParams(filtros))
+    const filtrosValidos = removerValoresNulos(filtros)
+
+    return get('/doacoes/mapa?' + new URLSearchParams(filtrosValidos))
 }
 
 // export function buscarDoacoesOferecidasMapa(filtros = {}) {
