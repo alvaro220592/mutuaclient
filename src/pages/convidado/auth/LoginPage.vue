@@ -39,7 +39,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useQuasar } from 'quasar'
 import { login } from 'src/services/auth'
 import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 import { useRouter } from 'vue-router'
@@ -47,10 +46,10 @@ import { armazenarToken } from 'src/services/storage'
 import { useAuthStore } from 'src/stores/auth';
 import TituloPagina from 'src/components/TituloPagina.vue';
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue';
+import { notificarErro } from 'src/utils/notificacao';
 
 const router = useRouter()
 const authStore = useAuthStore()
-const $q = useQuasar()
 
 //const email = ref('alvaro220592@gmail.com')
 const email = ref('_teste@mail.com')
@@ -74,11 +73,7 @@ const onLoginNormal = async () => {
         router.replace('/app')
 
     } catch (err) {
-        $q.notify({
-            type: 'negative',
-            message: err.message || 'Erro inesperado',
-            position: 'top-right'
-        })
+        notificarErro(err.message || 'Erro inesperado')
     } finally {
         carregando.value = false
     }

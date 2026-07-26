@@ -39,16 +39,15 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useQuasar } from 'quasar'
 import { useRouter, useRoute } from 'vue-router'
 
 import { redefinirSenha } from 'src/services/auth'
 import TituloPagina from 'src/components/TituloPagina.vue';
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
 
 const router = useRouter()
 const route = useRoute()
 
-const $q = useQuasar()
 const email = ref(route.query.email) // parâmetro que vem da função de envio de email em src/pages/convidado/auth/RecuperarSenhaPage.vue
 const codigo_recuperacao = ref('')
 const password = ref('')
@@ -68,20 +67,12 @@ const onRedefinirSenha = async () => {
             password_confirmation: password_confirmation.value,
         })
 
-        $q.notify({
-            type: 'positive',
-            message: 'Senha redefinida com sucesso',
-            position: 'top-right'
-        })
+        notificarSucesso('Senha redefinida com sucesso')
 
         router.replace('/login')
 
     } catch (err) {
-        $q.notify({
-            type: 'negative',
-            message: err.message || 'Erro inesperado',
-            position: 'top-right'
-        })
+        notificarErro(err.message || 'Erro inesperado')
     } finally {
         carregando.value = false
     }

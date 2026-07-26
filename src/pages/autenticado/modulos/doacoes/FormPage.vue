@@ -25,13 +25,12 @@
 import { useVerificarInfoUsuario } from 'src/composables/useVerificarInfoUsuario'
 import { onMounted, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { buscarCategorias, buscarDoacao, salvar, atualizar, buscarPerfisDoacao } from 'src/services/doacao';
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
 
 const router = useRouter()
 const route = useRoute()
-const $q = useQuasar()
 
 const categorias = ref([])
 const categoriasFiltradas = ref([])
@@ -77,11 +76,7 @@ const trazerPerfisDoacao = async () => {
         perfisDoacaoFiltrados.value = perfisDoacao.value
 
     } catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro),
-            position: 'top-right'
-        })
+        notificarErro(JSON.stringify(erro))
     }
 }
 
@@ -110,11 +105,7 @@ const trazerCategorias = async () => {
         categoriaOutrosId.value = dados.categoriaOutrosId
     }
     catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro),
-            position: 'top-right'
-        })
+        notificarErro(JSON.stringify(erro))
     }
 }
 
@@ -145,20 +136,12 @@ const onSalvar = async () => {
             await salvar(payload, true)
         }
 
-        $q.notify({
-            type: 'positive',
-            message: 'Salvo com sucesso',
-            position: 'top-right'
-        })
+        notificarSucesso('Salvo com sucesso')
 
         router.replace({ name: 'doacoes.index' })
     }
     catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro.message),
-            position: 'top-right'
-        })
+        notificarErro(erro.message)
     }
 }
 

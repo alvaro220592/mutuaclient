@@ -15,34 +15,29 @@
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar';
 import TituloPagina from 'src/components/TituloPagina.vue';
+import { useRouter } from 'vue-router';
 import { post } from 'src/services/http';
 import { ref } from 'vue';
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
 
 const carregando = ref(false)
 const mensagem = ref('')
-const $q = useQuasar()
+const router = useRouter()
 
 const enviarEmail = async () => {
     try {
         carregando.value = true
         const dados = await post('/contato-usuario/email', { mensagem: mensagem.value }, true)
 
-        $q.notify({
-            type: 'positive',
-            message: dados.message || 'Mensagem enviada com sucesso',
-            position: 'top-right'
-        })
+        notificarSucesso(dados.message || 'Mensagem enviada com sucesso')
 
         mensagem.value = ''
 
+        router.replace({ name: 'home' })
+
     } catch (e) {
-        $q.notify({
-            type: 'negative',
-            message: e.message || 'Erro inesperado',
-            position: 'top-right'
-        })
+        notificarErro(e.message || 'Erro inesperado')
 
     } finally {
         carregando.value = false

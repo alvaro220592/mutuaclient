@@ -22,13 +22,12 @@
 import { useVerificarInfoUsuario } from 'src/composables/useVerificarInfoUsuario'
 import { onMounted, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { buscarCategorias, buscarDoacao, salvarSolicitada, atualizarSolicitada } from 'src/services/doacao';
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
 
 const router = useRouter()
 const route = useRoute()
-const $q = useQuasar()
 
 const categorias = ref([])
 const categoriasFiltradas = ref([])
@@ -81,11 +80,7 @@ const trazerCategorias = async () => {
         categoriaOutrosId.value = dados.categoriaOutrosId
     }
     catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro),
-            position: 'top-right'
-        })
+        notificarErro(JSON.stringify(erro))
     }
 }
 
@@ -96,7 +91,7 @@ const carregarDoacao = async (id) => {
         detalhes.value = dados.doacao.detalhes
 
     } catch (error) {
-        alert(JSON.stringify(error))
+        notificarErro(JSON.stringify(error))
     }
 }
 
@@ -114,20 +109,12 @@ const salvar = async () => {
             await salvarSolicitada(payload, true)
         }
 
-        $q.notify({
-            type: 'positive',
-            message: 'Doação salva com sucesso',
-            position: 'top-right'
-        })
+        notificarSucesso('Doação salva com sucesso')
 
         router.replace({ name: 'doacoes.solicitadas.index' })
     }
     catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro.message),
-            position: 'top-right'
-        })
+        notificarErro(erro.message)
     }
 }
 

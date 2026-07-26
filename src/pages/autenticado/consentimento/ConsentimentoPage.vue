@@ -39,11 +39,10 @@
 <script setup>
 import { ref } from 'vue';
 import { get, post } from 'src/services/http.js';
-import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import ConsentimentoDialog from './ConsentimentoDialog.vue';
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao.js';
 
-const $q = useQuasar()
 const router = useRouter()
 
 const aceitou = ref(false)
@@ -60,11 +59,7 @@ const verTermosUso = async () => {
         preencherDialog('Termos de Uso', dados.conteudo)
 
     } catch (e) {
-        $q.notify({
-            type: 'negative',
-            message: e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua',
-            position: 'top-right'
-        })
+        notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
 
     } finally {
         carregandoTermo.value = false
@@ -78,11 +73,7 @@ const verPoliticaPrivacidade = async () => {
         preencherDialog('Política de privacidade', dados.conteudo)
 
     } catch (e) {
-        $q.notify({
-            type: 'negative',
-            message: e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua',
-            position: 'top-right'
-        })
+        notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
 
     } finally {
         carregandoPolitica.value = false
@@ -97,27 +88,18 @@ const preencherDialog = (titulo, conteudo) => {
 
 const aceitar = async () => {
     if (!aceitou.value) {
-        alert('desmarcado')
         return
     }
 
     try {
         const dados = await post('/consentimento/aceitar', null, true)
 
-        $q.notify({
-            type: 'positive',
-            message: dados.message || 'Aceito com sucesso',
-            position: 'top-right'
-        })
+        notificarSucesso(dados.message || 'Aceito com sucesso')
 
         router.replace({ name: 'home' })
 
     } catch (e) {
-        $q.notify({
-            type: 'negative',
-            message: e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua',
-            position: 'top-right'
-        })
+        notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
     }
 }
 

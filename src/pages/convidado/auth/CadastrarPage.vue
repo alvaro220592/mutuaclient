@@ -46,9 +46,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useQuasar } from 'quasar'
 
-const $q = useQuasar()
 const name = ref('')
 const email = ref('')
 const password = ref('')
@@ -61,6 +59,7 @@ import { useAuthStore } from 'src/stores/auth';
 import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue';
+import { notificarErro } from 'src/utils/notificacao';
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -84,11 +83,7 @@ const onCadastrar = async () => {
         router.replace('/app')
 
     } catch (err) {
-        $q.notify({
-            type: 'negative',
-            message: err.message || 'Erro inesperado',
-            position: 'top-right'
-        })
+        notificarErro(err.message || 'Erro inesperado')
     }
 }
 
@@ -106,7 +101,7 @@ const onLoginGoogle = async () => {
 
         router.replace('/app')
     } catch (err) {
-        console.error(err)
+        notificarErro(JSON.stringify(err))
     }
 }
 

@@ -21,15 +21,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useQuasar } from 'quasar'
-
-const $q = useQuasar()
 const email = ref('')
 const carregando = ref(false)
 
 import { recuperarSenha } from 'src/services/auth'
 import { useRouter } from 'vue-router'
 import TituloPagina from 'src/components/TituloPagina.vue';
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
 
 const router = useRouter()
 
@@ -39,11 +37,7 @@ const enviarEmailRecuperacao = async () => {
 
         await recuperarSenha({ email: email.value })
 
-        $q.notify({
-            type: 'positive',
-            message: 'O código de verificação foi enviado por e-mail',
-            position: 'top-right'
-        })
+        notificarSucesso('O código de verificação foi enviado por e-mail')
 
         router.replace({
             path: '/redefinir-senha',
@@ -53,11 +47,7 @@ const enviarEmailRecuperacao = async () => {
         })
 
     } catch (err) {
-        $q.notify({
-            type: 'negative',
-            message: err.message || 'Erro inesperado',
-            position: 'top-right'
-        })
+        notificarErro(err.message || 'Erro inesperado')
     } finally {
         carregando.value = false
     }

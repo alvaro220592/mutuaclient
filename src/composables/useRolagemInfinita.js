@@ -1,8 +1,7 @@
 import { ref } from 'vue'
-import { useQuasar } from 'quasar'
+import { notificarErro } from 'src/utils/notificacao'
 
 export function useRolagemInfinita(buscarPagina) {
-    const $q = useQuasar()
 
     const registros = ref({
         data: [],
@@ -49,11 +48,7 @@ export function useRolagemInfinita(buscarPagina) {
             }
         }
         catch (erro) {
-            $q.notify({
-                type: 'negative',
-                message: erro.message || 'Erro ao carregar dados.',
-                position: 'top-right'
-            })
+            notificarErro(erro.message || 'Erro ao carregar dados')
         }
         finally {
             done()

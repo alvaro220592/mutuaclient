@@ -28,14 +28,13 @@
 <script setup>
 import { onMounted, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { buscarCategorias, buscarDoacao, salvar, atualizar, buscarPerfisDoacao } from 'src/services/doacao';
 import { buscarUsuarios } from 'src/services/info-usuario';
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
 
 const router = useRouter()
 const route = useRoute()
-const $q = useQuasar()
 
 const usuarios = ref([])
 const usuariosFiltrados = ref([])
@@ -133,11 +132,7 @@ const trazerCategorias = async () => {
         categoriaOutrosId.value = dados.categoriaOutrosId
     }
     catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro),
-            position: 'top-right'
-        })
+        notificarErro(JSON.stringify(erro))
     }
 }
 
@@ -148,11 +143,7 @@ const trazerUsuarios = async () => {
         usuariosFiltrados.value = dados.usuarios
 
     } catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro),
-            position: 'top-right'
-        })
+        notificarErro(JSON.stringify(erro))
     }
 }
 
@@ -168,11 +159,7 @@ const trazerPerfisDoacao = async () => {
         perfisDoacaoFiltrados.value = perfisDoacao.value
 
     } catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro),
-            position: 'top-right'
-        })
+        notificarErro(JSON.stringify(erro))
     }
 }
 
@@ -185,7 +172,7 @@ const carregarDoacao = async (id) => {
         detalhes.value = dados.doacao.detalhes
 
     } catch (error) {
-        alert(JSON.stringify(error))
+        notificarErro(JSON.stringify(error))
     }
 }
 
@@ -205,20 +192,12 @@ const onSalvar = async () => {
             await salvar(payload, true)
         }
 
-        $q.notify({
-            type: 'positive',
-            message: 'Doação salva com sucesso',
-            position: 'top-right'
-        })
+        notificarSucesso('Doação salva com sucesso')
 
         router.replace({ name: 'admin.doacoes.index' })
     }
     catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro.message),
-            position: 'top-right'
-        })
+        notificarErro(erro.message)
     }
 }
 

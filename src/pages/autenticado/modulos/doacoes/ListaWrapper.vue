@@ -32,7 +32,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { carregarDoacoesLista } from 'src/utils/doacoes'
 import VisualizacaoModoLista from 'src/components/doacao/VisualizacaoModoLista.vue'
@@ -40,9 +39,9 @@ import { useDoacaoAcoes } from 'src/composables/useDoacaoAcoes'
 import NenhumRegistroEncontrado from 'src/components/NenhumRegistroEncontrado.vue'
 import { buscarDoacoesLista, buscarPerfisDoacao } from 'src/services/doacao'
 import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
+import { notificarErro } from 'src/utils/notificacao'
 
 const router = useRouter()
-const $q = useQuasar()
 
 const carregando = ref(false)
 const terminou = ref(false)
@@ -100,11 +99,7 @@ const trazerPerfisDoacao = async () => {
         }))
 
     } catch (erro) {
-        $q.notify({
-            type: 'negative',
-            message: JSON.stringify(erro),
-            position: 'top-right'
-        })
+        notificarErro(JSON.stringify(erro))
     }
 }
 

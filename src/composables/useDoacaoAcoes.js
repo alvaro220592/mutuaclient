@@ -2,6 +2,7 @@
 
 import { useQuasar } from 'quasar'
 import { excluir, mudarStatus } from 'src/services/doacao'
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao'
 
 export function useDoacaoAcoes(doacoes) {
     const $q = useQuasar()
@@ -9,28 +10,14 @@ export function useDoacaoAcoes(doacoes) {
     const alternarStatus =
         async function (doacao) {
             try {
-                const dados =
-                    await mudarStatus({
-                        id: doacao.id
-                    })
+                const dados = await mudarStatus({ id: doacao.id })
 
-                doacao.ativo =
-                    !doacao.ativo
+                doacao.ativo = !doacao.ativo
 
-                $q.notify({
-                    type: 'positive',
-                    message: dados.message,
-                    position: 'top-right'
-                })
+                notificarSucesso(dados.message)
             }
             catch (erro) {
-                $q.notify({
-                    type: 'negative',
-                    message:
-                        erro.message ||
-                        'Erro ao alterar status',
-                    position: 'top-right'
-                })
+                notificarErro(erro.message || 'Erro ao alterar status')
             }
         }
 
@@ -45,18 +32,10 @@ export function useDoacaoAcoes(doacoes) {
                 }
             )
 
-            $q.notify({
-                type: 'positive',
-                message: dados.message,
-                position: 'top-right'
-            })
+            notificarSucesso(dados.message)
         }
         catch (erro) {
-            $q.notify({
-                type: 'negative',
-                message: erro.message || 'Erro ao excluir',
-                position: 'top-right'
-            })
+            notificarErro(erro.message || 'Erro ao excluir')
         }
     }
 

@@ -77,6 +77,7 @@ import { armazenarToken } from 'src/services/storage'
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue'
 import SeparadorHorizontalComDescricao from 'src/components/SeparadorHorizontalComDescricao.vue'
 import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
+import { notificarErro, notificarSucesso } from 'src/utils/notificacao'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -145,11 +146,7 @@ const info = async () => {
                 .join('\n')
         }
 
-        $q.notify({
-            type: 'negative',
-            message: mensagem,
-            position: 'top-right'
-        })
+        notificarErro(mensagem)
 
     } finally {
         carregando.value = false
@@ -193,11 +190,7 @@ const salvar = async () => {
 
         else {
             router.replace({ name: 'home' })
-            $q.notify({
-                type: 'positive',
-                message: 'Perfil atualizado com sucesso',
-                position: 'top-right'
-            })
+            notificarSucesso('Atualizado com sucesso')
         }
 
 
@@ -211,11 +204,7 @@ const salvar = async () => {
                 .join('\n')
         }
 
-        $q.notify({
-            type: 'negative',
-            message: mensagem,
-            position: 'top-right'
-        })
+        notificarErro(mensagem)
 
     } finally {
         carregando.value = false
@@ -231,11 +220,7 @@ const buscarRegiaoPeloCep = async () => {
         uf.value = dados.uf
 
     } catch (e) {
-        $q.notify({
-            type: 'negative',
-            message: e.message,
-            position: 'top-right'
-        })
+        notificarErro(e.message)
     } finally {
         carregandoBuscaRegiao.value = false
     }
@@ -276,18 +261,10 @@ const excluirConta = () => {
 
             router.replace({ name: 'login' })
 
-            $q.notify({
-                type: 'positive',
-                message: 'Conta excluída com sucesso',
-                position: 'top-right'
-            })
+            notificarSucesso('Conta excluída com sucesso')
         }
         catch (erro) {
-            $q.notify({
-                type: 'negative',
-                message: erro.message,
-                position: 'top-right'
-            })
+            notificarErro(erro.message)
         }
     })
 }
