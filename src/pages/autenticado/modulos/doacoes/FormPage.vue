@@ -3,13 +3,13 @@
         <TituloPagina titulo="Insira os dados da doação" />
 
         <div class="column q-gutter-md">
-            <q-select outlined v-model="perfilDoacaoSelecionado" :options="perfisDoacaoFiltrados"
-                option-label="descricao" option-value="id" emit-value map-options use-input input-debounce="0"
-                @filter="filtrarPerfisDoacao" behavior="dialog" clearable label="Deseja doar ou precisa de algo?" />
+            <q-select outlined v-model="perfilDoacaoSelecionado" :options="perfisDoacao" option-label="descricao"
+                option-value="id" emit-value map-options input-debounce="0" behavior="dialog" clearable
+                label="Doar ou solicitar doação" />
 
             <q-select outlined v-model="categoriaSelecionada" :options="categoriasFiltradas" option-label="nome"
-                option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarCategorias"
-                behavior="dialog" clearable label="Do que se trata a doação?" />
+                option-value="id" emit-value map-options input-debounce="0" behavior="dialog" clearable
+                label="Do que se trata a doação?" />
 
             <q-input type="textarea" outlined v-model="detalhes"
                 :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />
@@ -78,23 +78,6 @@ const trazerPerfisDoacao = async () => {
     } catch (erro) {
         notificarErro(JSON.stringify(erro))
     }
-}
-
-function filtrarCategorias(val, update) {
-    if (val === '') {
-        update(() => {
-            categoriasFiltradas.value = categorias.value
-        })
-        return
-    }
-
-    update(() => {
-        const termo = val.toLowerCase()
-
-        categoriasFiltradas.value = categorias.value.filter(categoria =>
-            categoria.nome.toLowerCase().includes(termo)
-        )
-    })
 }
 
 const trazerCategorias = async () => {

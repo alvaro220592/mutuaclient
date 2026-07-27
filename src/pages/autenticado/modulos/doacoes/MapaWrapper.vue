@@ -48,6 +48,11 @@
 
             <q-space class="q-my-md" />
 
+            <div>
+                <span v-if="doacoes.length > 0">{{ doacoes.length }} resultado(s) encontrado(s)</span>
+                <span v-else>Nenhum resultado encontrado</span>
+            </div>
+
             <VisualizacaoModoMapa :doacoes="doacoes" :latitudeUsuario="latitudeInicial"
                 :longitudeUsuario="longitudeInicial" />
         </div>
