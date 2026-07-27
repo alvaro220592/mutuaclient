@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="text-caption text-grey">
-                            Exibe apenas tipos de coações que você está oferecendo ou solicitando
+                            Exibe apenas tipos de doações que você está oferecendo ou solicitando
                         </div>
                     </div>
                 </div>
