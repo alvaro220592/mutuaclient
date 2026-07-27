@@ -4,7 +4,8 @@ export const carregarDoacoesMapa = async ({
     categoriasDoacao,
     perfisDoacao,
     doacoes,
-    regiaoUsuario,
+    latitudeInicial,
+    longitudeInicial,
     buscar
 }) => {
 
@@ -21,7 +22,8 @@ export const carregarDoacoesMapa = async ({
         }))
 
         doacoes.value = dados.doacoes
-        regiaoUsuario.value = dados.usuario.regiao_usuario
+        latitudeInicial.value = dados.usuario.regiao_usuario?.latitude ?? '-23.5510589'
+        longitudeInicial.value = dados.usuario.regiao_usuario?.longitude ?? '-46.6548426'
 
     } catch (e) {
         alert(JSON.stringify(e))

@@ -5,7 +5,7 @@
                 {{ props.titulo }}
             </div>
 
-            <div class="text-caption text-grey-7">{{ props.descricao }}</div>
+            <div v-if="props.descricao" class="text-caption text-grey-7">{{ props.descricao }}</div>
         </div>
     </q-toolbar>
 </template>

@@ -6,7 +6,21 @@
             {{ primeiraLetraMaiuscula(doacao.perfil.nome) }}
         </div>
 
+        <!-- Essa seção é exibida apenas na área admin, que vê as doações de todos -->
+        <q-card-section class="q-pb-none" v-if="areaAdmin">
+            <div>
+                <div class="text-subtitle2 text-weight-bold">
+                    Usuário
+                </div>
+
+                <div class="text-body1">
+                    {{ doacao.usuario.name }}
+                </div>
+            </div>
+        </q-card-section>
+
         <q-card-section class="row items-center justify-between">
+
             <div>
                 <div class="text-subtitle2 text-weight-bold">
                     Categoria
@@ -87,6 +101,10 @@ defineProps({
     usuario: {
         type: String,
         required: false
+    },
+    areaAdmin: {
+        type: Boolean,
+        default: false
     }
 })
 

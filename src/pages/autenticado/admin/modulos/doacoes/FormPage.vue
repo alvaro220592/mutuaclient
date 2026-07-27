@@ -7,13 +7,13 @@
                 option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarUsuarios"
                 behavior="dialog" clearable label="Selecione um usuario para atribuir" />
 
-            <q-select outlined v-model="perfilDoacaoSelecionado" :options="perfisDoacaoFiltrados" option-label="nome"
-                option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarPerfisDoacao"
-                behavior="dialog" clearable label="Selecione um perfil de doação" />
+            <q-select outlined v-model="perfilDoacaoSelecionado" :options="perfisDoacaoFiltrados"
+                option-label="descricao" option-value="id" emit-value map-options use-input input-debounce="0"
+                @filter="filtrarPerfisDoacao" behavior="dialog" clearable label="Deseja doar ou precisa de algo?" />
 
             <q-select outlined v-model="categoriaSelecionada" :options="categoriasFiltradas" option-label="nome"
                 option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarCategorias"
-                behavior="dialog" clearable label="Selecione uma categoria" />
+                behavior="dialog" clearable label="Do que se trata a doação?" />
 
             <q-input type="textarea" outlined v-model="detalhes"
                 :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />

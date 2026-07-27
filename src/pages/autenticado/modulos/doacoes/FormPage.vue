@@ -3,13 +3,13 @@
         <TituloPagina titulo="Insira os dados da doação" />
 
         <div class="column q-gutter-md">
-            <q-select outlined v-model="perfilDoacaoSelecionado" :options="perfisDoacaoFiltrados" option-label="nome"
-                option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarPerfisDoacao"
-                behavior="dialog" clearable label="Qual tipo de doação?" />
+            <q-select outlined v-model="perfilDoacaoSelecionado" :options="perfisDoacaoFiltrados"
+                option-label="descricao" option-value="id" emit-value map-options use-input input-debounce="0"
+                @filter="filtrarPerfisDoacao" behavior="dialog" clearable label="Deseja doar ou precisa de algo?" />
 
             <q-select outlined v-model="categoriaSelecionada" :options="categoriasFiltradas" option-label="nome"
                 option-value="id" emit-value map-options use-input input-debounce="0" @filter="filtrarCategorias"
-                behavior="dialog" clearable label="Qual a categoria?" />
+                behavior="dialog" clearable label="Do que se trata a doação?" />
 
             <q-input type="textarea" outlined v-model="detalhes"
                 :label="`Detalhes (${categoriaOutrosSelecionada ? 'Obrigatório' : 'Opcional'})`" />

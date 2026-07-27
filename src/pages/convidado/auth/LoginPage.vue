@@ -51,8 +51,8 @@ import { notificarErro } from 'src/utils/notificacao';
 const router = useRouter()
 const authStore = useAuthStore()
 
-//const email = ref('alvaro220592@gmail.com')
-const email = ref('_teste@mail.com')
+const email = ref('alvaro220592@gmail.com')
+// const email = ref('_teste@mail.com')
 const password = ref('password')
 const carregando = ref(false)
 const campoTipoSenha = ref(true)

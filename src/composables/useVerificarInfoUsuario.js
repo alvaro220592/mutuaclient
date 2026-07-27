@@ -9,7 +9,7 @@ export function useVerificarInfoUsuario() {
     const verificarInfoUsuario = async () => {
         const dados = await dadosUsuario()
 
-        if (!dados.usuario.regiao_usuario || !dados.usuario.telefone) {
+        if (!dados.usuario.regiao_usuario) {
             router.push({
                 name: 'usuario.perfil',
                 query: {

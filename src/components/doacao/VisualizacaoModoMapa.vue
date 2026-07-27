@@ -162,10 +162,6 @@ const carregarMarcadores = () => {
 
         const regiao_usuario = doacao.usuario?.regiao_usuario
 
-        if (!regiao_usuario?.latitude || !regiao_usuario?.longitude) {
-            return
-        }
-
         const marker = L.marker(
             [
                 regiao_usuario.latitude,

@@ -1,31 +1,5 @@
 import { get, metodoDelete, post } from "./http";
 
-// SOLICITADAS
-// export function buscarSolicitadas(pagina) {
-//     return get(`/doacoes/solicitadas?page=${pagina}`)
-// }
-
-// export function salvarSolicitada(corpoRequisicao) {
-//     return post('/doacoes/solicitadas/store', corpoRequisicao, true)
-// }
-
-// export function atualizarSolicitada(id, corpoRequisicao) {
-//     return post(`/doacoes/solicitadas/update/${id}`, corpoRequisicao, true)
-// }
-
-// OFERECIDAS
-// export function buscarOferecidas(pagina) {
-//     return get(`/doacoes/oferecidas?page=${pagina}`)
-// }
-
-// export function salvarOferecida(corpoRequisicao) {
-//     return post('/doacoes/oferecidas/store', corpoRequisicao, true)
-// }
-
-// export function atualizarOferecida(id, corpoRequisicao) {
-//     return post(`/doacoes/oferecidas/update/${id}`, corpoRequisicao, true)
-// }
-
 const removerValoresNulos = (objeto) => {
     return Object.fromEntries(
         Object.entries(objeto).filter(entrada => entrada[1] != null)
@@ -46,22 +20,6 @@ export function buscarDoacoesMapa(filtros = {}) {
 
     return get('/doacoes/mapa?' + new URLSearchParams(filtrosValidos))
 }
-
-// export function buscarDoacoesOferecidasMapa(filtros = {}) {
-//     return get('/doacoes/oferecidas/mapa?' + new URLSearchParams(filtros))
-// }
-
-// export function buscarDoacoesOferecidasLista(pagina) {
-//     return get(`/doacoes/oferecidas/lista?page=${pagina}`)
-// }
-
-// export function buscarDoacoesSolicitadasMapa(filtros = {}) {
-//     return get('/doacoes/solicitadas/mapa?' + new URLSearchParams(filtros))
-// }
-
-// export function buscarDoacoesSolicitadasLista(pagina) {
-//     return get(`/doacoes/solicitadas/lista?page=${pagina}`)
-// }
 
 export function salvar(corpoRequisicao) {
     return post('/doacoes/store', corpoRequisicao, true)
