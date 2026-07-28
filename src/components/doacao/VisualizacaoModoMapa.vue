@@ -72,7 +72,8 @@
                 <q-separator />
 
                 <q-card-actions class="q-pa-md justify-center">
-                    <q-btn outline icon="chat" label="Conversar" padding="8px 20px" unelevated rounded />
+                    <q-btn outline icon="chat" label="Conversar" padding="8px 20px" unelevated rounded
+                        @click="navegar('chat.index')" />
                 </q-card-actions>
 
             </q-card>
@@ -129,6 +130,9 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import * as L from 'leaflet'
 import "leaflet.markercluster"
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 
 const initialMap = ref(null)
@@ -236,6 +240,11 @@ watch(
         deep: true
     }
 )
+
+
+function navegar(rota) {
+    router.push({ name: rota })
+}
 
 onUnmounted(() => {
     if (initialMap.value) {

@@ -1,6 +1,7 @@
 <template>
     <q-layout view="hHh lpR fFf">
 
+        <!-- Header normal -->
         <q-header class="bg-dark" flat>
             <div class="row items-center q-pa-sm">
 
@@ -145,7 +146,6 @@
 
                         <!-- <transition appear mode="out-in" :enter-active-class="animacaoEntrar" :leave-active-class="animacaoSair"> -->
                         <router-view v-slot="{ Component }">
-
                             <component :is="Component" :key="$route.fullPath" />
                         </router-view>
                         <!-- </transition> -->

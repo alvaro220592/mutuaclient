@@ -1,6 +1,4 @@
-// Serviço feito para autenticação
-
-import { post } from './http'
+import { get, post } from './http'
 
 import { removerToken, trazerToken } from 'src/services/storage'
 
@@ -27,4 +25,8 @@ export function logout() {
 export async function usuarioAutenticado() {
     const token = await trazerToken()
     return !!token
+}
+
+export function dadosUsuario() {
+    return get('/me')
 }

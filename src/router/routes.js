@@ -190,6 +190,18 @@ const routes = [
   },
 
   {
+    path: '/chat',
+    meta: { auth: true, requerConsentimento: true },
+    children: [
+      {
+        path: '/',
+        name: 'chat.index',
+        component: () => import('pages/autenticado/chat/IndexPage.vue')
+      }
+    ]
+  },
+
+  {
     path: '/consentimento',
     meta: { auth: true, requerConsentimento: false },
     component: () => import('layouts/ConsentimentoLayout.vue'),

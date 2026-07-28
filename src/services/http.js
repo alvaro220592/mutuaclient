@@ -29,7 +29,7 @@ function tratarErro(response, data, auth) {
         }
     }
 
-    // politica de privacidade e termos de uso
+    // Política de privacidade e termos de uso
     const documentosPendentes = response.status === 428 && data?.codigo === 'DOCUMENTOS_PENDENTES'
 
     if (documentosPendentes) {
@@ -64,7 +64,7 @@ export async function get(url) {
     const data = await response.json()
 
     if (!response.ok) {
-        throw tratarErro(response, data)
+        throw tratarErro(response, data, !!token)
     }
 
     return data
@@ -78,6 +78,7 @@ export async function post(url, body = {}, auth = false) {
 
     if (auth) {
         const token = await trazerToken()
+
         if (token) {
             headers.Authorization = `Bearer ${token}`
         }
@@ -92,7 +93,7 @@ export async function post(url, body = {}, auth = false) {
     const data = await response.json()
 
     if (!response.ok) {
-        throw tratarErro(response, data)
+        throw tratarErro(response, data, auth)
     }
 
     return data
@@ -107,6 +108,7 @@ export async function metodoDelete(url, auth = false) {
 
     if (auth) {
         const token = await trazerToken()
+
         if (token) {
             headers.Authorization = `Bearer ${token}`
         }
@@ -120,7 +122,7 @@ export async function metodoDelete(url, auth = false) {
     const data = await response.json()
 
     if (!response.ok) {
-        throw tratarErro(response, data)
+        throw tratarErro(response, data, auth)
     }
 
     return data

@@ -1,4 +1,10 @@
 :root {
     --cor-doacao-oferecida: #1864d6;
     --cor-doacao-solicitada: #f44336;
+    --cor-borda: #0000003d;
+    --cor-borda-dark: #ffffff47;
+}
+
+.body--dark {
+    --cor-borda: #ffffff47;
 }
