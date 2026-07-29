@@ -83,9 +83,17 @@
 
 <script setup>
 import { Dark } from 'quasar';
+import { obterOuCriarConversa } from 'src/services/conversa';
 import { armazenarTema } from 'src/services/storage';
-import { ref } from 'vue';
-// import { Dark } from 'quasar';
+import { useAuthStore } from 'src/stores/auth';
+import { notificarErro } from 'src/utils/notificacao';
+import { onMounted, ref } from 'vue';
+
+const authStore = useAuthStore()
+
+onMounted(() => {
+    abrirConversa(authStore.user.id)
+})
 
 const texto = ref('')
 
@@ -189,6 +197,16 @@ const alternarTema = async () => {
     Dark.toggle()
     await armazenarTema(Dark.mode)
 }
+
+const abrirConversa = async () => {
+    try {
+        const dados = await obterOuCriarConversa(1, 1, 3) // dinamizar no redirecionamento pra essa página
+        alert(JSON.stringify(dados))
+    } catch (e) {
+        notificarErro(e.message)
+    }
+}
+
 </script>
 
 <style lang="scss" scoped>

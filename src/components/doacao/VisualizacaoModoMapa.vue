@@ -69,9 +69,8 @@
                     </q-list>
                 </q-card-section>
 
-                <q-separator />
-
-                <q-card-actions class="q-pa-md justify-center">
+                <!-- O botão de conversar só aparece se a doação sendo exibida não for do usuário logado -->
+                <q-card-actions v-if="doacaoSelecionada.usuario.id != authStore.user.id" class="q-pa-md justify-center">
                     <q-btn outline icon="chat" label="Conversar" padding="8px 20px" unelevated rounded
                         @click="navegar('chat.index')" />
                 </q-card-actions>
@@ -80,47 +79,6 @@
         </q-dialog>
     </div>
 </template>
-
-<style>
-.meu-marker {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .4);
-}
-
-.mapa-container {
-    position: relative;
-}
-
-#map {
-    height: 600px;
-}
-
-.legenda {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 1000;
-}
-
-.solicitada-mapa {
-    background: var(--cor-doacao-solicitada);
-}
-
-.oferecida-mapa {
-    background: var(--cor-doacao-oferecida);
-}
-
-.solicitada-legenda {
-    color: var(--cor-doacao-solicitada);
-}
-
-.oferecida-legenda {
-    color: var(--cor-doacao-oferecida);
-}
-</style>
 
 <script setup>
 
@@ -131,9 +89,10 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import * as L from 'leaflet'
 import "leaflet.markercluster"
 import { useRouter } from 'vue-router'
+import { useAuthStore } from 'src/stores/auth'
 
 const router = useRouter()
-
+const authStore = useAuthStore()
 
 const initialMap = ref(null)
 const mostrarModal = ref(false)
@@ -254,3 +213,44 @@ onUnmounted(() => {
 })
 
 </script>
+
+<style>
+.meu-marker {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+}
+
+.mapa-container {
+    position: relative;
+}
+
+#map {
+    height: 600px;
+}
+
+.legenda {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 1000;
+}
+
+.solicitada-mapa {
+    background: var(--cor-doacao-solicitada);
+}
+
+.oferecida-mapa {
+    background: var(--cor-doacao-oferecida);
+}
+
+.solicitada-legenda {
+    color: var(--cor-doacao-solicitada);
+}
+
+.oferecida-legenda {
+    color: var(--cor-doacao-oferecida);
+}
+</style>
