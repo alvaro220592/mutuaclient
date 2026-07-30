@@ -203,7 +203,8 @@ const conversa = ref({})
 const enviarMsg = async () => {
     try {
         const dados = await enviarMensagem(conversa.value.id, textoMensagem.value)
-        alert(JSON.stringify(dados))
+        conversa.value.mensagens.push(dados.mensagem)
+        textoMensagem.value = ''
     } catch (e) {
         notificarErro(e.message)
     }
