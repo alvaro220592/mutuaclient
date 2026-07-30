@@ -69,10 +69,10 @@
 
         <q-footer class="q-pa-xs bg-dark" bordered>
             <q-toolbar>
-                <q-input v-model="texto" outlined placeholder="Digite sua mensagem..." dense rounded
-                    class="full-width campo-mensagem" @keyup.enter="enviarMensagem">
+                <q-input v-model="textoMensagem" outlined placeholder="Digite sua mensagem..." dense rounded
+                    class="full-width campo-mensagem" @keyup.enter="enviarMsg">
                     <template v-slot:after>
-                        <q-btn round flat icon="send" color="grey-1" @click="enviarMensagem" />
+                        <q-btn round flat icon="send" color="grey-1" @click="enviarMsg" />
                     </template>
                 </q-input>
             </q-toolbar>
@@ -83,7 +83,7 @@
 
 <script setup>
 import { Dark } from 'quasar';
-import { obterOuCriarConversa } from 'src/services/conversa';
+import { enviarMensagem, obterOuCriarConversa } from 'src/services/conversa';
 import { armazenarTema } from 'src/services/storage';
 import { useAuthStore } from 'src/stores/auth';
 import { notificarErro } from 'src/utils/notificacao';
@@ -94,7 +94,7 @@ import { useRoute } from 'vue-router';
 const authStore = useAuthStore()
 const route = useRoute()
 
-const texto = ref('')
+const textoMensagem = ref('')
 const usuarioDoacaoNome = ref('')
 const categoriaDoacaoNome = ref('')
 const detalhesDoacao = ref('')
@@ -200,8 +200,13 @@ onMounted(() => {
 
 const conversa = ref({})
 
-const enviarMensagem = async () => {
-
+const enviarMsg = async () => {
+    try {
+        const dados = await enviarMensagem(conversa.value.id, textoMensagem.value)
+        alert(JSON.stringify(dados))
+    } catch (e) {
+        notificarErro(e.message)
+    }
 }
 
 const alternarTema = async () => {

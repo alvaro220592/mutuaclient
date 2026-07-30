@@ -17,3 +17,10 @@ export const obterOuCriarConversa = async (usuarioDoacaoId, moduloId, referencia
         referencia_id: referenciaId,
     }, true)
 }
+
+export const enviarMensagem = async (conversaId, textoMensagem) => {
+    return await post('/conversa/enviar-mensagem', {
+        conversa_id: conversaId,
+        mensagem: textoMensagem,
+    }, true)
+}
