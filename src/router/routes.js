@@ -97,7 +97,7 @@ const routes = [
         path: 'doacoes',
         children: [
           {
-            path: '/',
+            path: '',
             name: 'doacoes.index',
             component: () => import('pages/autenticado/modulos/doacoes/IndexPage.vue')
           },
@@ -194,7 +194,7 @@ const routes = [
     meta: { auth: true, requerConsentimento: true },
     children: [
       {
-        path: '/',
+        path: '',
         name: 'chat.index',
         component: () => import('pages/autenticado/chat/IndexPage.vue')
       }

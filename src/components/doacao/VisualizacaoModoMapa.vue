@@ -208,7 +208,6 @@ watch(
 // }
 
 const irParaChat = () => {
-    alert(doacaoSelecionada.value.detalhes)
     router.push({
         name: 'chat.index',
         query: {
