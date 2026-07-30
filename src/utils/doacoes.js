@@ -6,6 +6,7 @@ export const carregarDoacoesMapa = async ({
     doacoes,
     latitudeInicial,
     longitudeInicial,
+    moduloId,
     buscar
 }) => {
 
@@ -22,6 +23,7 @@ export const carregarDoacoesMapa = async ({
         }))
 
         doacoes.value = dados.doacoes
+        moduloId.value = dados.moduloId
         latitudeInicial.value = dados.usuario.regiao_usuario?.latitude ?? '-23.5510589'
         longitudeInicial.value = dados.usuario.regiao_usuario?.longitude ?? '-46.6548426'
 

@@ -7,9 +7,9 @@
                 <q-btn flat round dense icon="arrow_back" @click="$router.back()" />
 
                 <div class="text-center">
-                    <span>João - Eletrodomésticos</span>
+                    <span>{{ usuarioDoacaoNome }} - {{ categoriaDoacaoNome }}</span>
                     <br>
-                    <span class="text-caption">dkfjlsdsdfjksd...</span>
+                    <span class="text-caption">{{ truncar(detalhesDoacao, 40) }}</span>
                 </div>
 
                 <!-- Botão de Opções Rápidas -->
@@ -58,10 +58,10 @@
 
         <q-page-container>
             <q-page class="q-pa-md column justify-end" :class="Dark.isActive ? 'bg-grey-10' : 'bg-grey-4'">
-                <q-chat-message label="Sunday, 19th" />
+                <!-- <q-chat-message label="Sunday, 19th" /> -->
 
                 <q-chat-message v-for="mensagem in conversa.mensagens" :key="mensagem.id"
-                    :name="mensagem.minha ? 'Eu' : mensagem.user.name" :text="[mensagem.mensagem]"
+                    :name="mensagem.minha ? 'Eu' : mensagem.usuario.name" :text="[mensagem.mensagem]"
                     :sent="mensagem.minha" stamp="7 minutes ago" :bg-color="mensagem.minha ? 'purple-8' : ''"
                     :text-color="mensagem.minha ? 'white' : 'black'" />
             </q-page>
@@ -87,110 +87,121 @@ import { obterOuCriarConversa } from 'src/services/conversa';
 import { armazenarTema } from 'src/services/storage';
 import { useAuthStore } from 'src/stores/auth';
 import { notificarErro } from 'src/utils/notificacao';
+import { truncar } from 'src/utils/strings';
 import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const authStore = useAuthStore()
+const route = useRoute()
+
+const texto = ref('')
+const usuarioDoacaoNome = ref('')
+const categoriaDoacaoNome = ref('')
+const detalhesDoacao = ref('')
 
 onMounted(() => {
     abrirConversa(authStore.user.id)
+    usuarioDoacaoNome.value = route.query.usuarioDoacaoNome
+    categoriaDoacaoNome.value = route.query.categoriaDoacaoNome
+    detalhesDoacao.value = route.query.detalhesDoacao
 })
 
-const texto = ref('')
+// const conversa = {
+//     mensagens: [
+//         {
+//             id: 1,
+//             user_id: 1,
+//             mensagem: 'Boa tarde. Ainda está disponível?',
+//             minha: true,
+//             user: {
+//                 id: 1,
+//                 name: 'Maria'
+//             }
+//         },
 
-const conversa = {
-    mensagens: [
-        {
-            id: 1,
-            user_id: 1,
-            mensagem: 'Boa tarde. Ainda está disponível?',
-            minha: true,
-            user: {
-                id: 1,
-                name: 'Maria'
-            }
-        },
+//         {
+//             id: 2,
+//             user_id: 2,
+//             mensagem: 'Boa tarde. Sim, está.',
+//             minha: false,
+//             user: {
+//                 id: 2,
+//                 name: 'João'
+//             }
+//         },
 
-        {
-            id: 2,
-            user_id: 2,
-            mensagem: 'Boa tarde. Sim, está.',
-            minha: false,
-            user: {
-                id: 2,
-                name: 'João'
-            }
-        },
+//         {
+//             id: 3,
+//             user_id: 1,
+//             mensagem: 'Onde eu posso pegar?',
+//             minha: true,
+//             user: {
+//                 id: 1,
+//                 name: 'Maria'
+//             }
+//         },
 
-        {
-            id: 3,
-            user_id: 1,
-            mensagem: 'Onde eu posso pegar?',
-            minha: true,
-            user: {
-                id: 1,
-                name: 'Maria'
-            }
-        },
+//         {
+//             id: 4,
+//             user_id: 2,
+//             mensagem: 'Pode me encontrar em frente ao atacadão',
+//             minha: false,
+//             user: {
+//                 id: 2,
+//                 name: 'João'
+//             }
+//         },
 
-        {
-            id: 4,
-            user_id: 2,
-            mensagem: 'Pode me encontrar em frente ao atacadão',
-            minha: false,
-            user: {
-                id: 2,
-                name: 'João'
-            }
-        },
+//         {
+//             id: 5,
+//             user_id: 1,
+//             mensagem: 'ok',
+//             minha: true,
+//             user: {
+//                 id: 2,
+//                 name: 'Maria'
+//             }
+//         },
 
-        {
-            id: 5,
-            user_id: 1,
-            mensagem: 'ok',
-            minha: true,
-            user: {
-                id: 2,
-                name: 'Maria'
-            }
-        },
+//         {
+//             id: 5,
+//             user_id: 2,
+//             mensagem: 'Pode me passar seu whats?',
+//             minha: false,
+//             user: {
+//                 id: 1,
+//                 name: 'João'
+//             }
+//         },
 
-        {
-            id: 5,
-            user_id: 2,
-            mensagem: 'Pode me passar seu whats?',
-            minha: false,
-            user: {
-                id: 1,
-                name: 'João'
-            }
-        },
+//         {
+//             id: 6,
+//             user_id: 1,
+//             mensagem: 'Sim: 11 9999-9874',
+//             minha: true,
+//             user: {
+//                 id: 2,
+//                 name: 'Maria'
+//             }
+//         },
 
-        {
-            id: 6,
-            user_id: 1,
-            mensagem: 'Sim: 11 9999-9874',
-            minha: true,
-            user: {
-                id: 2,
-                name: 'Maria'
-            }
-        },
+//         {
+//             id: 7,
+//             user_id: 2,
+//             mensagem: 'Que horas vc pode ir lá?',
+//             minha: false,
+//             user: {
+//                 id: 1,
+//                 name: 'João'
+//             }
+//         }
+//     ]
+// }
 
-        {
-            id: 7,
-            user_id: 2,
-            mensagem: 'Que horas vc pode ir lá?',
-            minha: false,
-            user: {
-                id: 1,
-                name: 'João'
-            }
-        }
-    ]
-}
+const conversa = ref({})
 
 const enviarMensagem = async () => {
-    alert('msg')
+
 }
 
 const alternarTema = async () => {
@@ -200,8 +211,13 @@ const alternarTema = async () => {
 
 const abrirConversa = async () => {
     try {
-        const dados = await obterOuCriarConversa(1, 1, 3) // dinamizar no redirecionamento pra essa página
-        alert(JSON.stringify(dados))
+        const dados = await obterOuCriarConversa(
+            route.query.usuarioDoacaoId,
+            route.query.moduloId,
+            route.query.referenciaId,
+        )
+
+        conversa.value = dados.conversa
     } catch (e) {
         notificarErro(e.message)
     }

@@ -72,7 +72,7 @@
                 <!-- O botão de conversar só aparece se a doação sendo exibida não for do usuário logado -->
                 <q-card-actions v-if="doacaoSelecionada.usuario.id != authStore.user.id" class="q-pa-md justify-center">
                     <q-btn outline icon="chat" label="Conversar" padding="8px 20px" unelevated rounded
-                        @click="navegar('chat.index')" />
+                        @click="irParaChat" />
                 </q-card-actions>
 
             </q-card>
@@ -105,6 +105,10 @@ const props = defineProps({
     doacoes: {
         type: Array,
         required: true
+    },
+    moduloId: {
+        type: Number,
+        required: false
     },
     latitudeUsuario: {
         type: String,
@@ -175,8 +179,6 @@ onMounted(() => {
             Number(props.longitudeUsuario)
         ], 12)
 
-    // alert(props.latitudeUsuario + ', ' + props.longitudeUsuario)
-
     L.tileLayer(
         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
@@ -201,8 +203,23 @@ watch(
 )
 
 
-function navegar(rota) {
-    router.push({ name: rota })
+// function navegar(rota) {
+//     router.push({ name: rota })
+// }
+
+const irParaChat = () => {
+    alert(doacaoSelecionada.value.detalhes)
+    router.push({
+        name: 'chat.index',
+        query: {
+            usuarioDoacaoId: doacaoSelecionada.value.usuario.id,
+            usuarioDoacaoNome: doacaoSelecionada.value.usuario.name,
+            categoriaDoacaoNome: doacaoSelecionada.value.categoria.nome,
+            detalhesDoacao: doacaoSelecionada.value.detalhes,
+            moduloId: props.moduloId,
+            referenciaId: doacaoSelecionada.value.id,
+        }
+    })
 }
 
 onUnmounted(() => {
