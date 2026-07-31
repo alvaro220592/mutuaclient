@@ -186,6 +186,12 @@ const routes = [
           }
         ]
       },
+
+      {
+        path: 'conversas',
+        name: 'conversas.index',
+        component: () => import('pages/autenticado/conversas/IndexPage.vue')
+      }
     ]
   },
 
@@ -195,8 +201,8 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'chat.index',
-        component: () => import('pages/autenticado/chat/IndexPage.vue')
+        name: 'conversas.chat',
+        component: () => import('pages/autenticado/conversas/ChatPage.vue')
       }
     ]
   },

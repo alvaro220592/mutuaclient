@@ -20,9 +20,11 @@
     "@capacitor/core": "^8.4.0",
     "@capacitor/preferences": "^8.0.1",
     "@capawesome/capacitor-google-sign-in": "^0.1.2",
+    "laravel-echo": "^2.4.0",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "pinia": "^3.0.1",
+    "pusher-js": "^8.6.0",
     "quasar": "^2.16.0",
     "vue": "^3.5.22",
     "vue-router": "^5.0.3"

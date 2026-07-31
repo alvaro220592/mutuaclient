@@ -5,17 +5,19 @@
         <q-header class="bg-dark" flat>
             <div class="row items-center q-pa-sm">
 
-                <div class="col row items-center justify-start">
+                <div class="col items-center justify-start">
                     <q-btn v-if="mostrarBotaoVoltar" class="text-subtitle1" flat round dense icon="arrow_back"
                         @click="voltar()" />
                 </div>
 
-                <div class="col row justify-center">
+                <div class="col justify-center">
                     <img :src="logoDark" width="100%" style="display: block;">
                 </div>
 
-                <div class="col row items-center justify-end">
-                    <q-btn flat dense class="text-subtitle1" icon="menu" @click="drawer = !drawer" />
+                <div class="col items-center justify-end">
+                    <div class="row justify-end q-gutter-sm">
+                        <q-btn round flat dense class="text-subtitle1" icon="notifications" />
+                    </div>
                 </div>
 
             </div>
@@ -140,7 +142,6 @@
         <q-page-container>
 
             <q-page class="flex flex-center q-pa-md" :class="Dark.isActive ? '' : 'bg-grey-2'">
-
                 <div class="box">
                     <q-card class="q-pa-md" flat>
 
@@ -154,6 +155,15 @@
                 </div>
             </q-page>
         </q-page-container>
+
+        <q-footer class="bg-dark" flat>
+            <div class="row items-center justify-between q-py-sm q-px-lg">
+                <q-btn round flat dense class="text-subtitle1" icon="menu" @click="drawer = !drawer" />
+                <q-btn round flat dense class="text-subtitle1" icon="home" @click="navegar('home')" />
+                <q-btn round flat dense class="text-subtitle1" icon="mode_comment"
+                    @click="navegar('conversas.index')" />
+            </div>
+        </q-footer>
 
     </q-layout>
 </template>
@@ -203,8 +213,13 @@ const alternarTema = async () => {
 
 // vai até a url desejada e fecha o expansion item se houver
 function navegar(rota, expansao = null) {
-    if (expansao) { expansoes[expansao] = false }
-    router.push({ name: rota })
+    try {
+
+        if (expansao) { expansoes[expansao] = false }
+        router.push({ name: rota })
+    } catch (e) {
+        alert(e)
+    }
 }
 
 const voltar = () => {

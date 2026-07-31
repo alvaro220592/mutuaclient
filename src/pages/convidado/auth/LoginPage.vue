@@ -47,12 +47,13 @@ import { useAuthStore } from 'src/stores/auth';
 import TituloPagina from 'src/components/TituloPagina.vue';
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue';
 import { notificarErro } from 'src/utils/notificacao';
+import { iniciarEcho } from 'src/services/echo';
 
 const router = useRouter()
 const authStore = useAuthStore()
 
 const email = ref('alvaro220592@gmail.com')
-// const email = ref('_teste@mail.com')
+// const email = ref('joao_teste@mail.com')
 const password = ref('password')
 const carregando = ref(false)
 const campoTipoSenha = ref(true)
@@ -67,6 +68,8 @@ const onLoginNormal = async () => {
         })
 
         await armazenarToken(data.token)
+
+        await iniciarEcho()
 
         authStore.setAuth(data.user, data.token)
 
@@ -88,6 +91,8 @@ const onLoginGoogle = async () => {
         const data = await loginGoogleBackend(idToken)
 
         await armazenarToken(data.token)
+
+        await iniciarEcho()
 
         authStore.setAuth(data.user, data.token)
 

@@ -7,9 +7,9 @@
                 <q-btn flat round dense icon="arrow_back" @click="$router.back()" />
 
                 <div class="text-center">
-                    <span>{{ usuarioDoacaoNome }} - {{ categoriaDoacaoNome }}</span>
+                    <span>{{ conversa.outros_usuarios?.[0]?.name }}</span>
                     <br>
-                    <span class="text-caption">{{ truncar(detalhesDoacao, 40) }}</span>
+                    <span v-if="detalhes" class="text-caption">{{ truncar(detalhes, 40) }}</span>
                 </div>
 
                 <!-- Botão de Opções Rápidas -->
@@ -85,128 +85,57 @@
 import { Dark } from 'quasar';
 import { enviarMensagem, obterOuCriarConversa } from 'src/services/conversa';
 import { armazenarTema } from 'src/services/storage';
-import { useAuthStore } from 'src/stores/auth';
 import { notificarErro } from 'src/utils/notificacao';
 import { truncar } from 'src/utils/strings';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { obterEcho } from 'src/services/echo'
 
-const authStore = useAuthStore()
 const route = useRoute()
 
 const textoMensagem = ref('')
-const usuarioDoacaoNome = ref('')
-const categoriaDoacaoNome = ref('')
-const detalhesDoacao = ref('')
-
-onMounted(() => {
-    abrirConversa(authStore.user.id)
-    usuarioDoacaoNome.value = route.query.usuarioDoacaoNome
-    categoriaDoacaoNome.value = route.query.categoriaDoacaoNome
-    detalhesDoacao.value = route.query.detalhesDoacao
-})
-
-// const conversa = {
-//     mensagens: [
-//         {
-//             id: 1,
-//             user_id: 1,
-//             mensagem: 'Boa tarde. Ainda está disponível?',
-//             minha: true,
-//             user: {
-//                 id: 1,
-//                 name: 'Maria'
-//             }
-//         },
-
-//         {
-//             id: 2,
-//             user_id: 2,
-//             mensagem: 'Boa tarde. Sim, está.',
-//             minha: false,
-//             user: {
-//                 id: 2,
-//                 name: 'João'
-//             }
-//         },
-
-//         {
-//             id: 3,
-//             user_id: 1,
-//             mensagem: 'Onde eu posso pegar?',
-//             minha: true,
-//             user: {
-//                 id: 1,
-//                 name: 'Maria'
-//             }
-//         },
-
-//         {
-//             id: 4,
-//             user_id: 2,
-//             mensagem: 'Pode me encontrar em frente ao atacadão',
-//             minha: false,
-//             user: {
-//                 id: 2,
-//                 name: 'João'
-//             }
-//         },
-
-//         {
-//             id: 5,
-//             user_id: 1,
-//             mensagem: 'ok',
-//             minha: true,
-//             user: {
-//                 id: 2,
-//                 name: 'Maria'
-//             }
-//         },
-
-//         {
-//             id: 5,
-//             user_id: 2,
-//             mensagem: 'Pode me passar seu whats?',
-//             minha: false,
-//             user: {
-//                 id: 1,
-//                 name: 'João'
-//             }
-//         },
-
-//         {
-//             id: 6,
-//             user_id: 1,
-//             mensagem: 'Sim: 11 9999-9874',
-//             minha: true,
-//             user: {
-//                 id: 2,
-//                 name: 'Maria'
-//             }
-//         },
-
-//         {
-//             id: 7,
-//             user_id: 2,
-//             mensagem: 'Que horas vc pode ir lá?',
-//             minha: false,
-//             user: {
-//                 id: 1,
-//                 name: 'João'
-//             }
-//         }
-//     ]
-// }
+const detalhes = ref('')
 
 const conversa = ref({})
+
+let canal = null
+
+onMounted(async () => {
+    const echo = await obterEcho()
+
+    await abrirConversa()
+
+    canal = echo
+        .private(`conversa.${conversa.value.id}`)
+        .listen('.mensagem.enviada', (evento) => {
+            adicionarMensagemNoChat(evento.mensagem)
+        })
+})
+
+onUnmounted(async () => {
+    if (canal) {
+        const echo = await obterEcho()
+        echo.leave(`conversa.${conversa.value.id}`)
+    }
+})
 
 const enviarMsg = async () => {
     try {
         const dados = await enviarMensagem(conversa.value.id, textoMensagem.value)
-        conversa.value.mensagens.push(dados.mensagem)
+        adicionarMensagemNoChat(dados.mensagem)
         textoMensagem.value = ''
     } catch (e) {
         notificarErro(e.message)
+    }
+}
+
+const adicionarMensagemNoChat = (mensagem) => {
+    const existe = conversa.value.mensagens.some(
+        item => item.id === mensagem.id
+    )
+
+    if (!existe) {
+        conversa.value.mensagens.push(mensagem)
     }
 }
 
@@ -218,12 +147,15 @@ const alternarTema = async () => {
 const abrirConversa = async () => {
     try {
         const dados = await obterOuCriarConversa(
-            route.query.usuarioDoacaoId,
+            route.query.outroUsuarioId,
             route.query.moduloId,
             route.query.referenciaId,
+            route.query.assunto,
         )
 
         conversa.value = dados.conversa
+        detalhes.value = dados.conversa.detalhes
+
     } catch (e) {
         notificarErro(e.message)
     }

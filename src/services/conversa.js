@@ -1,5 +1,9 @@
 import { get, post } from './http'
 
+export const buscarConversasUsuario = async () => {
+    return await get(`/conversa/todas-usuario-logado`)
+}
+
 export const obterConversa = async (usuarioId) => {
     return await get(`/conversa/${usuarioId}`)
 }
@@ -10,11 +14,12 @@ export const criarConversa = async (usuarioId) => {
     }, true)
 }
 
-export const obterOuCriarConversa = async (usuarioDoacaoId, moduloId, referenciaId) => {
+export const obterOuCriarConversa = async (outroUsuarioId, moduloId, referenciaId, assunto) => {
     return await post('/conversa', {
-        usuario_doacao_id: usuarioDoacaoId,
+        outro_usuario_id: outroUsuarioId,
         modulo_id: moduloId,
         referencia_id: referenciaId,
+        assunto: assunto,
     }, true)
 }
 

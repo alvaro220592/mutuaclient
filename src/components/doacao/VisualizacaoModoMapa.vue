@@ -100,7 +100,6 @@ const doacaoSelecionada = ref({})
 
 const markers = L.markerClusterGroup()
 
-
 const props = defineProps({
     doacoes: {
         type: Array,
@@ -202,21 +201,14 @@ watch(
     }
 )
 
-
-// function navegar(rota) {
-//     router.push({ name: rota })
-// }
-
 const irParaChat = () => {
     router.push({
-        name: 'chat.index',
+        name: 'conversas.chat',
         query: {
-            usuarioDoacaoId: doacaoSelecionada.value.usuario.id,
-            usuarioDoacaoNome: doacaoSelecionada.value.usuario.name,
-            categoriaDoacaoNome: doacaoSelecionada.value.categoria.nome,
-            detalhesDoacao: doacaoSelecionada.value.detalhes,
+            outroUsuarioId: doacaoSelecionada.value.usuario.id,
             moduloId: props.moduloId,
             referenciaId: doacaoSelecionada.value.id,
+            assunto: `Doação de ${doacaoSelecionada.value.categoria.nome} ${doacaoSelecionada.value.perfil.nome} por ${doacaoSelecionada.value.usuario.name}`
         }
     })
 }
