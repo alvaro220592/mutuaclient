@@ -14,7 +14,7 @@
                 </div>
             </q-card>
 
-            <div id="map"></div>
+            <div ref="mapContainer" id="map" style="height: 100vh; width: 100%;"></div>
 
         </div>
 
@@ -85,7 +85,6 @@ import { ref, onMounted, watch, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 
-// Estilos continuam sendo importados estaticamente sem problemas
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
@@ -93,11 +92,13 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 const router = useRouter()
 const authStore = useAuthStore()
 
+// Referência direta para a DIV do mapa
+const mapContainer = ref(null)
+
 const initialMap = ref(null)
 const mostrarModal = ref(false)
 const doacaoSelecionada = ref({})
 
-// Guardamos as referências do Leaflet reativamente para usar em todo o componente
 const LRef = ref(null)
 const markersRef = ref(null)
 
@@ -121,7 +122,6 @@ const props = defineProps({
 })
 
 const carregarMarcadores = () => {
-    // Evita rodar se o Leaflet ou o grupo de clusters ainda não foram inicializados
     if (!markersRef.value || !LRef.value) return
 
     const L = LRef.value
@@ -159,27 +159,39 @@ const carregarMarcadores = () => {
     })
 }
 
+const destruirMapa = () => {
+    if (initialMap.value) {
+        initialMap.value.off()
+        initialMap.value.remove()
+        initialMap.value = null
+    }
+}
+
 onMounted(async () => {
-    // 1. IMPORTAÇÃO DINÂMICA: Garante que o Leaflet só carregará dentro do ambiente Android ativo
+    await nextTick()
+
+    // 1. Garante que se já existir uma instância (ex: HMR do Vite), ela seja destruída
+    if (mapContainer.value && mapContainer.value._leaflet_id) {
+        mapContainer.value._leaflet_id = null
+    }
+    destruirMapa()
+
+    // 2. Importação Dinâmica do Leaflet e do Cluster
     const LeafletModule = await import('leaflet')
     LRef.value = LeafletModule.default || LeafletModule
-
-    // Importa o plugin de cluster anexando-o ao Leaflet carregado
     await import('leaflet.markercluster')
 
     const L = LRef.value
 
-    // 2. Inicializa o Cluster Group apenas AGORA que o 'L' existe com certeza
     markersRef.value = L.markerClusterGroup({
-        chunkedLoading: true, // Melhora de performance obrigatória para Android
+        chunkedLoading: true,
         removeOutsideVisibleBounds: true
     })
 
-    // Garante que o elemento HTML do mapa já está renderizado na tela do celular
-    await nextTick()
+    // 3. Passamos a referência da DIV em vez da string id 'map'
+    if (!mapContainer.value) return
 
-    // 3. Inicializa o mapa
-    initialMap.value = L.map('map', {
+    initialMap.value = L.map(mapContainer.value, {
         zoomControl: true,
         zoom: 1,
         zoomAnimation: false,
@@ -187,7 +199,6 @@ onMounted(async () => {
         markerZoomAnimation: true
     })
 
-    // Define as coordenadas iniciais baseadas no usuário ou fallback seguro
     const lat = Number(props.latitudeUsuario) || -23.617055
     const lng = Number(props.longitudeUsuario) || -46.954702
     initialMap.value.setView([lat, lng], 12)
@@ -201,8 +212,6 @@ onMounted(async () => {
     ).addTo(initialMap.value)
 
     initialMap.value.addLayer(markersRef.value)
-
-    // Desenha os marcadores iniciais
     carregarMarcadores()
 })
 
@@ -227,10 +236,7 @@ const irParaChat = () => {
 }
 
 onUnmounted(() => {
-    if (initialMap.value) {
-        initialMap.value.remove()
-        initialMap.value = null
-    }
+    destruirMapa()
 })
 </script>
 

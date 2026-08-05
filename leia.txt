@@ -9,7 +9,23 @@ rodar no emulador:
 
 variáveis de ambiente devem começar com 'VITE_', senão o quasar bloqueia
 
-instalar plugin google auth(login com google): npm install @capawesome/capacitor-google-sign-in
+instalar plugin google auth(login com google): 
+    npm install @capawesome/capacitor-google-sign-in --legacy-peer-deps
+    npx cap sync android
+    mudança no src-capacitor/android/app/src/main/java/com/alvaro/mutua/MainActivity.java (ver arquivo)
+    em src-capacitor/android/settings.gradle:
+        include ':capawesome-capacitor-google-sign-in'
+        project(':capawesome-capacitor-google-sign-in').projectDir = new File('../../node_modules/@capawesome/capacitor-google-sign-in/android')
+
+    em src-capacitor/android/app/build.gradle, dentro de 'dependencies':
+        implementation project(':capawesome-capacitor-google-sign-in')
+
+    cd src-capacitor/android
+    ./gradlew clean
+    cd ../..
+    quasar dev -m capacitor -T android
+
+    
 
 sempre que instalar um plugin pro android: npx cap sync android
 
@@ -66,3 +82,7 @@ gerar ícone:
 
 ideias:
     implantar notificação quando alguem lança uma doação com uma categoria de interesse do usuario
+
+    instalar o app no celular:
+        quasar build -m capacitor -T android && npx cap sync android && cd src-capacitor/android && ./gradlew assembleDebug && cd ../..
+        pegar o arquivo em /home/alvaro/programacao/projetos/vuejs/quasar/mutua/src-capacitor/android/app/build/outputs/apk/debug/app-debug.apk e passar pro celular, instalar o app
