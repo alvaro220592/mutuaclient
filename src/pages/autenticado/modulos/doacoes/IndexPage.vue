@@ -17,8 +17,6 @@
             <MapaWrapper v-if="modoVisualizacao == 'mapa'" />
             <ListaWrapper v-if="modoVisualizacao == 'lista'" />
         </div>
-
-        <BotaoFlutuanteNovoCadastro nomeRota="doacoes.novo" />
     </div>
 </template>
 
@@ -28,7 +26,6 @@ import { Dark } from 'quasar';
 import MapaWrapper from './MapaWrapper.vue';
 import ListaWrapper from './ListaWrapper.vue';
 import TituloPagina from 'src/components/TituloPagina.vue';
-import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue';
 
 const modoVisualizacao = ref('mapa')
 

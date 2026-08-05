@@ -28,6 +28,7 @@ export const carregarDoacoesMapa = async ({
         longitudeInicial.value = dados.usuario.regiao_usuario?.longitude ?? '-46.6548426'
 
     } catch (e) {
+        alert(e)
         alert(JSON.stringify(e))
 
     } finally {

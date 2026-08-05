@@ -34,7 +34,7 @@
                 </div>
 
                 <!-- Rodapé -->
-                <q-footer bordered class="bg-dark">
+                <q-footer bordered class="bg-dark" style="padding-bottom: env(safe-area-inset-bottom);">
                     <q-toolbar class="justify-between">
                         <div>
                             <q-btn v-if="route.name != 'login'" color="white" outline label="Entrar"

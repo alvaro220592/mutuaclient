@@ -71,6 +71,7 @@ const perfisDoacao = ref([])
 const usuarios = ref([])
 const latitudeInicial = ref(null)
 const longitudeInicial = ref(null)
+const moduloId = ref(null)
 
 const carregando = ref(false)
 
@@ -86,6 +87,7 @@ const buscarDoacoes = async () => {
         doacoes,
         latitudeInicial,
         longitudeInicial,
+        moduloId,
         buscar: buscarDoacoesMapa
     })
 }

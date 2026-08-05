@@ -16,7 +16,35 @@
 
                 <div class="col items-center justify-end">
                     <div class="row justify-end q-gutter-sm">
-                        <q-btn round flat dense class="text-subtitle1" icon="notifications" />
+                        <!-- <q-btn round flat dense class="text-subtitle1" icon="notifications" /> -->
+                        <q-btn round flat dense icon="notifications">
+                            <q-badge color="red" floating>3</q-badge>
+
+                            <q-menu>
+                                <q-list style="min-width:320px">
+                                    <q-item-label header>
+                                        Notificações
+                                    </q-item-label>
+
+                                    <q-item clickable>
+                                        <q-item-section>
+                                            João respondeu sua doação
+                                            <div class="text-caption">
+                                                há 5 minutos
+                                            </div>
+                                        </q-item-section>
+                                    </q-item>
+
+                                    <q-separator />
+
+                                    <q-item clickable>
+                                        <q-item-section>
+                                            Ver todas
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-menu>
+                        </q-btn>
                     </div>
                 </div>
 
@@ -156,22 +184,27 @@
             </q-page>
         </q-page-container>
 
-        <q-footer class="bg-dark" flat>
+        <q-footer class="bg-dark" flat style="padding-bottom: env(safe-area-inset-bottom);">
             <div class="row items-center justify-between q-py-sm q-px-lg">
                 <q-btn round flat dense class="text-subtitle1" icon="menu" @click="drawer = !drawer" />
                 <q-btn round flat dense class="text-subtitle1" icon="home" @click="navegar('home')" />
-                <q-btn round flat dense class="text-subtitle1" icon="mode_comment"
-                    @click="navegar('conversas.index')" />
+                <q-btn round flat dense class="text-subtitle1" icon="chat" @click="navegar('conversas.index')">
+                    <q-badge v-if="numMensagensNaoLidas > 0" color="red" floating> {{ numMensagensNaoLidas }} </q-badge>
+                </q-btn>
             </div>
         </q-footer>
 
     </q-layout>
 </template>
 
-<style></style>
+<style>
+.espelhado {
+    transform: scaleX(-1);
+}
+</style>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { armazenarTema, armazenarToken } from 'src/services/storage'
@@ -179,6 +212,42 @@ import { Dark } from 'quasar'
 // import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
 import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
+import { obterEcho } from 'src/services/echo'
+import { buscarNumMensagensNaoLidas } from 'src/services/conversa'
+
+let canal = null
+
+const numMensagensNaoLidas = ref(0)
+
+onMounted(async () => {
+    await atualizarNumMensagensNaoLidas()
+
+    const echo = await obterEcho()
+
+    canal = echo
+        .private(`usuario.${authStore.user.id}`)
+        .listen('.mensagem.enviada', () => {
+            atualizarNumMensagensNaoLidas()
+        })
+})
+
+onUnmounted(async () => {
+    if (canal) {
+        const echo = await obterEcho()
+        echo.leave(`usuario.${authStore.user.id}`)
+    }
+})
+
+const atualizarNumMensagensNaoLidas = async () => {
+    try {
+        const dados = await buscarNumMensagensNaoLidas()
+
+        numMensagensNaoLidas.value = dados.numero
+
+    } catch (e) {
+        console.error(e)
+    }
+}
 
 const logo = computed(() =>
     Dark.isActive ? logoDark : logoLight

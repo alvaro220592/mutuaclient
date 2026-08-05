@@ -57,9 +57,7 @@
         </q-header>
 
         <q-page-container>
-            <q-page class="q-pa-md column justify-end" :class="Dark.isActive ? 'bg-grey-10' : 'bg-grey-4'">
-                <!-- <q-chat-message label="Sunday, 19th" /> -->
-
+            <q-page class="q-pa-md column justify-end" :class="Dark.isActive ? 'chat-dark' : 'chat-light'">
                 <q-chat-message v-for="mensagem in conversa.mensagens" :key="mensagem.id"
                     :name="mensagem.minha ? 'Eu' : mensagem.usuario.name" :text="[mensagem.mensagem]"
                     :sent="mensagem.minha" stamp="7 minutes ago" :bg-color="mensagem.minha ? 'purple-8' : ''"
@@ -67,7 +65,7 @@
             </q-page>
         </q-page-container>
 
-        <q-footer class="q-pa-xs bg-dark" bordered>
+        <q-footer class="q-pa-xs bg-dark" bordered style="padding-bottom: env(safe-area-inset-bottom);">
             <q-toolbar>
                 <q-input v-model="textoMensagem" outlined placeholder="Digite sua mensagem..." dense rounded
                     class="full-width campo-mensagem" @keyup.enter="enviarMsg">
@@ -176,5 +174,17 @@ const abrirConversa = async () => {
     :deep(input) {
         color: white;
     }
+}
+
+.chat-light {
+    background-color: #eeeeee;
+    background-image: radial-gradient(#d0d0d0 1px, transparent 1px);
+    background-size: 12px 12px;
+}
+
+.chat-dark {
+    background-color: #212121;
+    background-image: radial-gradient(#444 1px, transparent 1px);
+    background-size: 12px 12px;
 }
 </style>

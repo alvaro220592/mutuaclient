@@ -65,5 +65,4 @@ gerar ícone:
 
 
 ideias:
-    repensar na dinamica de contato, em deixar as pessoas se verem no mapa de acordo com a categoria e se contatarem
-    em vez de cadastrar o endereço completo, cadastrar só o bairro e ver se tem coordenada só pelo bairro
+    implantar notificação quando alguem lança uma doação com uma categoria de interesse do usuario

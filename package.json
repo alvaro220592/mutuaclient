@@ -20,6 +20,7 @@
     "@capacitor/core": "^8.4.0",
     "@capacitor/preferences": "^8.0.1",
     "@capawesome/capacitor-google-sign-in": "^0.1.2",
+    "@quasar/extras": "^2.0.2",
     "laravel-echo": "^2.4.0",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",

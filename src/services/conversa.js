@@ -29,3 +29,7 @@ export const enviarMensagem = async (conversaId, textoMensagem) => {
         mensagem: textoMensagem,
     }, true)
 }
+
+export const buscarNumMensagensNaoLidas = async () => {
+    return await get(`/conversa/numero-mensagens-nao-lidas`)
+}

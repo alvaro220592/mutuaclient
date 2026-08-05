@@ -35,6 +35,8 @@
             @excluir="mostrarConfirmacaoExclusao" />
 
         <NenhumRegistroEncontrado v-else />
+
+        <BotaoFlutuanteNovoCadastro nomeRota="admin.doacoes.novo" />
     </div>
 </template>
 
@@ -49,6 +51,7 @@ import { buscarDoacoesLista, buscarPerfisDoacao } from 'src/services/doacao'
 import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
 import { notificarErro } from 'src/utils/notificacao'
 import { buscarUsuarios } from 'src/services/info-usuario'
+import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue'
 
 const router = useRouter()
 

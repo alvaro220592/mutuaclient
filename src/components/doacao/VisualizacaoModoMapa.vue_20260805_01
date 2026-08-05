@@ -81,14 +81,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onUnmounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from 'src/stores/auth'
 
-// Estilos continuam sendo importados estaticamente sem problemas
+import { ref, onMounted, watch, onUnmounted } from 'vue'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import * as L from 'leaflet'
+import "leaflet.markercluster"
+import { useRouter } from 'vue-router'
+import { useAuthStore } from 'src/stores/auth'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -97,9 +98,7 @@ const initialMap = ref(null)
 const mostrarModal = ref(false)
 const doacaoSelecionada = ref({})
 
-// Guardamos as referências do Leaflet reativamente para usar em todo o componente
-const LRef = ref(null)
-const markersRef = ref(null)
+const markers = L.markerClusterGroup()
 
 const props = defineProps({
     doacoes: {
@@ -120,21 +119,19 @@ const props = defineProps({
     },
 })
 
-const carregarMarcadores = () => {
-    // Evita rodar se o Leaflet ou o grupo de clusters ainda não foram inicializados
-    if (!markersRef.value || !LRef.value) return
 
-    const L = LRef.value
-    markersRef.value.clearLayers()
+const carregarMarcadores = () => {
+
+    markers.clearLayers()
 
     props.doacoes.forEach((doacao) => {
+
         const regiao_usuario = doacao.usuario?.regiao_usuario
-        if (!regiao_usuario?.latitude || !regiao_usuario?.longitude) return
 
         const marker = L.marker(
             [
-                Number(regiao_usuario.latitude),
-                Number(regiao_usuario.longitude)
+                regiao_usuario.latitude,
+                regiao_usuario.longitude
             ],
             {
                 icon: L.divIcon({
@@ -155,42 +152,31 @@ const carregarMarcadores = () => {
             mostrarModal.value = true
         })
 
-        markersRef.value.addLayer(marker)
+        markers.addLayer(marker)
     })
 }
 
-onMounted(async () => {
-    // 1. IMPORTAÇÃO DINÂMICA: Garante que o Leaflet só carregará dentro do ambiente Android ativo
-    const LeafletModule = await import('leaflet')
-    LRef.value = LeafletModule.default || LeafletModule
 
-    // Importa o plugin de cluster anexando-o ao Leaflet carregado
-    await import('leaflet.markercluster')
+onMounted(() => {
 
-    const L = LRef.value
+    initialMap.value = L.map('map',
+        {
+            zoomControl: true,
+            zoom: 1,
+            zoomAnimation: false,
+            fadeAnimation: true,
+            markerZoomAnimation: true
+        }
+    )
+        .setView(
+            [-23.617055, -46.954702],
+            12
+        )
 
-    // 2. Inicializa o Cluster Group apenas AGORA que o 'L' existe com certeza
-    markersRef.value = L.markerClusterGroup({
-        chunkedLoading: true, // Melhora de performance obrigatória para Android
-        removeOutsideVisibleBounds: true
-    })
-
-    // Garante que o elemento HTML do mapa já está renderizado na tela do celular
-    await nextTick()
-
-    // 3. Inicializa o mapa
-    initialMap.value = L.map('map', {
-        zoomControl: true,
-        zoom: 1,
-        zoomAnimation: false,
-        fadeAnimation: true,
-        markerZoomAnimation: true
-    })
-
-    // Define as coordenadas iniciais baseadas no usuário ou fallback seguro
-    const lat = Number(props.latitudeUsuario) || -23.617055
-    const lng = Number(props.longitudeUsuario) || -46.954702
-    initialMap.value.setView([lat, lng], 12)
+        .setView([
+            Number(props.latitudeUsuario),
+            Number(props.longitudeUsuario)
+        ], 12)
 
     L.tileLayer(
         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -200,9 +186,8 @@ onMounted(async () => {
         }
     ).addTo(initialMap.value)
 
-    initialMap.value.addLayer(markersRef.value)
+    initialMap.value.addLayer(markers)
 
-    // Desenha os marcadores iniciais
     carregarMarcadores()
 })
 
@@ -211,7 +196,9 @@ watch(
     () => {
         carregarMarcadores()
     },
-    { deep: true }
+    {
+        deep: true
+    }
 )
 
 const irParaChat = () => {
@@ -232,6 +219,7 @@ onUnmounted(() => {
         initialMap.value = null
     }
 })
+
 </script>
 
 <style>

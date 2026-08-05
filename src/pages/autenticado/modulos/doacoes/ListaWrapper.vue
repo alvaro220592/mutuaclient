@@ -27,6 +27,8 @@
 
             <NenhumRegistroEncontrado v-else />
         </div>
+
+        <BotaoFlutuanteNovoCadastro nomeRota="doacoes.novo" />
     </div>
 </template>
 
@@ -40,6 +42,7 @@ import NenhumRegistroEncontrado from 'src/components/NenhumRegistroEncontrado.vu
 import { buscarDoacoesLista, buscarPerfisDoacao } from 'src/services/doacao'
 import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
 import { notificarErro } from 'src/utils/notificacao'
+import BotaoFlutuanteNovoCadastro from 'src/components/BotaoFlutuanteNovoCadastro.vue'
 
 const router = useRouter()
 
