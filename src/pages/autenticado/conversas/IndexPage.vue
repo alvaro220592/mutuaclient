@@ -1,5 +1,8 @@
 <template>
     <div>
+
+        <titulo-pagina titulo="Mensagens" descricao="" />
+
         <spinner-carregamento v-if="carregando" :carregando="carregando" />
 
         <div v-else>
@@ -44,22 +47,27 @@
 
 <script setup>
 import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
+import TituloPagina from 'src/components/TituloPagina.vue'
 import { buscarConversasUsuario } from 'src/services/conversa'
+import { obterEcho } from 'src/services/echo'
+import { useAuthStore } from 'src/stores/auth'
 import { notificarErro } from 'src/utils/notificacao'
 import { truncar } from 'src/utils/strings'
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const authStore = useAuthStore()
 const conversas = ref([])
 const carregando = ref(false)
+let canal = null
 
 const trazerConversas = async () => {
     try {
         carregando.value = true
         const dados = await buscarConversasUsuario()
         conversas.value = dados.conversas
-        // alert(JSON.stringify(dados))
+
     } catch (e) {
         notificarErro(e.message)
     } finally {
@@ -80,7 +88,22 @@ const irParaChat = (conversa) => {
 }
 
 onMounted(async () => {
+    const echo = await obterEcho()
+
     await trazerConversas()
+
+    canal = echo
+        .private(`usuario.${authStore.user.id}`)
+        .listen('.mensagem.enviada', () => {
+            trazerConversas()
+        })
+})
+
+onUnmounted(async () => {
+    if (canal) {
+        const echo = await obterEcho()
+        echo.leave(`usuario.${authStore.user.id}`)
+    }
 })
 
 </script>

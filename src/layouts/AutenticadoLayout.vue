@@ -2,7 +2,7 @@
     <q-layout view="hHh lpR fFf">
 
         <!-- Header normal -->
-        <q-header class="bg-dark" flat>
+        <q-header class="bg-dark" flat bordered>
             <div class="row items-center q-pa-sm">
 
                 <div class="col items-center justify-start">
@@ -184,10 +184,10 @@
             </q-page>
         </q-page-container>
 
-        <q-footer class="bg-dark" flat style="padding-bottom: env(safe-area-inset-bottom);">
+        <q-footer class="bg-dark" flat bordered style="padding-bottom: env(safe-area-inset-bottom);">
             <div class="row items-center justify-between q-py-sm q-px-lg">
-                <q-btn round flat dense class="text-subtitle1" icon="menu" @click="drawer = !drawer" />
                 <q-btn round flat dense class="text-subtitle1" icon="home" @click="navegar('home')" />
+                <q-btn round flat dense class="text-subtitle1" icon="menu" @click="drawer = !drawer" />
                 <q-btn round flat dense class="text-subtitle1" icon="chat" @click="navegar('conversas.index')">
                     <q-badge v-if="numMensagensNaoLidas > 0" color="red" floating> {{ numMensagensNaoLidas }} </q-badge>
                 </q-btn>
@@ -241,6 +241,7 @@ onUnmounted(async () => {
 const atualizarNumMensagensNaoLidas = async () => {
     try {
         const dados = await buscarNumMensagensNaoLidas()
+        // alert(JSON.stringify(dados))
 
         numMensagensNaoLidas.value = dados.numero
 
