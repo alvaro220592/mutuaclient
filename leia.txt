@@ -77,11 +77,13 @@ gerar ícone:
     npm i -g @quasar/icongenie
     colocar uma imagem quadrada de 1024px na raíz do projeto.
     npx icongenie generate -m capacitor -i nomeDaImagem.png
+    cd src-capacitor
     npx cap sync android
+    cd ..
 
 
 ideias:
-    implantar notificação quando alguem lança uma doação com uma categoria de interesse do usuario
+    ta chegando a notificaçãod e doação do interesse do usuario. falta mostrar na tela e ver o que faz depois
 
     instalar o app no celular:
         quasar build -m capacitor -T android && npx cap sync android && cd src-capacitor/android && ./gradlew assembleDebug && cd ../..

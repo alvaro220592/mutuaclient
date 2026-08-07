@@ -250,6 +250,7 @@ const abrirConversa = async () => {
         }
 
     } catch (e) {
+        alert(JSON.stringify(e))
         notificarErro(e.message)
     }
 }

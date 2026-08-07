@@ -93,7 +93,7 @@ onMounted(async () => {
     await trazerConversas()
 
     canal = echo
-        .private(`usuario.${authStore.user.id}`)
+        .private(`App.Models.User.${authStore.user.id}`)
         .listen('.mensagem.enviada', () => {
             trazerConversas()
         })
@@ -102,7 +102,7 @@ onMounted(async () => {
 onUnmounted(async () => {
     if (canal) {
         const echo = await obterEcho()
-        echo.leave(`usuario.${authStore.user.id}`)
+        echo.leave(`App.Models.User.${authStore.user.id}`)
     }
 })
 

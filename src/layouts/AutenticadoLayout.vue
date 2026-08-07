@@ -17,20 +17,23 @@
                 <div class="col items-center justify-end">
                     <div class="row justify-end q-gutter-sm">
                         <!-- <q-btn round flat dense class="text-subtitle1" icon="notifications" /> -->
-                        <q-btn round flat dense icon="notifications">
-                            <q-badge color="red" floating>3</q-badge>
+                        <q-btn icon="notifications">
+                            <q-badge v-if="naoLidas > 0" color="red" floating>
+                                {{ naoLidas }}
+                            </q-badge>
 
-                            <q-menu>
+                            <q-menu @show="marcarComoLidas">
                                 <q-list style="min-width:320px">
                                     <q-item-label header>
                                         Notificações
                                     </q-item-label>
 
-                                    <q-item clickable>
+                                    <q-item v-for="notificacao in notificacoes" :key="notificacao.id" clickable>
                                         <q-item-section>
-                                            João respondeu sua doação
+                                            {{ notificacao.texto }}
+
                                             <div class="text-caption">
-                                                há 5 minutos
+                                                {{ notificacao.tempo }}
                                             </div>
                                         </q-item-section>
                                     </q-item>
@@ -214,27 +217,85 @@ import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
 import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
 import { obterEcho } from 'src/services/echo'
 import { buscarNumMensagensNaoLidas } from 'src/services/conversa'
+import { notificacaoGeral } from 'src/utils/notificacao'
 
+const drawer = ref(false)
+const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
+
+const expansoes = reactive({})
+const numMensagensNaoLidas = ref(0)
 let canal = null
 
-const numMensagensNaoLidas = ref(0)
+/** NOTIFICAÇÕES */
+const notificacoes = ref([
+    {
+        id: 1,
+        texto: 'Fulano 1 está doando algo do seu interesse',
+        tempo: 'há 5 minutos',
+        lida: false
+    },
+    {
+        id: 1,
+        texto: 'Fulano 2 está doando algo do seu interesse',
+        tempo: 'há 8 minutos',
+        lida: false
+    }
+])
+
+const naoLidas = ref(2)
+
+// function adicionarNotificacao(notificacao) {
+//     notificacoes.value.unshift(notificacao)
+//     naoLidas.value++
+// }
+
+// function marcarComoLidas() {
+//     notificacoes.value.forEach(n => n.lida = true)
+//     naoLidas.value = 0
+// }
+///////////////////////////////////
+
+
 
 onMounted(async () => {
     await atualizarNumMensagensNaoLidas()
 
     const echo = await obterEcho()
 
-    canal = echo
-        .private(`usuario.${authStore.user.id}`)
-        .listen('.mensagem.enviada', () => {
-            atualizarNumMensagensNaoLidas()
+    canal = echo.private(`App.Models.User.${authStore.user.id}`)
+
+    canal.listen('.mensagem.enviada', (event) => {
+        atualizarNumMensagensNaoLidas()
+
+        notificacaoGeral({
+            icone: 'chat',
+            mensagem: 'Fulano mandou uma mensagem',
+            router,
+            acoes: {
+                rota: 'conversas.chat',
+                label: 'Abrir'
+            },
+            query: {
+                conversaId: event.mensagem.conversa_id,
+                outroUsuarioId: event.mensagem.user_id,
+                moduloId: event.mensagem.conversa.modulo_id,
+                referenciaId: event.mensagem.conversa.referencia_id,
+                assunto: event.mensagem.conversa.assunto
+            }
         })
+    })
+
+    canal.notification((notification) => {
+        alert('Nova notificação: ' + JSON.stringify(notification))
+    })
 })
 
 onUnmounted(async () => {
     if (canal) {
         const echo = await obterEcho()
-        echo.leave(`usuario.${authStore.user.id}`)
+        echo.leave(`App.Models.User.${authStore.user.id}`)
     }
 })
 
@@ -254,12 +315,6 @@ const logo = computed(() =>
     Dark.isActive ? logoDark : logoLight
 )
 
-const drawer = ref(false)
-const route = useRoute()
-const router = useRouter()
-const authStore = useAuthStore()
-
-const expansoes = reactive({})
 
 // const {
 //     animacaoEntrar,

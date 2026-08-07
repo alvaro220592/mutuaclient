@@ -21,7 +21,7 @@
             <separador-horizontal detalhes="ou" />
 
             <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                label="Entrar com Google" @click.prevent="onLoginGoogle" />
+                label="Entrar com Google" @click.prevent="onLoginGoogle" :loading="carregando" :disable="carregando" />
 
             <!-- ações secundárias -->
             <div class="column q-gutter-sm q-mt-md">
@@ -84,6 +84,8 @@ const onLoginNormal = async () => {
 
 const onLoginGoogle = async () => {
     try {
+        carregando.value = true
+
         const user = await loginGoogle()
 
         const idToken = user.idToken
@@ -99,6 +101,8 @@ const onLoginGoogle = async () => {
         router.replace('/app')
     } catch (err) {
         console.error(err)
+    } finally {
+        carregando.value = false
     }
 }
 
