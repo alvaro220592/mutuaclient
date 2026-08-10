@@ -20,61 +20,11 @@
 
 
         <q-dialog v-model="mostrarModal" position="bottom">
-            <q-card style="
-                border-top-left-radius: 22px;
-                border-top-right-radius: 22px;
-                min-height: 40vh;
-            ">
+            <q-card>
                 <q-card-section>
-                    <div class="text-overline text-grey-7">
-                        {{ doacaoSelecionada.perfil_doacao_id === 1 ? 'OFERECE' : 'SOLICITA' }}
-                    </div>
-
-                    <div class="text-h6 text-weight-bold">
-                        {{ doacaoSelecionada.categoria?.nome ?? 'Sem categoria' }}
-                    </div>
-
-                    <div class="text-body1 q-mt-sm">
-                        {{ doacaoSelecionada.detalhes ?? 'Sem detalhes.' }}
-                    </div>
+                    <detalhes-doacao :moduloId="props.moduloId" :doacao="doacaoSelecionada"
+                        :mostrarBotaoIrParaChat="mostrarBotaoIrParaChat" />
                 </q-card-section>
-
-                <q-separator />
-
-                <q-card-section>
-                    <div class="text-subtitle2 text-weight-medium q-mb-md">
-                        Contato
-                    </div>
-
-                    <q-list dense>
-                        <q-item>
-                            <q-item-section avatar>
-                                <q-icon name="phone" color="primary" />
-                            </q-item-section>
-
-                            <q-item-section>
-                                {{ doacaoSelecionada.usuario.telefone?.telefone ?? 'Não informado' }}
-                            </q-item-section>
-                        </q-item>
-
-                        <q-item>
-                            <q-item-section avatar>
-                                <q-icon name="mail" color="primary" />
-                            </q-item-section>
-
-                            <q-item-section>
-                                {{ doacaoSelecionada.usuario.email }}
-                            </q-item-section>
-                        </q-item>
-                    </q-list>
-                </q-card-section>
-
-                <!-- O botão de conversar só aparece se a doação sendo exibida não for do usuário logado -->
-                <q-card-actions v-if="doacaoSelecionada.usuario.id != authStore.user.id" class="q-pa-md justify-center">
-                    <q-btn outline icon="chat" label="Conversar" padding="8px 20px" unelevated rounded
-                        @click="irParaChat" />
-                </q-card-actions>
-
             </q-card>
         </q-dialog>
     </div>
@@ -82,14 +32,13 @@
 
 <script setup>
 import { ref, onMounted, watch, onUnmounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import DetalhesDoacao from 'src/pages/autenticado/modulos/doacoes/DetalhesDoacao.vue'
 
-const router = useRouter()
 const authStore = useAuthStore()
 
 // Referência direta para a DIV do mapa
@@ -98,6 +47,7 @@ const mapContainer = ref(null)
 const initialMap = ref(null)
 const mostrarModal = ref(false)
 const doacaoSelecionada = ref({})
+const mostrarBotaoIrParaChat = ref(false)
 
 const LRef = ref(null)
 const markersRef = ref(null)
@@ -107,10 +57,10 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    moduloId: {
-        type: Number,
-        required: false
-    },
+    // moduloId: {
+    //     type: Number,
+    //     required: false
+    // },
     latitudeUsuario: {
         type: String,
         required: false
@@ -153,6 +103,7 @@ const carregarMarcadores = () => {
         marker.on('click', () => {
             doacaoSelecionada.value = doacao
             mostrarModal.value = true
+            mostrarBotaoIrParaChat.value = doacaoSelecionada.value.usuario.id != authStore.user.id
         })
 
         markersRef.value.addLayer(marker)
@@ -222,18 +173,6 @@ watch(
     },
     { deep: true }
 )
-
-const irParaChat = () => {
-    router.push({
-        name: 'conversas.chat',
-        query: {
-            outroUsuarioId: doacaoSelecionada.value.usuario.id,
-            moduloId: props.moduloId,
-            referenciaId: doacaoSelecionada.value.id,
-            assunto: `Doação de ${doacaoSelecionada.value.categoria.nome} ${doacaoSelecionada.value.perfil.nome} por ${doacaoSelecionada.value.usuario.name}`
-        }
-    })
-}
 
 onUnmounted(() => {
     destruirMapa()

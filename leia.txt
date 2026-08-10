@@ -83,7 +83,7 @@ gerar ícone:
 
 
 ideias:
-    ta chegando a notificaçãod e doação do interesse do usuario. falta mostrar na tela e ver o que faz depois
+    ta chegando a notificação de doação do interesse do usuario. falta mostrar na tela e ver o que faz depois
 
     instalar o app no celular:
         quasar build -m capacitor -T android && npx cap sync android && cd src-capacitor/android && ./gradlew assembleDebug && cd ../..

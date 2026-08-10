@@ -111,6 +111,11 @@ const routes = [
             name: 'doacoes.editar',
             component: () => import('pages/autenticado/modulos/doacoes/FormPage.vue')
           },
+          {
+            path: ':id/detalhes',
+            name: 'doacoes.detalhes',
+            component: () => import('pages/autenticado/modulos/doacoes/DetalhesDoacaoPage.vue')
+          },
         ]
       },
 

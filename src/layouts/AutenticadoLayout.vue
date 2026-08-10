@@ -287,8 +287,27 @@ onMounted(async () => {
         })
     })
 
-    canal.notification((notification) => {
-        alert('Nova notificação: ' + JSON.stringify(notification))
+    canal.notification((notificacao) => {
+        // alert('Nova notificação: ' + JSON.stringify(notificacao))
+
+        let icone = ''
+
+        if (notificacao.tipo == 'nova_doacao_interesse') {
+            icone = 'volunteer_activism'
+        }
+
+        notificacaoGeral({
+            icone,
+            mensagem: notificacao.mensagem,
+            router,
+            acoes: {
+                rota: 'doacoes.detalhes',
+                label: 'Ver'
+            },
+            params: {
+                id: notificacao.doacao_id
+            }
+        })
     })
 })
 

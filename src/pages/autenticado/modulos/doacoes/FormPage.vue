@@ -34,7 +34,7 @@ const route = useRoute()
 
 const categorias = ref([])
 const categoriasFiltradas = ref([])
-const categoriaSelecionada = ref(null)
+const categoriaSelecionada = ref(1)
 const categoriaOutrosId = ref()
 const categoriaOutrosSelecionada = ref(false)
 const detalhes = ref(null)
@@ -42,7 +42,7 @@ const modoEdicao = computed(() => !!route.params.id)
 
 const perfisDoacao = ref([])
 const perfisDoacaoFiltrados = ref([])
-const perfilDoacaoSelecionado = ref(null)
+const perfilDoacaoSelecionado = ref(1)
 
 const { verificarInfoUsuario } = useVerificarInfoUsuario()
 

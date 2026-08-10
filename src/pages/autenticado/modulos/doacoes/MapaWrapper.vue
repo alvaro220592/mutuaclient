@@ -53,7 +53,7 @@
                 <span v-else>Nenhum resultado encontrado</span>
             </div>
 
-            <VisualizacaoModoMapa :moduloId="moduloId" :doacoes="doacoes" :latitudeUsuario="latitudeInicial"
+            <VisualizacaoModoMapa :doacoes="doacoes" :latitudeUsuario="latitudeInicial"
                 :longitudeUsuario="longitudeInicial" />
         </div>
     </div>
@@ -61,7 +61,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-
 import { carregarDoacoesMapa } from 'src/utils/doacoes'
 import VisualizacaoModoMapa from 'src/components/doacao/VisualizacaoModoMapa.vue'
 import { buscarDoacoesMapa } from 'src/services/doacao'

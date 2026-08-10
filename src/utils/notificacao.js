@@ -25,6 +25,7 @@ export const notificacaoGeral = ({
     mensagem,
     router,
     acoes = null,
+    params = null,
     query = null
 }) => {
     Notify.create({
@@ -43,6 +44,7 @@ export const notificacaoGeral = ({
                     handler: () => {
                         router.push({
                             name: acoes.rota,
+                            params,
                             query
                         })
                     }
