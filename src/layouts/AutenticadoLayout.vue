@@ -16,41 +16,60 @@
 
                 <div class="col items-center justify-end">
                     <div class="row justify-end q-gutter-sm">
-                        <!-- <q-btn round flat dense class="text-subtitle1" icon="notifications" /> -->
                         <q-btn icon="notifications">
-                            <q-badge v-if="naoLidas > 0" color="red" floating>
-                                {{ naoLidas }}
+                            <q-badge v-if="notificacoesNaoLidas > 0" color="red" floating>
+                                {{ notificacoesNaoLidas }}
                             </q-badge>
 
                             <q-menu @show="marcarComoLidas">
-                                <q-list style="min-width:320px">
-                                    <q-item-label header>
-                                        Notificações
-                                    </q-item-label>
+                                <div style="width: 320px">
+                                    <q-list>
+                                        <q-item-label header>
+                                            Notificações
+                                        </q-item-label>
+                                    </q-list>
 
-                                    <q-item v-for="notificacao in notificacoes" :key="notificacao.id" clickable>
-                                        <q-item-section>
-                                            {{ notificacao.texto }}
+                                    <div v-if="notificacoes.length > 0">
+                                        <div style="max-height: 400px; overflow-y: auto">
+                                            <q-list>
+                                                <q-item v-for="notificacao in notificacoes" :key="notificacao.id"
+                                                    clickable :to="notificacao.link">
+                                                    <q-item-section>
+                                                        {{ notificacao.texto }}
 
-                                            <div class="text-caption">
-                                                {{ notificacao.tempo }}
-                                            </div>
-                                        </q-item-section>
-                                    </q-item>
+                                                        <div class="text-caption">
+                                                            {{ notificacao.tempo }}
+                                                        </div>
+                                                    </q-item-section>
+                                                </q-item>
+                                            </q-list>
+                                        </div>
 
-                                    <q-separator />
+                                        <q-separator />
 
-                                    <q-item clickable>
-                                        <q-item-section>
-                                            Ver todas
-                                        </q-item-section>
-                                    </q-item>
-                                </q-list>
+                                        <q-list>
+                                            <q-item clickable>
+                                                <q-item-section>
+                                                    Ver todas
+                                                </q-item-section>
+                                            </q-item>
+                                        </q-list>
+                                    </div>
+
+                                    <div v-else>
+                                        <q-list>
+                                            <q-item clickable>
+                                                <q-item-section>
+                                                    Nenhuma notificação
+                                                </q-item-section>
+                                            </q-item>
+                                        </q-list>
+                                    </div>
+                                </div>
                             </q-menu>
                         </q-btn>
                     </div>
                 </div>
-
             </div>
         </q-header>
 
@@ -217,7 +236,8 @@ import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
 import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
 import { obterEcho } from 'src/services/echo'
 import { buscarNumMensagensNaoLidas } from 'src/services/conversa'
-import { notificacaoGeral } from 'src/utils/notificacao'
+import { notificacaoGeral, notificarErro } from 'src/utils/notificacao'
+import { get, post } from 'src/services/http'
 
 const drawer = ref(false)
 const route = useRoute()
@@ -229,38 +249,27 @@ const numMensagensNaoLidas = ref(0)
 let canal = null
 
 /** NOTIFICAÇÕES */
-const notificacoes = ref([
-    {
-        id: 1,
-        texto: 'Fulano 1 está doando algo do seu interesse',
-        tempo: 'há 5 minutos',
-        lida: false
-    },
-    {
-        id: 1,
-        texto: 'Fulano 2 está doando algo do seu interesse',
-        tempo: 'há 8 minutos',
-        lida: false
+const notificacoes = ref([])
+
+const notificacoesNaoLidas = ref(0)
+
+const marcarComoLidas = async () => {
+
+    try {
+        await post('/notificacoes/marcar-como-lidas', {}, true)
+
+        notificacoesNaoLidas.value = 0
+
+    } catch (erro) {
+        notificarErro('Erro: ' + erro.message)
     }
-])
-
-const naoLidas = ref(2)
-
-// function adicionarNotificacao(notificacao) {
-//     notificacoes.value.unshift(notificacao)
-//     naoLidas.value++
-// }
-
-// function marcarComoLidas() {
-//     notificacoes.value.forEach(n => n.lida = true)
-//     naoLidas.value = 0
-// }
-///////////////////////////////////
-
-
+}
+/** ********************************************** */
 
 onMounted(async () => {
     await atualizarNumMensagensNaoLidas()
+
+    await carregarNotificacoes()
 
     const echo = await obterEcho()
 
@@ -288,12 +297,17 @@ onMounted(async () => {
     })
 
     canal.notification((notificacao) => {
-        // alert('Nova notificação: ' + JSON.stringify(notificacao))
 
         let icone = ''
+        let rota = ''
+        let label = ''
+        let parametros = {}
 
         if (notificacao.tipo == 'nova_doacao_interesse') {
             icone = 'volunteer_activism'
+            rota = 'doacoes.detalhes'
+            label = 'Ver'
+            parametros = { id: notificacao.doacao_id }
         }
 
         notificacaoGeral({
@@ -301,12 +315,10 @@ onMounted(async () => {
             mensagem: notificacao.mensagem,
             router,
             acoes: {
-                rota: 'doacoes.detalhes',
-                label: 'Ver'
+                rota: rota,
+                label: label
             },
-            params: {
-                id: notificacao.doacao_id
-            }
+            params: parametros
         })
     })
 })
@@ -317,6 +329,36 @@ onUnmounted(async () => {
         echo.leave(`App.Models.User.${authStore.user.id}`)
     }
 })
+
+const carregarNotificacoes = async () => {
+    const data = await get('/notificacoes')
+
+    notificacoes.value = data.notificacoes.map(notificacao => {
+        return {
+            id: notificacao.id,
+            texto: notificacao.data.mensagem,
+            tempo: notificacao.dataAmigavel,
+            lida: notificacao.read_at !== null,
+            tipo: notificacao.data.tipo,
+            link: obterLinkNotificacao(notificacao)
+        }
+    })
+
+    notificacoesNaoLidas.value = data.notificacoesNaoLidas
+}
+
+const obterLinkNotificacao = notificacao => {
+    if (notificacao.data.tipo === 'nova_doacao_interesse') {
+        return {
+            name: 'doacoes.detalhes',
+            params: {
+                id: notificacao.data.doacao_id
+            }
+        }
+    }
+
+    return null
+}
 
 const atualizarNumMensagensNaoLidas = async () => {
     try {
@@ -345,9 +387,9 @@ const mostrarBotaoVoltar = computed(() => {
 })
 
 const logout = async () => {
+    router.replace('/login')
     await armazenarToken(null)
     authStore.setAuth(null, null)
-    router.replace('/login')
 }
 
 const alternarTema = async () => {
@@ -358,7 +400,6 @@ const alternarTema = async () => {
 // vai até a url desejada e fecha o expansion item se houver
 function navegar(rota, expansao = null) {
     try {
-
         if (expansao) { expansoes[expansao] = false }
         router.push({ name: rota })
     } catch (e) {

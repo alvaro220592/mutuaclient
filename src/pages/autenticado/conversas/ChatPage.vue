@@ -191,8 +191,6 @@ onMounted(async () => {
         })
 
     scroll()
-
-    alert(route.query.moduloId)
 })
 
 onUnmounted(async () => {

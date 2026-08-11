@@ -56,7 +56,8 @@
         </div>
 
         <div v-if="mostrarBotaoIrParaChat" class="q-mt-lg text-center">
-            <q-btn outline icon="chat" label="Conversar" padding="8px 20px" unelevated rounded @click="irParaChat" />
+            <!-- <q-btn outline icon="chat" label="Conversar" padding="8px 20px" unelevated rounded @click="irParaChat" /> -->
+            <q-btn color="primary" icon="chat" label="Conversar" unelevated @click="irParaChat" />
         </div>
     </div>
 </template>

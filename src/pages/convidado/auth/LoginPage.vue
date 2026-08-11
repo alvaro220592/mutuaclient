@@ -15,13 +15,12 @@
                 </template>
             </q-input>
 
-            <q-btn class="botao-primario" label="Entrar" @click.prevent="onLoginNormal" :loading="carregando"
-                :disable="carregando" />
+            <q-btn class="botao-primario" label="Entrar" @click.prevent="onLoginNormal" />
 
             <separador-horizontal detalhes="ou" />
 
             <q-btn outline icon="img:https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                label="Entrar com Google" @click.prevent="onLoginGoogle" :loading="carregando" :disable="carregando" />
+                label="Entrar com Google" @click.prevent="onLoginGoogle" />
 
             <!-- ações secundárias -->
             <div class="column q-gutter-sm q-mt-md">
@@ -32,6 +31,8 @@
 
             </div>
         </div>
+
+        <q-inner-loading :showing="carregando" color="primary" label="Aguarde" label-style="font-size: 1.1em" />
     </div>
 </template>
 
