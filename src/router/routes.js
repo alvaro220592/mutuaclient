@@ -196,6 +196,12 @@ const routes = [
         path: 'conversas',
         name: 'conversas.index',
         component: () => import('pages/autenticado/conversas/IndexPage.vue')
+      },
+
+      {
+        path: 'notificacoes',
+        name: 'notificacoes.index',
+        component: () => import('pages/autenticado/notificacoes/IndexPage.vue')
       }
     ]
   },

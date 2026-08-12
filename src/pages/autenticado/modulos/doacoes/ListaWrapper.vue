@@ -3,7 +3,7 @@
         <SpinnerCarregamento v-if="carregando" :carregando="carregando" />
 
         <div v-else>
-            <div class="row items-center justify-center q-col-gutter-sm q-mb-md">
+            <div class="q-gutter-sm q-mb-md text-center">
                 <div class="q-pt-md text-caption">
                     Se quiser, filtre os resultados no campo abaixo
                 </div>

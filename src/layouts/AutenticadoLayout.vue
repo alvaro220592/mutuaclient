@@ -21,7 +21,7 @@
                                 {{ notificacoesNaoLidas }}
                             </q-badge>
 
-                            <q-menu @show="marcarComoLidas">
+                            <q-menu @show="marcarNotificacoesComoLidas">
                                 <div style="width: 320px">
                                     <q-list>
                                         <q-item-label header>
@@ -48,7 +48,7 @@
                                         <q-separator />
 
                                         <q-list>
-                                            <q-item clickable>
+                                            <q-item clickable :to="{ name: 'notificacoes.index' }">
                                                 <q-item-section>
                                                     Ver todas
                                                 </q-item-section>
@@ -236,8 +236,8 @@ import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
 import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
 import { obterEcho } from 'src/services/echo'
 import { buscarNumMensagensNaoLidas } from 'src/services/conversa'
-import { notificacaoGeral, notificarErro } from 'src/utils/notificacao'
-import { get, post } from 'src/services/http'
+import { notificacaoGeral } from 'src/utils/notificacao'
+import { useNotificacoes } from 'src/composables/useNotificacoes'
 
 const drawer = ref(false)
 const route = useRoute()
@@ -248,28 +248,22 @@ const expansoes = reactive({})
 const numMensagensNaoLidas = ref(0)
 let canal = null
 
-/** NOTIFICAÇÕES */
-const notificacoes = ref([])
+// NOTIFICAÇÕES
+const {
+    notificacoes,
+    notificacoesNaoLidas,
+    carregarNotificacoes,
+    marcarNotificacoesComoLidas,
+    iniciarListenerNotificacoes
+} = useNotificacoes()
 
-const notificacoesNaoLidas = ref(0)
-
-const marcarComoLidas = async () => {
-
-    try {
-        await post('/notificacoes/marcar-como-lidas', {}, true)
-
-        notificacoesNaoLidas.value = 0
-
-    } catch (erro) {
-        notificarErro('Erro: ' + erro.message)
-    }
-}
 /** ********************************************** */
 
 onMounted(async () => {
     await atualizarNumMensagensNaoLidas()
 
     await carregarNotificacoes()
+    await iniciarListenerNotificacoes(authStore.user.id, router)
 
     const echo = await obterEcho()
 
@@ -295,32 +289,6 @@ onMounted(async () => {
             }
         })
     })
-
-    canal.notification((notificacao) => {
-
-        let icone = ''
-        let rota = ''
-        let label = ''
-        let parametros = {}
-
-        if (notificacao.tipo == 'nova_doacao_interesse') {
-            icone = 'volunteer_activism'
-            rota = 'doacoes.detalhes'
-            label = 'Ver'
-            parametros = { id: notificacao.doacao_id }
-        }
-
-        notificacaoGeral({
-            icone,
-            mensagem: notificacao.mensagem,
-            router,
-            acoes: {
-                rota: rota,
-                label: label
-            },
-            params: parametros
-        })
-    })
 })
 
 onUnmounted(async () => {
@@ -329,36 +297,6 @@ onUnmounted(async () => {
         echo.leave(`App.Models.User.${authStore.user.id}`)
     }
 })
-
-const carregarNotificacoes = async () => {
-    const data = await get('/notificacoes')
-
-    notificacoes.value = data.notificacoes.map(notificacao => {
-        return {
-            id: notificacao.id,
-            texto: notificacao.data.mensagem,
-            tempo: notificacao.dataAmigavel,
-            lida: notificacao.read_at !== null,
-            tipo: notificacao.data.tipo,
-            link: obterLinkNotificacao(notificacao)
-        }
-    })
-
-    notificacoesNaoLidas.value = data.notificacoesNaoLidas
-}
-
-const obterLinkNotificacao = notificacao => {
-    if (notificacao.data.tipo === 'nova_doacao_interesse') {
-        return {
-            name: 'doacoes.detalhes',
-            params: {
-                id: notificacao.data.doacao_id
-            }
-        }
-    }
-
-    return null
-}
 
 const atualizarNumMensagensNaoLidas = async () => {
     try {
