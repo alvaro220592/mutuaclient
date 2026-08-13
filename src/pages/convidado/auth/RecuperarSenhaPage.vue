@@ -25,17 +25,14 @@ import { recuperarSenha } from 'src/services/auth'
 import { useRouter } from 'vue-router'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
-import { useQuasar } from 'quasar';
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando';
 
 const email = ref('')
 const router = useRouter()
-const $q = useQuasar()
 
 const enviarEmailRecuperacao = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         await recuperarSenha({ email: email.value })
 
@@ -50,8 +47,9 @@ const enviarEmailRecuperacao = async () => {
 
     } catch (err) {
         notificarErro(err.message || 'Erro inesperado')
+
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

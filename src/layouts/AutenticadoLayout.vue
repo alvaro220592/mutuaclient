@@ -230,7 +230,7 @@ import { ref, computed, reactive, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { armazenarTema, armazenarToken } from 'src/services/storage'
-import { Dark, useQuasar } from 'quasar'
+import { Dark } from 'quasar'
 // import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
 import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
@@ -238,8 +238,7 @@ import { obterEcho } from 'src/services/echo'
 import { buscarNumMensagensNaoLidas } from 'src/services/conversa'
 import { notificacaoGeral, notificarErro } from 'src/utils/notificacao'
 import { useNotificacoes } from 'src/composables/useNotificacoes'
-
-const $q = useQuasar()
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando'
 
 const drawer = ref(false)
 const route = useRoute()
@@ -327,9 +326,7 @@ const mostrarBotaoVoltar = computed(() => {
 
 const logout = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         router.replace('/login')
         await armazenarToken(null)
@@ -339,7 +336,7 @@ const logout = async () => {
         notificarErro(erro.message)
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

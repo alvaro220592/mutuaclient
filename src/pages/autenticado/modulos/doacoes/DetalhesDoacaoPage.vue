@@ -10,10 +10,9 @@ import {
 } from 'vue'
 import { useRoute } from 'vue-router'
 import DetalhesDoacao from './DetalhesDoacao.vue'
-import { useQuasar } from 'quasar'
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando.js'
 
 const route = useRoute()
-const $q = useQuasar()
 
 const doacao = ref({})
 
@@ -23,9 +22,7 @@ onMounted(async () => {
 
 const carregarDoacao = async (id) => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const dados = await buscarDoacao(id)
         doacao.value = dados.doacao
@@ -34,7 +31,7 @@ const carregarDoacao = async (id) => {
         alert(JSON.stringify(error) ?? error)
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

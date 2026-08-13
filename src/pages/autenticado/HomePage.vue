@@ -28,9 +28,8 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { modulos } from 'src/services/modulo';
 import TituloPagina from 'src/components/TituloPagina.vue';
-import { useQuasar } from 'quasar';
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando';
 
-const $q = useQuasar()
 const authStore = useAuthStore()
 const router = useRouter()
 const listaModulos = ref()
@@ -41,15 +40,15 @@ onMounted(() => {
 
 const trazerModulos = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
+
         const dados = await modulos()
         listaModulos.value = dados.modulos || []
     } catch (error) {
         console.log(JSON.stringify(error))
+
     } finally {
-        $q.loading.hide()
+        ocultarCarregando
     }
 }
 

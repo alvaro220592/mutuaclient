@@ -47,11 +47,10 @@ import TituloPagina from 'src/components/TituloPagina.vue';
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue';
 import { notificarErro } from 'src/utils/notificacao';
 import { iniciarEcho } from 'src/services/echo';
-import { useQuasar } from 'quasar';
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando';
 
 const router = useRouter()
 const authStore = useAuthStore()
-const $q = useQuasar()
 
 const email = ref('alvaro220592@gmail.com')
 // const email = ref('joao_teste@mail.com')
@@ -60,9 +59,7 @@ const campoTipoSenha = ref(true)
 
 const onLoginNormal = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const data = await login({
             email: email.value,
@@ -76,15 +73,13 @@ const onLoginNormal = async () => {
     } catch (err) {
         notificarErro(err.message || 'Erro inesperado')
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 
 const onLoginGoogle = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const user = await loginGoogle()
         const idToken = user.idToken
@@ -97,7 +92,7 @@ const onLoginGoogle = async () => {
     } catch (err) {
         console.error(err)
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

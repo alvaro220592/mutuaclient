@@ -7,12 +7,10 @@
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar';
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { get } from 'src/services/http';
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando';
 import { onMounted, ref } from 'vue';
-
-const $q = useQuasar()
 
 const termoUso = ref({ conteudo: '' })
 const ultimaAtualizacao = ref('...')
@@ -23,9 +21,7 @@ onMounted(() => {
 
 const trazerAtual = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const dados = await get('/termo-uso/atual',)
         termoUso.value = dados
@@ -33,8 +29,9 @@ const trazerAtual = async () => {
 
     } catch (e) {
         alert(e)
+
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

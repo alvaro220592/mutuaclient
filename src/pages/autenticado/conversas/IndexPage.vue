@@ -44,18 +44,17 @@
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar'
 import TituloPagina from 'src/components/TituloPagina.vue'
 import { buscarConversasUsuario } from 'src/services/conversa'
 import { obterEcho } from 'src/services/echo'
 import { useAuthStore } from 'src/stores/auth'
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando'
 import { notificarErro } from 'src/utils/notificacao'
 import { truncar } from 'src/utils/strings'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const $q = useQuasar()
 
 const authStore = useAuthStore()
 const conversas = ref([])
@@ -64,9 +63,7 @@ let canal = null
 
 const trazerConversas = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const dados = await buscarConversasUsuario()
         conversas.value = dados.conversas
@@ -75,7 +72,7 @@ const trazerConversas = async () => {
         notificarErro(e.message)
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

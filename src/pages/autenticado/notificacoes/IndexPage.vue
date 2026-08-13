@@ -44,9 +44,7 @@
 import { ref } from 'vue'
 import { useNotificacoes } from 'src/composables/useNotificacoes'
 import { notificarErro } from 'src/utils/notificacao'
-import { useQuasar } from 'quasar'
-
-const $q = useQuasar()
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando'
 
 const carregando = ref(false)
 const terminou = ref(false)
@@ -60,9 +58,7 @@ const {
 
 const onCarregarMais = async (_, done) => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         await carregarNotificacoes({
             pagina,
@@ -78,7 +74,7 @@ const onCarregarMais = async (_, done) => {
         notificarErro(erro.message)
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

@@ -74,6 +74,7 @@ import { armazenarToken } from 'src/services/storage'
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue'
 import SeparadorHorizontalComDescricao from 'src/components/SeparadorHorizontalComDescricao.vue'
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao'
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -117,9 +118,7 @@ const info = async () => {
 
 
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const url = '/user/info-perfil'
 
@@ -145,15 +144,13 @@ const info = async () => {
         notificarErro(mensagem)
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 
 const salvar = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const url = '/user/update'
 
@@ -205,15 +202,13 @@ const salvar = async () => {
         notificarErro(mensagem)
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 
 const buscarRegiaoPeloCep = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const dados = await get('/buscar-regiao-pelo-cep/' + cep.value)
         cidade.value = dados.localidade
@@ -223,7 +218,7 @@ const buscarRegiaoPeloCep = async () => {
     } catch (e) {
         notificarErro(e.message)
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

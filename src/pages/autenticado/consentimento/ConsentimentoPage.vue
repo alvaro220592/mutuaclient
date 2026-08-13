@@ -41,10 +41,9 @@ import { get, post } from 'src/services/http.js';
 import { useRouter } from 'vue-router';
 import ConsentimentoDialog from './ConsentimentoDialog.vue';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao.js';
-import { useQuasar } from 'quasar';
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando.js';
 
 const router = useRouter()
-const $q = useQuasar()
 
 const aceitou = ref(false)
 const mostrarDialog = ref(false)
@@ -53,9 +52,7 @@ const conteudoDialog = ref('')
 
 const verTermosUso = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const dados = await get('/termo-uso/atual')
         preencherDialog('Termos de Uso', dados.conteudo)
@@ -64,15 +61,13 @@ const verTermosUso = async () => {
         notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 
 const verPoliticaPrivacidade = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const dados = await get('/politica-privacidade/atual',)
         preencherDialog('Política de privacidade', dados.conteudo)
@@ -81,7 +76,7 @@ const verPoliticaPrivacidade = async () => {
         notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 
@@ -97,9 +92,7 @@ const aceitar = async () => {
     }
 
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const dados = await post('/consentimento/aceitar', null, true)
 
@@ -111,7 +104,7 @@ const aceitar = async () => {
         notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

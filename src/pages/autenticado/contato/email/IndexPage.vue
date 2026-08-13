@@ -19,18 +19,15 @@ import { useRouter } from 'vue-router';
 import { post } from 'src/services/http';
 import { ref } from 'vue';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
-import { useQuasar } from 'quasar';
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando';
 
 const router = useRouter()
-const $q = useQuasar()
 
 const mensagem = ref('')
 
 const enviarEmail = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         const dados = await post('/contato-usuario/email', { mensagem: mensagem.value }, true)
 
@@ -44,7 +41,7 @@ const enviarEmail = async () => {
         notificarErro(e.message || 'Erro inesperado')
 
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 

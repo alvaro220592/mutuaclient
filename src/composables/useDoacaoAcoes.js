@@ -2,6 +2,7 @@
 
 import { useQuasar } from 'quasar'
 import { excluir, mudarStatus } from 'src/services/doacao'
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando'
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao'
 
 export function useDoacaoAcoes(doacoes) {
@@ -10,9 +11,7 @@ export function useDoacaoAcoes(doacoes) {
     const alternarStatus =
         async function (doacao) {
             try {
-                $q.loading.show({
-                    message: 'Carregando'
-                })
+                carregandoBasico()
 
                 const dados = await mudarStatus({ id: doacao.id })
 
@@ -24,15 +23,13 @@ export function useDoacaoAcoes(doacoes) {
                 notificarErro(erro.message || 'Erro ao alterar status')
 
             } finally {
-                $q.loading.hide()
+                ocultarCarregando()
             }
         }
 
     const confirmarExclusao = async function (id) {
         try {
-            $q.loading.show({
-                message: 'Carregando'
-            })
+            carregandoBasico()
 
             const dados = await excluir(id)
             const listaAtual = doacoes.value
@@ -49,7 +46,7 @@ export function useDoacaoAcoes(doacoes) {
             notificarErro(erro.message || 'Erro ao excluir')
 
         } finally {
-            $q.loading.hide()
+            ocultarCarregando()
         }
     }
 

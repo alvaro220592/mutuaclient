@@ -44,11 +44,10 @@ import { useRouter, useRoute } from 'vue-router'
 import { redefinirSenha } from 'src/services/auth'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
-import { useQuasar } from 'quasar';
+import { carregandoBasico, ocultarCarregando } from 'src/utils/carregando';
 
 const router = useRouter()
 const route = useRoute()
-const $q = useQuasar()
 
 const email = ref(route.query.email) // parâmetro que vem da função de envio de email em src/pages/convidado/auth/RecuperarSenhaPage.vue
 const codigo_recuperacao = ref('')
@@ -60,9 +59,7 @@ const campoTipoSenhaConfirmacaoSenha = ref(true)
 
 const onRedefinirSenha = async () => {
     try {
-        $q.loading.show({
-            message: 'Carregando'
-        })
+        carregandoBasico()
 
         await redefinirSenha({
             email: email.value,
@@ -78,7 +75,7 @@ const onRedefinirSenha = async () => {
     } catch (err) {
         notificarErro(err.message || 'Erro inesperado')
     } finally {
-        $q.loading.hide()
+        ocultarCarregando()
     }
 }
 
