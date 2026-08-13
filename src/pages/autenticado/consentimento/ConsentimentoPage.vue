@@ -15,11 +15,10 @@
 
             <!-- Botões de exibição do dialog -->
             <q-card-section class="q-gutter-sm">
-                <q-btn outline :disable="carregandoTermo" :loading="carregandoTermo" icon="description"
-                    @click="verTermosUso" label="Ver Termos de Uso" class="full-width" />
+                <q-btn outline icon="description" @click="verTermosUso" label="Ver Termos de Uso" class="full-width" />
 
-                <q-btn outline :disable="carregandoPolitica" :loading="carregandoPolitica" icon="privacy_tip"
-                    @click="verPoliticaPrivacidade" label="Ver Política de Privacidade" class="full-width" />
+                <q-btn outline icon="privacy_tip" @click="verPoliticaPrivacidade" label="Ver Política de Privacidade"
+                    class="full-width" />
             </q-card-section>
 
             <q-card-section>
@@ -42,19 +41,22 @@ import { get, post } from 'src/services/http.js';
 import { useRouter } from 'vue-router';
 import ConsentimentoDialog from './ConsentimentoDialog.vue';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao.js';
+import { useQuasar } from 'quasar';
 
 const router = useRouter()
+const $q = useQuasar()
 
 const aceitou = ref(false)
 const mostrarDialog = ref(false)
 const tituloDialog = ref('')
 const conteudoDialog = ref('')
-const carregandoTermo = ref(false)
-const carregandoPolitica = ref(false)
 
 const verTermosUso = async () => {
     try {
-        carregandoTermo.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await get('/termo-uso/atual')
         preencherDialog('Termos de Uso', dados.conteudo)
 
@@ -62,13 +64,16 @@ const verTermosUso = async () => {
         notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
 
     } finally {
-        carregandoTermo.value = false
+        $q.loading.hide()
     }
 }
 
 const verPoliticaPrivacidade = async () => {
     try {
-        carregandoPolitica.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await get('/politica-privacidade/atual',)
         preencherDialog('Política de privacidade', dados.conteudo)
 
@@ -76,7 +81,7 @@ const verPoliticaPrivacidade = async () => {
         notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
 
     } finally {
-        carregandoPolitica.value = false
+        $q.loading.hide()
     }
 }
 
@@ -92,6 +97,10 @@ const aceitar = async () => {
     }
 
     try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await post('/consentimento/aceitar', null, true)
 
         notificarSucesso(dados.message || 'Aceito com sucesso')
@@ -100,6 +109,9 @@ const aceitar = async () => {
 
     } catch (e) {
         notificarErro(e.message || 'Erro inesperado. Entre em contato com a equipe do Mútua')
+
+    } finally {
+        $q.loading.hide()
     }
 }
 

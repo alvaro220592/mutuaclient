@@ -7,8 +7,7 @@
 
             <q-input outlined v-model="mensagem" label="Insira sua mensagem" type="textarea" />
 
-            <q-btn class="botao-primario" label="Enviar" @click.prevent="enviarEmail" :loading="carregando"
-                :disable="carregando" />
+            <q-btn class="botao-primario" label="Enviar" @click.prevent="enviarEmail" />
 
         </div>
     </div>
@@ -20,14 +19,19 @@ import { useRouter } from 'vue-router';
 import { post } from 'src/services/http';
 import { ref } from 'vue';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
+import { useQuasar } from 'quasar';
 
-const carregando = ref(false)
-const mensagem = ref('')
 const router = useRouter()
+const $q = useQuasar()
+
+const mensagem = ref('')
 
 const enviarEmail = async () => {
     try {
-        carregando.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await post('/contato-usuario/email', { mensagem: mensagem.value }, true)
 
         notificarSucesso(dados.message || 'Mensagem enviada com sucesso')
@@ -40,7 +44,7 @@ const enviarEmail = async () => {
         notificarErro(e.message || 'Erro inesperado')
 
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 

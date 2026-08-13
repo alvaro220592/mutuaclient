@@ -10,6 +10,10 @@ export function useDoacaoAcoes(doacoes) {
     const alternarStatus =
         async function (doacao) {
             try {
+                $q.loading.show({
+                    message: 'Carregando'
+                })
+
                 const dados = await mudarStatus({ id: doacao.id })
 
                 doacao.ativo = !doacao.ativo
@@ -18,11 +22,18 @@ export function useDoacaoAcoes(doacoes) {
             }
             catch (erro) {
                 notificarErro(erro.message || 'Erro ao alterar status')
+
+            } finally {
+                $q.loading.hide()
             }
         }
 
     const confirmarExclusao = async function (id) {
         try {
+            $q.loading.show({
+                message: 'Carregando'
+            })
+
             const dados = await excluir(id)
             const listaAtual = doacoes.value
 
@@ -36,6 +47,9 @@ export function useDoacaoAcoes(doacoes) {
         }
         catch (erro) {
             notificarErro(erro.message || 'Erro ao excluir')
+
+        } finally {
+            $q.loading.hide()
         }
     }
 

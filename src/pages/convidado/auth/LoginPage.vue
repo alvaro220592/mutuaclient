@@ -31,8 +31,6 @@
 
             </div>
         </div>
-
-        <q-inner-loading :showing="carregando" color="primary" label="Aguarde" label-style="font-size: 1.1em" />
     </div>
 </template>
 
@@ -49,61 +47,57 @@ import TituloPagina from 'src/components/TituloPagina.vue';
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue';
 import { notificarErro } from 'src/utils/notificacao';
 import { iniciarEcho } from 'src/services/echo';
+import { useQuasar } from 'quasar';
 
 const router = useRouter()
 const authStore = useAuthStore()
+const $q = useQuasar()
 
 const email = ref('alvaro220592@gmail.com')
 // const email = ref('joao_teste@mail.com')
 const password = ref('password')
-const carregando = ref(false)
 const campoTipoSenha = ref(true)
 
 const onLoginNormal = async () => {
     try {
-        carregando.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
 
         const data = await login({
             email: email.value,
             password: password.value,
         })
-
         await armazenarToken(data.token)
-
         await iniciarEcho()
-
         authStore.setAuth(data.user, data.token)
-
         router.replace('/app')
 
     } catch (err) {
         notificarErro(err.message || 'Erro inesperado')
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 
 const onLoginGoogle = async () => {
     try {
-        carregando.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
 
         const user = await loginGoogle()
-
         const idToken = user.idToken
-
         const data = await loginGoogleBackend(idToken)
-
         await armazenarToken(data.token)
-
         await iniciarEcho()
-
         authStore.setAuth(data.user, data.token)
-
         router.replace('/app')
+
     } catch (err) {
         console.error(err)
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 

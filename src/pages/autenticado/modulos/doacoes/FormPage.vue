@@ -28,9 +28,11 @@ import { useRoute, useRouter } from 'vue-router'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { buscarCategorias, buscarDoacao, salvar, atualizar, buscarPerfisDoacao } from 'src/services/doacao';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
+import { useQuasar } from 'quasar';
 
 const router = useRouter()
 const route = useRoute()
+const $q = useQuasar()
 
 const categorias = ref([])
 const categoriasFiltradas = ref([])
@@ -94,6 +96,10 @@ const trazerCategorias = async () => {
 
 const carregarDoacao = async (id) => {
     try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await buscarDoacao(id)
         perfilDoacaoSelecionado.value = dados.doacao.perfil_doacao_id
         categoriaSelecionada.value = dados.doacao.categoria_doacao_id
@@ -101,6 +107,9 @@ const carregarDoacao = async (id) => {
 
     } catch (error) {
         alert(JSON.stringify(error) ?? error)
+
+    } finally {
+        $q.loading.hide()
     }
 }
 

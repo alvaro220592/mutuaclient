@@ -159,7 +159,7 @@
 </template>
 
 <script setup>
-import { Dark } from 'quasar';
+import { Dark, useQuasar } from 'quasar';
 import { enviarMensagem, obterOuCriarConversa } from 'src/services/conversa';
 import { armazenarTema } from 'src/services/storage';
 import { notificarErro } from 'src/utils/notificacao';
@@ -169,6 +169,7 @@ import { useRoute } from 'vue-router';
 import { obterEcho } from 'src/services/echo'
 
 const route = useRoute()
+const $q = useQuasar()
 
 const textoMensagem = ref('')
 const detalhes = ref('')
@@ -235,6 +236,10 @@ const alternarTema = async () => {
 
 const abrirConversa = async () => {
     try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await obterOuCriarConversa(
             route.query.outroUsuarioId,
             route.query.moduloId,
@@ -250,8 +255,10 @@ const abrirConversa = async () => {
         }
 
     } catch (e) {
-        alert(JSON.stringify(e))
         notificarErro(e.message)
+
+    } finally {
+        $q.loading.hide()
     }
 }
 

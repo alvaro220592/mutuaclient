@@ -19,8 +19,6 @@
                 </template>
             </q-input>
 
-            <SpinnerCarregamento :carregando="carregandoBuscaRegiao" />
-
             <q-card v-if="mostrarRegiao" class="q-pa-sm" flat style="border: 2px dashed #ccc">
                 <div class="text-caption">
                     <q-icon name="location_on" color="red" />
@@ -50,8 +48,7 @@
                 </template>
             </q-input>
 
-            <q-btn class="botao-primario" label="Salvar alterações" @click.prevent="salvar" :loading="carregando"
-                :disable="carregando" />
+            <q-btn class="botao-primario" label="Salvar alterações" @click.prevent="salvar" />
 
             <q-btn outline label="Cancelar" :to="{ name: 'home' }" />
 
@@ -76,7 +73,6 @@ import TituloPagina from 'src/components/TituloPagina.vue'
 import { armazenarToken } from 'src/services/storage'
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue'
 import SeparadorHorizontalComDescricao from 'src/components/SeparadorHorizontalComDescricao.vue'
-import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao'
 
 const authStore = useAuthStore()
@@ -84,11 +80,7 @@ const router = useRouter()
 const route = useRoute()
 const $q = useQuasar()
 
-const carregando = ref(false)
-const carregandoBuscaRegiao = ref(false)
-
 const campoCep = ref(null)
-
 const user = authStore.user
 const end = user?.endereco
 const tel = user?.telefone
@@ -122,9 +114,13 @@ const onCepChange = (valor) => {
 }
 
 const info = async () => {
-    carregando.value = true
+
 
     try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const url = '/user/info-perfil'
 
         const dados = await dadosUsuario(url)
@@ -149,14 +145,16 @@ const info = async () => {
         notificarErro(mensagem)
 
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 
 const salvar = async () => {
-    carregando.value = true
-
     try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const url = '/user/update'
 
         const body = {
@@ -207,13 +205,16 @@ const salvar = async () => {
         notificarErro(mensagem)
 
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 
 const buscarRegiaoPeloCep = async () => {
     try {
-        carregandoBuscaRegiao.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await get('/buscar-regiao-pelo-cep/' + cep.value)
         cidade.value = dados.localidade
         bairro.value = dados.bairro
@@ -222,7 +223,7 @@ const buscarRegiaoPeloCep = async () => {
     } catch (e) {
         notificarErro(e.message)
     } finally {
-        carregandoBuscaRegiao.value = false
+        $q.loading.hide()
     }
 }
 

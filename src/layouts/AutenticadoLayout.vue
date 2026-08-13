@@ -30,7 +30,7 @@
                                     </q-list>
 
                                     <div v-if="notificacoes.length > 0">
-                                        <div style="max-height: 400px; overflow-y: auto">
+                                        <q-scroll-area style="height: 400px; overflow-y: auto">
                                             <q-list>
                                                 <q-item v-for="notificacao in notificacoes" :key="notificacao.id"
                                                     clickable :to="notificacao.link">
@@ -43,7 +43,7 @@
                                                     </q-item-section>
                                                 </q-item>
                                             </q-list>
-                                        </div>
+                                        </q-scroll-area>
 
                                         <q-separator />
 
@@ -230,14 +230,16 @@ import { ref, computed, reactive, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { armazenarTema, armazenarToken } from 'src/services/storage'
-import { Dark } from 'quasar'
+import { Dark, useQuasar } from 'quasar'
 // import { useTransicaoEntrePaginas } from 'src/composables/useTransicaoEntrePaginas'
 import logoDark from 'src/assets/logos/logo-mutua-dark-sem-fundo.png'
 import logoLight from 'src/assets/logos/logo-mutua-light-sem-fundo.png'
 import { obterEcho } from 'src/services/echo'
 import { buscarNumMensagensNaoLidas } from 'src/services/conversa'
-import { notificacaoGeral } from 'src/utils/notificacao'
+import { notificacaoGeral, notificarErro } from 'src/utils/notificacao'
 import { useNotificacoes } from 'src/composables/useNotificacoes'
+
+const $q = useQuasar()
 
 const drawer = ref(false)
 const route = useRoute()
@@ -252,7 +254,7 @@ let canal = null
 const {
     notificacoes,
     notificacoesNaoLidas,
-    carregarNotificacoes,
+    carregarNotificacoesSininho,
     marcarNotificacoesComoLidas,
     iniciarListenerNotificacoes
 } = useNotificacoes()
@@ -262,7 +264,7 @@ const {
 onMounted(async () => {
     await atualizarNumMensagensNaoLidas()
 
-    await carregarNotificacoes()
+    await carregarNotificacoesSininho()
     await iniciarListenerNotificacoes(authStore.user.id, router)
 
     const echo = await obterEcho()
@@ -314,7 +316,6 @@ const logo = computed(() =>
     Dark.isActive ? logoDark : logoLight
 )
 
-
 // const {
 //     animacaoEntrar,
 //     animacaoSair
@@ -325,9 +326,21 @@ const mostrarBotaoVoltar = computed(() => {
 })
 
 const logout = async () => {
-    router.replace('/login')
-    await armazenarToken(null)
-    authStore.setAuth(null, null)
+    try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
+        router.replace('/login')
+        await armazenarToken(null)
+        authStore.setAuth(null, null)
+
+    } catch (erro) {
+        notificarErro(erro.message)
+
+    } finally {
+        $q.loading.hide()
+    }
 }
 
 const alternarTema = async () => {

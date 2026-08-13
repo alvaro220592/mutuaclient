@@ -2,20 +2,19 @@
     <div>
         <TituloPagina titulo="Política de Privacidade" :descricao="ultimaAtualizacao" />
 
-        <SpinnerCarregamento :carregando="carregando" />
-
         <div v-html="politicaPrivacidade.conteudo"></div>
     </div>
 </template>
 
 <script setup>
-import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue';
+import { useQuasar } from 'quasar';
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { get } from 'src/services/http';
 import { onMounted, ref } from 'vue';
 
+const $q = useQuasar()
+
 const politicaPrivacidade = ref({ conteudo: '' })
-const carregando = ref(false)
 const ultimaAtualizacao = ref('...')
 
 onMounted(() => {
@@ -24,7 +23,10 @@ onMounted(() => {
 
 const trazerAtual = async () => {
     try {
-        carregando.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await get('/politica-privacidade/atual',)
         politicaPrivacidade.value = dados
         ultimaAtualizacao.value = 'Última atualização: ' + politicaPrivacidade.value.dataCriacaoPtBr
@@ -32,7 +34,7 @@ const trazerAtual = async () => {
     } catch (e) {
         alert(JSON.stringify(e))
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 

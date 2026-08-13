@@ -3,9 +3,7 @@
 
         <titulo-pagina titulo="Mensagens" descricao="" />
 
-        <spinner-carregamento v-if="carregando" :carregando="carregando" />
-
-        <div v-else>
+        <div>
             <div v-if="conversas.length > 0" id="conversas-container" class="q-gutter-md">
                 <q-card bordered flat clickable v-ripple class="my-card" v-for="conversa in conversas"
                     :key="conversa.id" @click="irParaChat(conversa)">
@@ -46,7 +44,7 @@
 </template>
 
 <script setup>
-import SpinnerCarregamento from 'src/components/SpinnerCarregamento.vue'
+import { useQuasar } from 'quasar'
 import TituloPagina from 'src/components/TituloPagina.vue'
 import { buscarConversasUsuario } from 'src/services/conversa'
 import { obterEcho } from 'src/services/echo'
@@ -57,21 +55,27 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const $q = useQuasar()
+
 const authStore = useAuthStore()
 const conversas = ref([])
-const carregando = ref(false)
+
 let canal = null
 
 const trazerConversas = async () => {
     try {
-        carregando.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await buscarConversasUsuario()
         conversas.value = dados.conversas
 
     } catch (e) {
         notificarErro(e.message)
+
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 

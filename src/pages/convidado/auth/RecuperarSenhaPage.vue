@@ -7,8 +7,7 @@
 
             <q-input outlined v-model="email" label="E-mail" type="email" autocapitalize="off" />
 
-            <q-btn class="botao-primario" label="Enviar link" @click.prevent="enviarEmailRecuperacao"
-                :loading="carregando" :disable="carregando" />
+            <q-btn class="botao-primario" label="Enviar link" @click.prevent="enviarEmailRecuperacao" />
 
             <!-- ações secundárias -->
             <q-btn flat no-caps label="Voltar para o login" :to="{ name: 'login' }" />
@@ -20,20 +19,23 @@
 <style scoped></style>
 
 <script setup>
-import { ref } from 'vue';
-const email = ref('')
-const carregando = ref(false)
 
+import { ref } from 'vue';
 import { recuperarSenha } from 'src/services/auth'
 import { useRouter } from 'vue-router'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
+import { useQuasar } from 'quasar';
 
+const email = ref('')
 const router = useRouter()
+const $q = useQuasar()
 
 const enviarEmailRecuperacao = async () => {
     try {
-        carregando.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
 
         await recuperarSenha({ email: email.value })
 
@@ -49,7 +51,7 @@ const enviarEmailRecuperacao = async () => {
     } catch (err) {
         notificarErro(err.message || 'Erro inesperado')
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 

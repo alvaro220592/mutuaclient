@@ -60,15 +60,21 @@ import { loginGoogle, loginGoogleBackend } from 'src/services/google-auth'
 import TituloPagina from 'src/components/TituloPagina.vue';
 import SeparadorHorizontal from 'src/components/SeparadorHorizontal.vue';
 import { notificarErro } from 'src/utils/notificacao';
+import { useQuasar } from 'quasar';
 
 const router = useRouter()
 const authStore = useAuthStore()
+const $q = useQuasar()
 
 const campoTipoSenhaSenha = ref(true)
 const campoTipoSenhaConfirmacaoSenha = ref(true)
 
 const onCadastrar = async () => {
     try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const data = await cadastrar({
             name: name.value,
             email: email.value,
@@ -84,11 +90,18 @@ const onCadastrar = async () => {
 
     } catch (err) {
         notificarErro(err.message || 'Erro inesperado')
+
+    } finally {
+        $q.loading.hide()
     }
 }
 
 const onLoginGoogle = async () => {
     try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const user = await loginGoogle()
 
         const idToken = user.idToken
@@ -102,6 +115,9 @@ const onLoginGoogle = async () => {
         router.replace('/app')
     } catch (err) {
         notificarErro(JSON.stringify(err))
+
+    } finally {
+        $q.loading.hide()
     }
 }
 

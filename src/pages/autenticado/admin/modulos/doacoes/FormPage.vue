@@ -32,9 +32,11 @@ import TituloPagina from 'src/components/TituloPagina.vue';
 import { buscarCategorias, buscarDoacao, salvar, atualizar, buscarPerfisDoacao } from 'src/services/doacao';
 import { buscarUsuarios } from 'src/services/info-usuario';
 import { notificarErro, notificarSucesso } from 'src/utils/notificacao';
+import { useQuasar } from 'quasar';
 
 const router = useRouter()
 const route = useRoute()
+const $q = useQuasar()
 
 const usuarios = ref([])
 const usuariosFiltrados = ref([])
@@ -165,6 +167,10 @@ const trazerPerfisDoacao = async () => {
 
 const carregarDoacao = async (id) => {
     try {
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await buscarDoacao(id)
         categoriaSelecionada.value = dados.doacao.categoria_doacao_id
         perfilDoacaoSelecionado.value = dados.doacao.perfil_doacao_id
@@ -173,6 +179,9 @@ const carregarDoacao = async (id) => {
 
     } catch (error) {
         notificarErro(JSON.stringify(error))
+
+    } finally {
+        $q.loading.hide()
     }
 }
 

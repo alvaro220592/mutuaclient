@@ -37,7 +37,9 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { modulos } from 'src/services/modulo';
 import TituloPagina from 'src/components/TituloPagina.vue';
+import { useQuasar } from 'quasar';
 
+const $q = useQuasar()
 const router = useRouter()
 const listaModulos = ref()
 const carregando = ref(false)
@@ -48,13 +50,18 @@ onMounted(() => {
 
 const trazerModulos = async () => {
     try {
-        carregando.value = true
+        $q.loading.show({
+            message: 'Carregando'
+        })
+
         const dados = await modulos()
         listaModulos.value = dados.modulos || []
+
     } catch (error) {
         console.log(JSON.stringify(error))
+
     } finally {
-        carregando.value = false
+        $q.loading.hide()
     }
 }
 
