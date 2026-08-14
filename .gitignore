@@ -34,3 +34,4 @@ yarn-error.log*
 .env
 mutua-release.keystore
 android/app/mutua-release.keystore
+src-capacitor/android/app/google-services.json
