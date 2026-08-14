@@ -91,3 +91,12 @@ instalar o app no celular:
 
 como saber a porta que o app tá rdando em dev:
     ss -ltnp | grep node
+
+notificações push:
+    criar aplicativo no console do firebase
+    colocar o google-services.json em src-capacitor/android/app
+    cd src-capacitor
+    npm install @capacitor-firebase/messaging firebase    
+    npx cap sync android
+    cd ..
+    criar src/services/firebase.js
