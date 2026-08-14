@@ -87,3 +87,7 @@ ideias:
 instalar o app no celular:
     quasar build -m capacitor -T android && npx cap sync android && cd src-capacitor/android && ./gradlew assembleDebug && cd ../..
     pegar o arquivo em /home/alvaro/programacao/projetos/vuejs/quasar/mutua/src-capacitor/android/app/build/outputs/apk/debug/app-debug.apk e passar pro celular, instalar o app
+
+
+como saber a porta que o app tá rdando em dev:
+    ss -ltnp | grep node

@@ -48,7 +48,7 @@ const trazerModulos = async () => {
         console.log(JSON.stringify(error))
 
     } finally {
-        ocultarCarregando
+        ocultarCarregando()
     }
 }
 

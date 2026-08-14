@@ -16,7 +16,7 @@
 
                 <div class="col items-center justify-end">
                     <div class="row justify-end q-gutter-sm">
-                        <q-btn icon="notifications">
+                        <q-btn icon="notifications" flat>
                             <q-badge v-if="notificacoesNaoLidas > 0" color="red" floating>
                                 {{ notificacoesNaoLidas }}
                             </q-badge>
