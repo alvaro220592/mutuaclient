@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "675372661254",
+    "project_id": "mutua-notificacoes-push",
+    "storage_bucket": "mutua-notificacoes-push.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675372661254:android:6be64c92edf44c5847a187",
+        "android_client_info": {
+          "package_name": "com.alvaro.mutua"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCImSvhhtMQhZFP9O_pojlHBuD9OvfW0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
